@@ -1,30 +1,35 @@
+/* eslint-disable no-unused-vars */
 import { Card, Typography, CardMedia, Grid, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useAuth } from "../../utils/context/AuthContext";
 
 export default function WelcomeCard() {
-  const { userData } = useAuth();
+  // const { userData } = useAuth();
   const RootStyle = styled(Card)(({ theme }) => ({
     boxShadow: "none",
     // textAlign: "center",
     padding: theme.spacing(4, 4),
     color: theme.palette.secondary.darker,
     backgroundColor: theme.palette.secondary.lighter,
+    height: '400px'
   }));
   return (
     <RootStyle>
-      {userData && (
+      {/* {userData && ( */}
         <Grid
           container
           direction="row"
           justifyContent="space-between"
           alignItems="center"
+          sx={{
+            height: '400px'
+          }}
         >
           <Grid item xs={6} lg={6}>
             <Grid container direction="column" justifyContent="flex-start">
               <Grid item>
                 <Typography variant="h4">
-                  Welcome {userData.FirstName}!
+                  Welcome Sandrine ISHEJA!
                 </Typography>
 
                 {/* <Typography variant="h4">HR Core!</Typography> */}
@@ -53,7 +58,7 @@ export default function WelcomeCard() {
             </Grid>
           </Grid>
         </Grid>
-      )}
+      {/* )} */}
     </RootStyle>
   );
 }

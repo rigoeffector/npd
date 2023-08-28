@@ -44,7 +44,7 @@ const IconWrapperStyle = styled("div")(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function TotalEmployed() {
+export default function CasualWorkers() {
   // const [totalEMPL, setTotal] = useState();
   // const { associates } = useContext(associatesContext);
 
@@ -56,7 +56,7 @@ export default function TotalEmployed() {
   //   setTotal(filtered.length);
   //   setLoading(false);
   // }, [associates]);
- const totalEMPL = 330;
+ const totalEMPL = 140;
   return (
     <>
       <RootStyle>
@@ -68,7 +68,7 @@ export default function TotalEmployed() {
             </IconWrapperStyle>
             <Typography variant="h6">{fShortenNumber(totalEMPL)}</Typography>
             <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
-              Total Employees
+              Casual Workers
             </Typography>
           </div>
         )}

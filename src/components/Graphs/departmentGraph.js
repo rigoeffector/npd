@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { merge } from "lodash";
 import ReactApexChart from "react-apexcharts";
 // material
@@ -16,6 +18,7 @@ import {
   associatesContext,
 } from "../../utils/context/contexts.js";
 
+import './index.css'
 const CHART_HEIGHT = 350;
 const LEGEND_HEIGHT = 90;
 
@@ -38,25 +41,25 @@ const ChartWrapperStyle = styled("div")(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function DepartmentGraph() {
-  const { allDepartments } = useContext(departmentsContext);
+  // const { allDepartments } = useContext(departmentsContext);
   const { associates } = useContext(associatesContext);
 
   const [chartData, setChartData] = useState();
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const getDepartment = () => {
-      const CHART_DATA = [];
-      for (const dep of allDepartments.flat(2)) {
-        // const ress = await fetchDetails(dep);
-        // CHART_DATA1.push(ress.docs.length);
-        CHART_DATA.push(fetchDetails(dep));
-      }
-      setChartData(CHART_DATA);
-      setLoading(false);
-    };
-    getDepartment();
-  }, [allDepartments]);
+  // useEffect(() => {
+  //   const getDepartment = () => {
+  //     const CHART_DATA = [];
+  //     for (const dep of allDepartments.flat(2)) {
+  //       // const ress = await fetchDetails(dep);
+  //       // CHART_DATA1.push(ress.docs.length);
+  //       CHART_DATA.push(fetchDetails(dep));
+  //     }
+  //     setChartData(CHART_DATA);
+  //     setLoading(false);
+  //   };
+  //   getDepartment();
+  // }, [allDepartments]);
 
   const fetchDetails = (dep) => {
     const filtered = associates.filter(
@@ -78,36 +81,47 @@ export default function DepartmentGraph() {
 
   const theme = useTheme();
 
-  const chartOptions = merge(BaseOptionChart(), {
-    // colors: [
-    // theme.palette.primary.main,
-    // theme.palette.info.main,
-    // theme.palette.warning.main,
-    // theme.palette.error.main,
+  // const chartOptions = merge(BaseOptionChart(), {
+  //   // colors: [
+  //   // theme.palette.primary.main,
+  //   // theme.palette.info.main,
+  //   // theme.palette.warning.main,
+  //   // theme.palette.error.main,
 
-    // ],
-    labels: allDepartments.flat(2),
-    stroke: { colors: [theme.palette.background.paper] },
-    legend: { floating: true, horizontalAlign: "center" },
-    dataLabels: { enabled: true, dropShadow: { enabled: false } },
-    tooltip: {
-      fillSeriesColor: false,
-      y: {
-        formatter: (seriesName) => fNumber(seriesName),
-        title: {
-          formatter: (seriesName) => `#${seriesName}`,
-        },
-      },
-    },
-    plotOptions: {
-      pie: { donut: { labels: { show: false } } },
-    },
-  });
+  //   // ],
+  //   // labels: allDepartments.flat(2),
+  //   stroke: { colors: [theme.palette.background.paper] },
+  //   legend: { floating: true, horizontalAlign: "center" },
+  //   dataLabels: { enabled: true, dropShadow: { enabled: false } },
+  //   tooltip: {
+  //     fillSeriesColor: false,
+  //     y: {
+  //       formatter: (seriesName) => fNumber(seriesName),
+  //       title: {
+  //         formatter: (seriesName) => `#${seriesName}`,
+  //       },
+  //     },
+  //   },
+  //   plotOptions: {
+  //     pie: { donut: { labels: { show: false } } },
+  //   },
+  // });
+
+  const state = {
+    options: {},
+    series: [44, 55, 41, 17, 15],
+    labels: ["A", "B", "C", "D", "E"],
+  };
 
   return (
-    <Card>
-      <CardHeader title="Associates per Department" />
-      {loading && (
+    <Card
+      id="dept_card"
+      sx={{
+        height: "fit-content !important",
+      }}
+    >
+      <CardHeader title="Departments" />
+      {/* {loading && (
         <Stack
           // direction="row"
           alignItems="center"
@@ -116,17 +130,18 @@ export default function DepartmentGraph() {
         >
           <CircularProgress />
         </Stack>
-      )}
-      {chartData && chartData.length > 1 && (
-        <ChartWrapperStyle dir="ltr">
-          <ReactApexChart
-            type="pie"
-            series={chartData}
-            options={chartOptions}
-            // height={280}
-          />
-        </ChartWrapperStyle>
-      )}
+      )} */}
+      {/* {chartData && chartData.length > 1 && ( */}
+      <ChartWrapperStyle dir="ltr">
+        <ReactApexChart
+          type="pie"
+          series={state.series}
+          options={state.options}
+          height={280}
+          width="680"
+        />
+      </ChartWrapperStyle>
+      {/* )} */}
     </Card>
   );
 }

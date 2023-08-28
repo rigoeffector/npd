@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Icon } from "@iconify/react";
 import { useRef, useState } from "react";
 import homeFill from "@iconify/icons-eva/home-fill";
@@ -18,6 +19,7 @@ import {
 } from "@mui/material";
 // components
 import MenuPopover from "../../components/MenuPopover";
+import history from "../../history";
 //
 
 // ----------------------------------------------------------------------
@@ -25,10 +27,12 @@ import MenuPopover from "../../components/MenuPopover";
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
-  const { logout, userData } = useAuth();
+  // const { logout, userData } = useAuth();
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
-
+  const logout =()=>{
+    history.push('/')
+  }
   const handleOpen = () => {
     setOpen(true);
   };
@@ -38,7 +42,7 @@ export default function AccountPopover() {
 
   return (
     <>
-      {userData && (
+      {/* {userData && ( */}
         <IconButton
           ref={anchorRef}
           onClick={handleOpen}
@@ -59,9 +63,9 @@ export default function AccountPopover() {
             }),
           }}
         >
-          <Avatar src={userData.profilePicture} />
+          <Avatar src={'/images/user.jpeg'} />
         </IconButton>
-      )}
+      {/* )} */}
 
       <MenuPopover
         open={open}
@@ -71,11 +75,11 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
-            {userData ? userData.FirstName : null}{" "}
-            {userData ? userData.LastName : null}
+            BUTERA ISHEJA{" "}
+            Sandrine
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-            {userData ? userData.Title : null}
+            Project Manager
           </Typography>
         </Box>
 
@@ -83,7 +87,7 @@ export default function AccountPopover() {
         <MenuItem
           key={"Home"}
           to={`#`}
-          component={RouterLink}
+          // component={RouterLink}
           onClick={handleClose}
           sx={{ typography: "body2", py: 1, px: 2.5 }}
         >
@@ -98,11 +102,11 @@ export default function AccountPopover() {
           />
           {"Home"}
         </MenuItem>
-        {userData && (
+       
           <MenuItem
             key={"Profile"}
-            to={`/dashboard/associates/${userData.id}`}
-            component={RouterLink}
+            // to={`/dashboard/associates/${userData.id}`}
+            // component={RouterLink}
             onClick={handleClose}
             sx={{ typography: "body2", py: 1, px: 2.5 }}
           >
@@ -117,11 +121,11 @@ export default function AccountPopover() {
             />
             {"Profile"}
           </MenuItem>
-        )}
+       
         <MenuItem
           key={"Settings"}
           to={`#`}
-          component={RouterLink}
+          // component={RouterLink}
           onClick={handleClose}
           sx={{ typography: "body2", py: 1, px: 2.5 }}
         >

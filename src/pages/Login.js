@@ -1,3 +1,5 @@
+/* eslint-disable no-sequences */
+/* eslint-disable no-unused-vars */
 import {
   Button,
   Box,
@@ -16,12 +18,14 @@ import React, { useState } from "react";
 import Logo from "../components/Logo";
 import Page from "../components/Page";
 import { useNavigate, useLocation } from "react-router-dom";
+import history from "../history";
+
 const Login = () => {
   const [alert, setAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
   const [isLoginScreen, setIsLoginScreen] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
-  const { login, resetUserPassword, currentUser } = useAuth();
+  // const { login, resetUserPassword, currentUser } = useAuth();
   let navigate = useNavigate();
 
   let location = useLocation();
@@ -37,37 +41,41 @@ const Login = () => {
   };
 
   const stepOneValidationSchema = Yup.object({
-    Email: Yup.string().email().required().label("Email"),
-    Password: Yup.string().required("This field is required"),
+    // Email: Yup.string().email().required().label("Email"),
+    // Password: Yup.string().required("This field is required"),
   });
   const stepTwoValidationSchema = Yup.object({
-    Email: Yup.string().email().required().label("Email"),
+    // Email: Yup.string().email().required().label("Email"),
   });
   const handleSubmit = async (values) => {
-    await login(values.Email, values.Password)
-      .then(() => {
-        navigate(from, { replace: true });
-      })
-      .catch((error) => (setErrorMessage(error.message), setAlert(true)));
+    // window.location.reload();
+    navigate(from, { replace: true });
+    history.push("/dashboard/home");
+
+    // await login(values.Email, values.Password)
+    //   .then(() => {
+    //     navigate(from, { replace: true });
+    //   })
+    //   .catch((error) => (setErrorMessage(error.message), setAlert(true)));
   };
   const handleDemoLogin = async () => {
-    await login(
-      process.env.REACT_APP_DEMO_LOGIN,
-      process.env.REACT_APP_DEMO_PASSWORD
-    )
-      .then(() => {
-        navigate(from, { replace: true });
-      })
-      .catch((error) => (setErrorMessage(error.message), setAlert(true)));
+    // await login(
+    //   process.env.REACT_APP_DEMO_LOGIN,
+    //   process.env.REACT_APP_DEMO_PASSWORD
+    // )
+    //   .then(() => {
+    //     navigate(from, { replace: true });
+    //   })
+    //   .catch((error) => (setErrorMessage(error.message), setAlert(true)));
   };
   const handleReset = async (values) => {
     console.log("reseting password");
-    await resetUserPassword(values.Email);
+    // await resetUserPassword(values.Email);
   };
 
   return (
     <div>
-      <Page title="HR Core - Login">
+      <Page title="NPD - Login">
         {isLoginScreen && (
           <Grid
             sx={{ p: 1, pb: 5, pt: 6 }}
@@ -156,7 +164,7 @@ const Login = () => {
                           Login
                         </Button>
 
-                         <Button
+                        {/* <Button
                           variant="outlined"
                           fullWidth
                           onClick={() => handleDemoLogin()}
@@ -168,7 +176,7 @@ const Login = () => {
                           }}
                         >
                           Demo login
-                        </Button> 
+                        </Button>  */}
 
                         <Button
                           type="button"

@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 import { Icon } from "@iconify/react";
-import poundOutlined from "@iconify/icons-ant-design/pound-outlined";
+import rwa from "@iconify/icons-ant-design/pound-outlined";
 // material
 import { styled } from "@mui/material/styles";
 import { Card, Typography } from "@mui/material";
@@ -44,20 +45,20 @@ const IconWrapperStyle = styled("div")(({ theme }) => ({
 
 export default function AverageSalary() {
   const [loading, setLoading] = useState(true);
-  const { associates } = useContext(associatesContext);
+  // const { associates } = useContext(associatesContext);
   const [chartData, setChartData] = useState();
 
-  useEffect(() => {
-    const salaries = [];
-    const filtered = associates.filter(
-      (associate) => associate.EmplStatus === "Employed"
-    );
-    filtered.forEach((associate) => {
-      salaries.push(parseInt(associate.Salary));
-    });
-    setChartData(_.sum(salaries) / salaries.length);
-    setLoading(false);
-  }, [associates]);
+  // useEffect(() => {
+  //   const salaries = [];
+  //   const filtered = associates.filter(
+  //     (associate) => associate.EmplStatus === "Employed"
+  //   );
+  //   filtered.forEach((associate) => {
+  //     salaries.push(parseInt(associate.Salary));
+  //   });
+  //   setChartData(_.sum(salaries) / salaries.length);
+  //   setLoading(false);
+  // }, [associates]);
   const formatter = new Intl.NumberFormat(undefined, {
     style: "currency",
     currency: "GBP",
@@ -66,20 +67,22 @@ export default function AverageSalary() {
   return (
     <>
       <RootStyle>
-        {loading && <CircularProgress />}
-        {chartData > 0 && (
+        {/* {loading && <CircularProgress />} */}
+        {/* {chartData > 0 && ( */}
           <div>
             <IconWrapperStyle>
-              <Icon icon={poundOutlined} width={35} height={35} />
+              RWF
             </IconWrapperStyle>
-            <Typography variant="h3">
-              {chartData ? formatter.format(chartData) : null}
+            <Typography variant="h6">
+              {/* {chartData ? formatter.format(chartData) : null} */}
+              {/* {chartData ? formatter.format(chartData) : null} */}
+              600,000,000
             </Typography>
             <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
               Average Salary
             </Typography>
           </div>
-        )}
+        {/* )} */}
       </RootStyle>
     </>
   );

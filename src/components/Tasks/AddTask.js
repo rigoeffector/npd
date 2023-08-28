@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { Button, Card, Grid, CardHeader } from "@mui/material";
 import { useState, useContext } from "react";
 import { associatesContext } from "../../utils/context/contexts";
-import { ref, push } from "firebase/database";
-import { rtdb } from "../../utils/firebase";
+// import { ref, push } from "firebase/database";
+// import { rtdb } from "../../utils/firebase";
 import ChangeTitleTask from "./addTaskElements/ChangeTitleTask";
 import IncreaseSalary from "./addTaskElements/IncreaseSalary";
 import { addNotification } from "../Thanks/thanksFunctions";
@@ -51,16 +52,16 @@ const AddTask = ({
   //   setTaskValues({ ...taskValues,  });
   // };
   const writeTask = () => {
-    const newTask = push(
-      ref(rtdb, `Tasks/${userDetails.id}/MyTasks`),
-      taskValues
-    );
+    // const newTask = push(
+    //   ref(rtdb, `Tasks/${userDetails.id}/MyTasks`),
+    //   taskValues
+    // );
     // write to each requester in To Approve with path to this specific task
     Object.keys(taskValues.approvers).forEach((approver, index) => {
-      push(ref(rtdb, `Tasks/${approver}/ToApprove`), {
-        TaskPath: `${taskValues.requester}/MyTasks/${newTask.key}`,
-      });
-      addNotification(approver, "task");
+      // push(ref(rtdb, `Tasks/${approver}/ToApprove`), {
+      //   TaskPath: `${taskValues.requester}/MyTasks/${newTask.key}`,
+      // });
+      // addNotification(approver, "task");
     });
     setPopupOpen(false);
   };

@@ -12,7 +12,6 @@ import {
   MenuItem,
 } from "@mui/material";
 import * as Yup from "yup";
-import { useAuth } from "../utils/context/AuthContext";
 import { Formik, Form } from "formik";
 import React from "react";
 import { useState, useContext } from "react";
@@ -30,10 +29,7 @@ const SignUp = () => {
     ConfirmPassword: "",
   });
   const [chosenProfile, setChosenProfile] = useState();
-  const uploadToFirebase = async (associateID, role) => {
-    const associate = associates.filter(
-      (ass) => ass.AssociateID === associateID
-    );
+  const uploadToFirebase = async (associateID) => {
     // const formData = {
     //   AssociateID: associate.id,
     //   FirstName: associate.FirstName,

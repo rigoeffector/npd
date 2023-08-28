@@ -1,9 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 // material
 import { styled } from "@mui/material/styles";
-import { Box, Drawer, Grid, Typography } from "@mui/material";
+import { Box, Drawer, Grid } from "@mui/material";
 // components
 import Scrollbar from "../../components/Scrollbar";
 import NavSection from "../../components/NavSection";
@@ -54,21 +55,31 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       }}
     >
       <Box sx={{ px: 2.5, py: 3 }}>
-        <Grid container direction="column" alignItems="center">
-          <Logo sx={{ width: 90 }} color="white" />
+        <Grid
+          container
+          direction="column"
+          alignItems="center"
+          sx={{
+            fontSize: "2rem",
+            color: "#c4cc36",
+            fontWeight: "800",
+          }}
+        >
+          {/* <Logo sx={{ width: 90 }} color="white" /> */}
+          NPD
         </Grid>
       </Box>
 
       <NavSection navConfig={sidebarConfig} />
 
       <Box sx={{ flexGrow: 1 }}></Box>
-      <Box>
+      {/* <Box>
         <Grid container justifyContent="center" sx={{ pb: 2 }}>
           <Typography variant="h7" color="lightGrey">
             Version 0.78.1
           </Typography>
         </Grid>
-      </Box>
+      </Box> */}
     </Scrollbar>
   );
 

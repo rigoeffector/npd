@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { Grid, Typography, Box } from "@mui/material";
 import Timeline from "@mui/lab/Timeline";
@@ -7,8 +8,8 @@ import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "../../../utils/firebase";
+// import { collection, getDocs, query, where } from "firebase/firestore";
+// import { db } from "../../../utils/firebase";
 import moment from "moment";
 const AssociateChanges = ({ userID }) => {
   const [associateChanges, setAssociateChanges] = useState();
@@ -22,10 +23,10 @@ const AssociateChanges = ({ userID }) => {
   }, []);
 
   const fetchDetails = async () => {
-    const citiesRef = collection(db, "Changes");
-    const q = query(citiesRef, where("AssociateID", "==", userID));
-    const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map((doc) => doc.data());
+    // const citiesRef = collection(db, "Changes");
+    // const q = query(citiesRef, where("AssociateID", "==", userID));
+    // const querySnapshot = await getDocs(q);
+    // return querySnapshot.docs.map((doc) => doc.data());
   };
 
   return (

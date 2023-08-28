@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useContext } from "react";
 import { useState } from "react";
 import UserListHead from "../components/Associates/UserListHead";
@@ -7,6 +8,7 @@ import { Link } from "react-router-dom";
 import Scrollbar from "../components/Scrollbar";
 import * as moment from "moment";
 import Page from "../components/Page";
+import { DataTable } from "../components/table";
 // import { CSVLink, CSVDownload } from "react-csv";
 import { sentenceCase } from "change-case";
 import {
@@ -29,153 +31,168 @@ import {
   resultsPerPageContext,
 } from "../utils/context/contexts";
 
-const TABLE_HEAD = [
-  { id: "", label: "    ", alignRight: false },
-  { id: "", label: "    ", alignRight: false },
-  { id: "FirstName", label: "First Name", alignRight: false },
-  { id: "LastName", label: "Last Name", alignRight: false },
-  { id: "Title", label: "Title", alignRight: false },
-  { id: "Department", label: "Department", alignRight: false },
-  { id: "StartDate", label: "Start Date", alignRight: false },
-  { id: "EmplStatus", label: "Status", alignRight: false },
-  { id: "" },
-];
-
 const Associates = () => {
   const { associates: associatesData, setAssociates: setAssociatesData } =
     useContext(associatesContext);
   const [filterName, setFilterName] = useState("");
-  const { rowsPerPage, setRowsPerPage } = useContext(resultsPerPageContext);
-  const [page, setPage] = useState(0);
+
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("LastName");
-  const [checked, setChecked] = useState(false);
 
-  // const [toExport, setToExport] = useState([]);
-  const emptyRows =
-    page > 0
-      ? Math.max(0, (1 + page) * rowsPerPage - associatesData.length)
-      : 0;
+  const columns = [
+    { field: "id", headerName: "ID", width: 70 },
+    { field: "firstName", headerName: "First name", width: 130 },
+    { field: "lastName", headerName: "Last name", width: 130 },
+    {
+      field: "age",
+      headerName: "Age",
+      width: 90,
+    },
+    {
+      field: "title",
+      headerName: "Title",
+      width: 130,
+    },
+    {
+      field: "department",
+      headerName: "Department",
+      width: 130,
+    },
+    {
+      field: "",
+      headerName: "Action",
+      type: "actions",
+      width: 300,
+      getActions: (params) => [
+        <div className="actions_button">
+          <Button
+            style={{
+              borderRadius: "8px",
+              border: "1px solid  #DCDFE5",
+              background: "#F9FAFB",
+              color: "#1090CB",
+              fontSize: "14px",
+              fontWeight: "600",
+              lineHeight: "normal",
+            }}
+            // onClick={() => handleAssignAsset(params)}
+          >
+            Edit
+          </Button>
+        </div>,
+        <div className="actions_button">
+          <Button
+            style={{
+              borderRadius: "8px",
+              border: "1px solid  #DCDFE5",
+              background: "#F9FAFB",
+              color: "red",
+              fontSize: "14px",
+              fontWeight: "600",
+              lineHeight: "normal",
+            }}
+            // onClick={() => handleAssignAsset(params)}
+          >
+            Delete
+          </Button>
+        </div>,
+      ],
+    },
+  ];
 
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
-  };
+  const rows = [
+    {
+      id: 1,
+      lastName: "Snow",
+      firstName: "Jon",
+      age: 35,
+      title: "Project Manager",
+      department: "Management",
+      startDate: "2022/09/12",
+      employeeStatus: "Active",
+    },
+    {
+      id: 2,
+      lastName: "Lannister",
+      firstName: "Cersei",
+      age: 42,
+      title: "Techinician Manager",
+      department: "IT",
+      startDate: "2022/09/12",
+      employeeStatus: "Active",
+    },
+    {
+      id: 3,
+      lastName: "Lannister",
+      firstName: "Jaime",
+      age: 45,
+      title: "Site Manager",
+      department: "Developer",
+      startDate: "2022/09/12",
+      employeeStatus: "Active",
+    },
+    {
+      id: 4,
+      lastName: "Stark",
+      firstName: "Arya",
+      age: 16,
+      title: "Capita",
+      department: "Developer",
+      startDate: "2022/09/12",
+      employeeStatus: "Active",
+    },
+    {
+      id: 5,
+      lastName: "Targaryen",
+      firstName: "Daenerys",
+      age: null,
+      title: "Project Manager",
+      department: "Management",
+      startDate: "2022/09/12",
+      employeeStatus: "Active",
+    },
+    {
+      id: 6,
+      lastName: "Melisandre",
+      firstName: null,
+      age: 150,
+      title: "Project Manager",
+      department: "Management",
+      startDate: "2022/09/12",
+      employeeStatus: "Active",
+    },
+    {
+      id: 7,
+      lastName: "Clifford",
+      firstName: "Ferrara",
+      age: 44,
+      title: "Employee",
+      department: "Management",
+      startDate: "2022/09/12",
+      employeeStatus: "Active",
+    },
+    {
+      id: 8,
+      lastName: "Frances",
+      firstName: "Rossini",
+      age: 36,
+      title: "Project Manager",
+      department: "Management",
+      startDate: "2022/09/12",
+      employeeStatus: "Active",
+    },
+    {
+      id: 9,
+      lastName: "Roxie",
+      firstName: "Harvey",
+      age: 65,
+      title: "Project Manager",
+      department: "Management",
+      startDate: "2022/09/12",
+      employeeStatus: "Active",
+    },
+  ];
 
-  const handleFilterByName = (event) => {
-    setFilterName(event.target.value);
-  };
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  function descendingComparator(a, b, orderBy) {
-    if (b[orderBy] < a[orderBy]) {
-      return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-      return 1;
-    }
-    return 0;
-  }
-
-  function getComparator(order, orderBy) {
-    return order === "desc"
-      ? (a, b) => descendingComparator(a, b, orderBy)
-      : (a, b) => -descendingComparator(a, b, orderBy);
-  }
-
-  function applySortFilter(array, comparator, query, status) {
-    // const stabilizedThis = array.map((el, index) => [el, index]);
-
-    if (status && query.length > 0) {
-      const newArray = array.filter(
-        (_user) =>
-          _user.FirstName.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
-          _user.LastName.toLowerCase().indexOf(query.toLowerCase()) !== -1
-      );
-      const stabilizedThis = newArray.map((el, index) => [el, index]);
-      stabilizedThis.sort((a, b) => {
-        const order = comparator(a[0], b[0]);
-        if (order !== 0) return order;
-        return a[1] - b[1];
-      });
-      return stabilizedThis.map((el) => el[0]);
-    } else if (!status && query.length > 0) {
-      const newArray = array.filter(
-        (_user) =>
-          (_user.FirstName.toLowerCase().indexOf(query.toLowerCase()) !== -1 &&
-            _user.EmplStatus.indexOf("Employed") !== -1) ||
-          (_user.LastName.toLowerCase().indexOf(query.toLowerCase()) !== -1 &&
-            _user.EmplStatus.indexOf("Employed") !== -1)
-      );
-      const stabilizedThis = newArray.map((el, index) => [el, index]);
-      stabilizedThis.sort((a, b) => {
-        const order = comparator(a[0], b[0]);
-        if (order !== 0) return order;
-        return a[1] - b[1];
-      });
-      return stabilizedThis.map((el) => el[0]);
-    } else if (status && query.length === 0) {
-      const stabilizedThis = array.map((el, index) => [el, index]);
-
-      stabilizedThis.sort((a, b) => {
-        const order = comparator(a[0], b[0]);
-        if (order !== 0) return order;
-        return a[1] - b[1];
-      });
-      return stabilizedThis.map((el) => el[0]);
-    } else if (!status && query.length === 0) {
-      // return filter(
-      //   array,
-      //   (_user) => _user.EmplStatus.indexOf("Employed") !== -1
-      // );
-      const newArray = array.filter(
-        (_user) => _user.EmplStatus.indexOf("Employed") !== -1
-      );
-      const stabilizedThis = newArray.map((el, index) => [el, index]);
-
-      stabilizedThis.sort((a, b) => {
-        const order = comparator(a[0], b[0]);
-        if (order !== 0) return order;
-        return a[1] - b[1];
-      });
-      return stabilizedThis.map((el) => el[0]);
-    } else {
-      const stabilizedThis = array.map((el, index) => [el, index]);
-
-      stabilizedThis.sort((a, b) => {
-        const order = comparator(a[0], b[0]);
-        if (order !== 0) return order;
-        return a[1] - b[1];
-      });
-      return stabilizedThis.map((el) => el[0]);
-    }
-    // const stabilizedThis = array.map((el, index) => [el, index]);
-    // stabilizedThis.sort((a, b) => {
-    //   const order = comparator(a[0], b[0]);
-    //   if (order !== 0) return order;
-    //   return a[1] - b[1];
-    // });
-    // return stabilizedThis.map((el) => el[0]);
-  }
-  const filteredAssociates = applySortFilter(
-    associatesData,
-    getComparator(order, orderBy),
-    filterName,
-    checked
-  );
-  // const toExport = Array.from(filteredAssociates);
-  // const Export = (toExport) => {
-  //   toExport.forEach((item) => delete item.profilePicture);
-  //   return toExport;
-  // };
   return (
     <Page title="HR Core - Associates">
       <Box>
@@ -187,151 +204,32 @@ const Associates = () => {
             mb={2}
           >
             <Typography variant="h4" gutterBottom>
-              Associates
+              All Employees
             </Typography>
 
-            <Button variant="contained" component={Link} to={"newassociate"}>
-              New Associate
+            <Button variant="contained" component={Link} to={"/new/employee"}>
+              New Employee
             </Button>
           </Stack>
-          {associatesData && (
-            <Card>
-              <UserListToolbar
-                filterName={filterName}
-                onFilterName={handleFilterByName}
-                setChecked={setChecked}
-                checked={checked}
-              />
-              <Scrollbar>
-                <TableContainer sx={{ minWidth: 800 }}>
-                  <Table>
-                    <UserListHead
-                      order={order}
-                      orderBy={orderBy}
-                      headLabel={TABLE_HEAD}
-                      rowCount={associatesData.length}
-                      onRequestSort={handleRequestSort}
-                    />
-                    <TableBody>
-                      {filteredAssociates
-                        .slice(
-                          page * rowsPerPage,
-                          page * rowsPerPage + rowsPerPage
-                        )
-                        .map((filteredassociate) => {
-                          const {
-                            id,
-                            FirstName,
-                            LastName,
-                            EmplStatus,
-                            Department,
-                            profilePicture,
-                            Title,
-                            StartDate,
-                          } = filteredassociate;
-
-                          return (
-                            <TableRow
-                              style={{ textDecoration: "none" }}
-                              key={id}
-                              hover
-                              sx={{ underline: "false" }}
-                              component={Link}
-                              to={`/dashboard/associates/${id}`}
-                            >
-                              <TableCell align="left" />
-                              <TableCell
-                                component="th"
-                                scope="row"
-                                padding="none"
-                              >
-                                <Stack
-                                  direction="row"
-                                  alignItems="center"
-                                  spacing={0}
-                                >
-                                  {/* <Badge
-                                    overlap="circular"
-                                    anchorOrigin={{
-                                      vertical: "bottom",
-                                      horizontal: "right",
-                                    }}
-                                    badgeContent="💡"
-                                  >
-                                    <Avatar
-                                      src={profilePicture}
-                                      alt="Profile Pic"
-                                      sx={{ width: 40, height: 40 }}
-                                    />
-                                  </Badge> */}
-                                  <Avatar
-                                    src={profilePicture}
-                                    alt="Profile Pic"
-                                    sx={{ width: 40, height: 40 }}
-                                  />
-                                </Stack>
-                              </TableCell>
-                              <TableCell align="left">
-                                <Typography
-                                  variant="subtitle2"
-                                  noWrap
-                                  style={{ textDecoration: "none" }}
-                                >
-                                  {FirstName}
-                                </Typography>
-                              </TableCell>
-                              <TableCell align="left">
-                                <Typography variant="subtitle2" noWrap>
-                                  {LastName}
-                                </Typography>
-                              </TableCell>
-                              <TableCell align="left">{Title}</TableCell>
-                              <TableCell align="left">{Department}</TableCell>
-                              <TableCell align="left">
-                                {moment(StartDate.toDate()).format(
-                                  "DD-MM-yyyy"
-                                )}
-                              </TableCell>
-                              <TableCell align="left">
-                                <Label
-                                  variant="ghost"
-                                  color={
-                                    (EmplStatus === "Terminated" && "error") ||
-                                    "success"
-                                  }
-                                >
-                                  {sentenceCase(EmplStatus)}
-                                </Label>
-                              </TableCell>
-                              <TableCell align="right">
-                                {/* <UserMoreMenu /> */}
-                              </TableCell>
-                            </TableRow>
-                          );
-                        })}
-                      {emptyRows > 0 && (
-                        <TableRow
-                          style={{ height: 53 * emptyRows }}
-                          key={Math.random}
-                        >
-                          <TableCell colSpan={6} />
-                        </TableRow>
-                      )}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </Scrollbar>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 25]}
-                component="div"
-                count={filteredAssociates.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
-            </Card>
-          )}
+          {/* {associatesData && ( */}
+          <Card
+            sx={{
+              padding: "2rem",
+            }}
+          >
+            <DataTable
+              rows={rows}
+              columns={columns}
+              initialState={{
+                pagination: {
+                  paginationModel: { page: 0, pageSize: 5 },
+                },
+              }}
+              pageSizeOptions={[5, 10]}
+              checkboxSelection
+            />
+          </Card>
+          {/* )} */}
         </Container>
       </Box>
     </Page>

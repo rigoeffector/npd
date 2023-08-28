@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useContext, useState } from "react";
 import {
   associatesContext,
@@ -36,16 +37,16 @@ import DatePicker from "@mui/lab/DatePicker";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "../../utils/firebase";
-import { Timestamp } from "firebase/firestore";
+// import { collection, addDoc } from "firebase/firestore";
+// import { db } from "../../utils/firebase";
+// import { Timestamp } from "firebase/firestore";
 import AssociateDocuments from "./subdetails/associateDocuments";
 import Page from "../Page";
 export default function NewAssociate() {
-  const { isDemo } = useAuth();
+  // const { isDemo } = useAuth();
   // const [currentStep, setCurrentStep] = useState(0);
   const stepLabels = ["Personal details", "Emergency contact", "Documents"];
-  const { setUpdateAssociates } = useContext(updateAssociatesContext);
+  // const { setUpdateAssociates } = useContext(updateAssociatesContext);
   const [associateID, setAssociateID] = useState();
   const [newAssociate, setNewAssocaite] = useState({
     emergencyInfo: {
@@ -84,15 +85,14 @@ export default function NewAssociate() {
   const [currentStep, setCurrentStep] = useState(0);
 
   const uploadToFirebase = async (formData) => {
-    const docRef = await addDoc(collection(db, "Associates"), formData);
-    setAssociateID(docRef.id);
-    setUpdateAssociates((updateAssociates) => updateAssociates + 1);
+    // const docRef = await addDoc(collection(db, "Associates"), formData);
+    // setAssociateID(docRef.id);
+    // setUpdateAssociates((updateAssociates) => updateAssociates + 1);
   };
 
   const makeRequest = async (formData) => {
-    !isDemo && (await uploadToFirebase(formData));
-
-    setCurrentStep((prev) => prev + 1);
+    // !isDemo && (await uploadToFirebase(formData));
+    // setCurrentStep((prev) => prev + 1);
   };
 
   const handleNextStep = (newData, final = false) => {
@@ -100,13 +100,12 @@ export default function NewAssociate() {
       ...prev,
       ...newData,
     }));
-
     if (final) {
       const newObject = Object.assign({}, newData, {
-        StartDate: Timestamp.fromDate(newData.StartDate),
-        DOB: Timestamp.fromDate(newData.DOB),
+        StartDate: "2022/09/09",
+        DOB: "2000/09/09",
       });
-      makeRequest(newObject);
+      // makeRequest(newObject);
       return;
     }
     setCurrentStep((prev) => prev + 1);
@@ -128,10 +127,10 @@ export default function NewAssociate() {
   ];
 
   return (
-    <Page title="HR Core - New Associate">
+    <Page title="NPD - New eMPLOYEE">
       <Container>
         <Typography variant="h4" sx={{ pb: 1 }}>
-          Add new Associate
+          Add new Employee
         </Typography>
         {currentStep === 0 && (
           <Button
@@ -142,7 +141,7 @@ export default function NewAssociate() {
             Back
           </Button>
         )}
-        <Card sx={{ mt: 2 }}>
+        <Card sx={{ mt: 2, padding: "3rem" }}>
           <Stepper
             activeStep={currentStep}
             alternativeLabel
@@ -162,34 +161,125 @@ export default function NewAssociate() {
 }
 
 const stepOneValidationSchema = Yup.object({
-  FirstName: Yup.string().required().label("First Name"),
-  LastName: Yup.string().required().label("Last Name"),
-  Title: Yup.string().required().label("Title"),
-  Gender: Yup.string().required().label("Gender"),
-  City: Yup.string().required().label("City"),
-  EmplStatus: Yup.string().required().label("Employment Status"),
-  PhoneNumber: Yup.string().required().label("Phone Number"),
-  StartDate: Yup.date().required().label("Start Date"),
-  DOB: Yup.date().required().label("Birth Date"),
-  Office: Yup.string().required().label("Office"),
-  Department: Yup.string().required().label("Department"),
-  Manager: Yup.string().label("Manager"),
-  PrivateEmail: Yup.string()
-    .email("Invalid email")
-    .required()
-    .label("Private Email"),
-  WorkEmail: Yup.string().email("Invalid email").required().label("Work Email"),
-  Salary: Yup.string().required().label("Salary"),
+  // FirstName: Yup.string().required().label("First Name"),
+  // LastName: Yup.string().required().label("Last Name"),
+  // Title: Yup.string().required().label("Title"),
+  // Gender: Yup.string().required().label("Gender"),
+  // City: Yup.string().required().label("City"),
+  // EmplStatus: Yup.string().required().label("Employment Status"),
+  // PhoneNumber: Yup.string().required().label("Phone Number"),
+  // StartDate: Yup.date().required().label("Start Date"),
+  // DOB: Yup.date().required().label("Birth Date"),
+  // Office: Yup.string().required().label("Office"),
+  // Department: Yup.string().required().label("Department"),
+  // Manager: Yup.string().label("Manager"),
+  // PrivateEmail: Yup.string()
+  //   .email("Invalid email")
+  //   .required()
+  //   .label("Private Email"),
+  // WorkEmail: Yup.string().email("Invalid email").required().label("Work Email"),
+  // Salary: Yup.string().required().label("Salary"),
 });
 
 const StepOne = (props) => {
-  const { allOffices } = useContext(officesContext);
-  const { allDepartments } = useContext(departmentsContext);
-  const { associates } = useContext(associatesContext);
+  // const { allOffices } = useContext(officesContext);
+  // const { allDepartments } = useContext(departmentsContext);
+  // const { associates } = useContext(associatesContext);
   const handleSubmit = (values) => {
     props.next(values);
   };
-
+  const associates = [
+    {
+      id: 1,
+      lastName: "Snow",
+      firstName: "Jon",
+      age: 35,
+      title: "Project Manager",
+      department: "Management",
+      startDate: "2022/09/12",
+      employeeStatus: "Active",
+    },
+    {
+      id: 2,
+      lastName: "Lannister",
+      firstName: "Cersei",
+      age: 42,
+      title: "Techinician Manager",
+      department: "IT",
+      startDate: "2022/09/12",
+      employeeStatus: "Active",
+    },
+    {
+      id: 3,
+      lastName: "Lannister",
+      firstName: "Jaime",
+      age: 45,
+      title: "Site Manager",
+      department: "Developer",
+      startDate: "2022/09/12",
+      employeeStatus: "Active",
+    },
+    {
+      id: 4,
+      lastName: "Stark",
+      firstName: "Arya",
+      age: 16,
+      title: "Capita",
+      department: "Developer",
+      startDate: "2022/09/12",
+      employeeStatus: "Active",
+    },
+    {
+      id: 5,
+      lastName: "Targaryen",
+      firstName: "Daenerys",
+      age: null,
+      title: "Project Manager",
+      department: "Management",
+      startDate: "2022/09/12",
+      employeeStatus: "Active",
+    },
+    {
+      id: 6,
+      lastName: "Melisandre",
+      firstName: null,
+      age: 150,
+      title: "Project Manager",
+      department: "Management",
+      startDate: "2022/09/12",
+      employeeStatus: "Active",
+    },
+    {
+      id: 7,
+      lastName: "Clifford",
+      firstName: "Ferrara",
+      age: 44,
+      title: "Employee",
+      department: "Management",
+      startDate: "2022/09/12",
+      employeeStatus: "Active",
+    },
+    {
+      id: 8,
+      lastName: "Frances",
+      firstName: "Rossini",
+      age: 36,
+      title: "Project Manager",
+      department: "Management",
+      startDate: "2022/09/12",
+      employeeStatus: "Active",
+    },
+    {
+      id: 9,
+      lastName: "Roxie",
+      firstName: "Harvey",
+      age: 65,
+      title: "Project Manager",
+      department: "Management",
+      startDate: "2022/09/12",
+      employeeStatus: "Active",
+    },
+  ];
   return (
     <Formik
       validationSchema={stepOneValidationSchema}
@@ -240,25 +330,25 @@ const StepOne = (props) => {
               />
               <ErrorMessage name="Title" />
             </Grid>
-            {allDepartments && (
-              <Grid item sx={4} sm={4} xl={4}>
-                <FormControl fullWidth>
-                  <InputLabel>Department</InputLabel>
-                  <Field
-                    as={Select}
-                    name="Department"
-                    required
-                    size="small"
-                    label="Department"
-                    fullWidth
-                  >
-                    {allDepartments.map((department, index) => (
-                      <MenuItem key={index} value={`${department}`}>
-                        {department}
-                      </MenuItem>
-                    ))}
-                  </Field>
-                  {/* <Field
+            {/* {allDepartments && ( */}
+            <Grid item sx={4} sm={4} xl={4}>
+              <FormControl fullWidth>
+                <InputLabel>Department</InputLabel>
+                <Field
+                  as={Select}
+                  name="Department"
+                  required
+                  size="small"
+                  label="Department"
+                  fullWidth
+                >
+                  {/* {allDepartments.map((department, index) => ( */}
+                  <MenuItem value={"1"}>IT Department</MenuItem>
+                  <MenuItem value={"1"}>Developer</MenuItem>
+                  <MenuItem value={"1"}>Management</MenuItem>
+                  {/* ))} */}
+                </Field>
+                {/* <Field
                   fullWidth
                   as={Select}
                   name="Department"
@@ -273,45 +363,22 @@ const StepOne = (props) => {
                     </MenuItem>
                   ))}
                 </Field> */}
-                  <ErrorMessage name="Department" />
-                </FormControl>
-              </Grid>
-            )}
+                <ErrorMessage name="Department" />
+              </FormControl>
+            </Grid>
+            {/* )} */}
             <Grid item sx={4} sm={4} xl={4}>
               <Field
                 fullWidth
                 required
-                name="City"
+                name="id"
                 size="small"
-                label="City"
+                label="ID Number"
                 as={TextField}
               />
-              <ErrorMessage name="City" />
+              <ErrorMessage name="id" />
             </Grid>
-            <Grid item sx={4} sm={4} xl={4}>
-              <Field
-                required
-                fullWidth
-                name="WorkEmail"
-                size="small"
-                label="Work Email"
-                // type="email"
-                as={TextField}
-              />
-              <ErrorMessage name="WorkEmail" />
-            </Grid>
-            <Grid item sx={4} sm={4} xl={4}>
-              <Field
-                // type="email"
-                required
-                fullWidth
-                name="PrivateEmail"
-                size="small"
-                label="Private Email"
-                as={TextField}
-              />
-              <ErrorMessage name="PrivateEmail" />
-            </Grid>
+
             <Grid item sx={4} sm={4} xl={4}>
               <Field
                 // type="email"
@@ -335,7 +402,7 @@ const StepOne = (props) => {
                 as={TextField}
                 InputProps={{
                   startAdornment: (
-                    <InputAdornment position="start">£</InputAdornment>
+                    <InputAdornment position="start">RWF</InputAdornment>
                   ),
                 }}
               />
@@ -365,55 +432,28 @@ const StepOne = (props) => {
                 <ErrorMessage name="Gender" />
               </FormControl>
             </Grid>
+
+            {/* {allOffices && ( */}
             <Grid item sx={4} sm={4} xl={4}>
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">
-                  Employment Status
-                </InputLabel>
+                <InputLabel id="demo-simple-select-label">Office</InputLabel>
                 <Field
-                  labelId="demo-simple-select-label"
                   as={Select}
-                  name="EmplStatus"
+                  name="Office"
                   // sx={{ width: 195 }}
                   required
                   size="small"
-                  // id="demo-simple-select"
-                  label="Employment Status"
-                  // label="Employment Status"
+                  label="Office"
+                  fullWidth={true}
                 >
-                  <MenuItem key={1} value="Employed">
-                    Employed
-                  </MenuItem>
-                  <MenuItem key={2} value="Terminated">
-                    Terminated
-                  </MenuItem>
+                  <MenuItem value={`1`}>Kinamba Office</MenuItem>
+                  <MenuItem value={`1`}>Nyarutarama Office</MenuItem>
+                  <MenuItem value={`1`}>Kicukiro Office</MenuItem>
                 </Field>
-                <ErrorMessage name="EmplStatus" />
+                <ErrorMessage name="Office" />
               </FormControl>
             </Grid>
-            {allOffices && (
-              <Grid item sx={4} sm={4} xl={4}>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Office</InputLabel>
-                  <Field
-                    as={Select}
-                    name="Office"
-                    // sx={{ width: 195 }}
-                    required
-                    size="small"
-                    label="Office"
-                    fullWidth={true}
-                  >
-                    {allOffices.map((office, index) => (
-                      <MenuItem key={index} value={`${office}`}>
-                        {office}
-                      </MenuItem>
-                    ))}
-                  </Field>
-                  <ErrorMessage name="Office" />
-                </FormControl>
-              </Grid>
-            )}
+            {/* )} */}
             <Grid item sx={4} sm={4} xl={4}>
               <Field
                 name="Manager"
@@ -422,7 +462,7 @@ const StepOne = (props) => {
                 size="small"
                 options={associates}
                 getOptionLabel={(associates) =>
-                  associates.FirstName + " " + associates.LastName
+                  associates.firstName + " " + associates.lastName
                 }
                 onChange={(e, value) => {
                   if (value != null) {
@@ -511,12 +551,12 @@ const StepOne = (props) => {
 };
 
 const stepTwoValidationSchema = Yup.object({
-  emergencyInfo: Yup.object().shape({
-    FirstName: Yup.string().required().label("First Name"),
-    LastName: Yup.string().required().label("Last Name"),
-    TelephoneNumber: Yup.string().required().label("Telephone Number"),
-    Relationship: Yup.string().required().label("Relationship"),
-  }),
+  // emergencyInfo: Yup.object().shape({
+  //   FirstName: Yup.string().required().label("First Name"),
+  //   LastName: Yup.string().required().label("Last Name"),
+  //   TelephoneNumber: Yup.string().required().label("Telephone Number"),
+  //   Relationship: Yup.string().required().label("Relationship"),
+  // }),
 });
 
 const StepTwo = (props) => {
@@ -623,14 +663,14 @@ const StepThree = ({ id }) => {
 
   return (
     <div>
-      <Dialog
+      {/* <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"New Associate succesfully added!"}
+          {"New Employee succesfully added!"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -639,18 +679,18 @@ const StepThree = ({ id }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => history(`/associates/`)}>
-            All Associates
+            All Employees
           </Button>
-          {!isDemo && (
-            <Button
-              onClick={() => history(`/dashboard/associates/${id}`)}
+          {/* {!isDemo && ( */}
+      {/* <Button
+              // onClick={() => history(`/dashboard/associates/${id}`)}
               color="success"
             >
-              See new Associate profile
-            </Button>
-          )}
-        </DialogActions>
-      </Dialog>
+              See new employee profile
+            </Button> */}
+      {/* )} */}
+      {/* </DialogActions> */}
+      {/* </Dialog> */}
       <Grid container sx={{ padding: 2 }}>
         <Grid item xs={12} lg={12} md={12}>
           <AssociateDocuments userID={id} />

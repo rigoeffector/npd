@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { Icon } from "@iconify/react";
@@ -189,7 +190,7 @@ NavSection.propTypes = {
 };
 
 export default function NavSection({ navConfig, ...other }) {
-  const { toApproveCount } = useContext(tasksToApproveContext);
+  // const { toApproveCount } = useContext(tasksToApproveContext);
   const { pathname } = useLocation();
   const match = (path) =>
     path ? !!matchPath({ path, end: true }, pathname) : false;
@@ -200,13 +201,20 @@ export default function NavSection({ navConfig, ...other }) {
         {navConfig.map((item) =>
           item.title === "Tasks" ? (
             <NavItem
+              sx={{ color: "#c4cc36" }}
               key={item.title}
               item={item}
               active={match}
-              count={toApproveCount}
+              count={4}
+              // count={toApproveCount}
             />
           ) : (
-            <NavItem key={item.title} item={item} active={match} />
+            <NavItem
+              key={item.title}
+              item={item}
+              active={match}
+              sx={{ color: "#c4cc36" }}
+            />
           )
         )}
       </List>

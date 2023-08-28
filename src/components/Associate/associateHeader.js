@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   Grid,
   Card,
@@ -34,16 +35,16 @@ import AssociateInfo from "../Associate/subdetails/associatePersonal";
 import AssociatePic from "./associatePicture";
 import AssociateDocuments from "./subdetails/associateDocuments";
 import AssociateEmergencyInfo from "./subdetails/associateEmergency";
-import { db } from "../../utils/firebase";
-import {
-  doc,
-  deleteDoc,
-  collection,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
-import { getStorage, ref, deleteObject } from "firebase/storage";
+// import { db } from "../../utils/firebase";
+// import {
+//   doc,
+//   deleteDoc,
+//   collection,
+//   getDocs,
+//   query,
+//   where,
+// } from "firebase/firestore";
+// import { getStorage, ref, deleteObject } from "firebase/storage";
 import AssociateNotes from "./subdetails/associateNotes";
 import AssociateChanges from "./subdetails/associateChanges";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -108,41 +109,41 @@ const AssociateHeader = ({ handleBack, updateFirebaseAndState }) => {
   const handleCloseAction = () => {
     setAnchorEl(null);
   };
-  const DeleteAssociate = async (id) => {
-    setLoading(true);
-    // delete from Associates
-    if (!isDemo && isAdmin) {
-      await deleteDoc(doc(db, "Associates", id));
-      // delete from Changes
-      try {
-        const q = query(
-          collection(db, "Changes"),
-          where("AssociateID", "==", id)
-        );
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach(async (document) => {
-          await deleteDoc(doc(db, "Changes", document.id));
-        });
-      } catch (e) {
-        console.log("Error", e);
-      }
-      // delete associate picture
-      try {
-        const storage = getStorage();
-        const storageRef = ref(storage, `associateImages/${id}.jpg`);
-        deleteObject(storageRef)
-          .then(() => {})
-          .catch((error) => {});
-      } catch (e) {
-        console.log(e);
-      }
-    }
+  // const DeleteAssociate = async (id) => {
+  //   setLoading(true);
+  //   // delete from Associates
+  //   if (!isDemo && isAdmin) {
+  //     await deleteDoc(doc(db, "Associates", id));
+  //     // delete from Changes
+  //     try {
+  //       const q = query(
+  //         collection(db, "Changes"),
+  //         where("AssociateID", "==", id)
+  //       );
+  //       const querySnapshot = await getDocs(q);
+  //       querySnapshot.forEach(async (document) => {
+  //         await deleteDoc(doc(db, "Changes", document.id));
+  //       });
+  //     } catch (e) {
+  //       console.log("Error", e);
+  //     }
+  //     // delete associate picture
+  //     try {
+  //       const storage = getStorage();
+  //       const storageRef = ref(storage, `associateImages/${id}.jpg`);
+  //       deleteObject(storageRef)
+  //         .then(() => {})
+  //         .catch((error) => {});
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   }
 
-    setUpdateAssociates((updateAssociates) => updateAssociates + 1);
-    setLoading(false);
-    handleClose();
-    history("/dashboard/associates");
-  };
+  //   setUpdateAssociates((updateAssociates) => updateAssociates + 1);
+  //   setLoading(false);
+  //   handleClose();
+  //   history("/dashboard/associates");
+  // };
   const handleClickOpen = () => {
     setOpen(true);
     handleCloseAction();
@@ -255,7 +256,7 @@ const AssociateHeader = ({ handleBack, updateFirebaseAndState }) => {
           <LoadingButton
             loading={loading}
             loadingIndicator="Deleting..."
-            onClick={() => DeleteAssociate(associateData.id)}
+            // onClick={() => DeleteAssociate(associateData.id)}
             color="error"
           >
             Delete

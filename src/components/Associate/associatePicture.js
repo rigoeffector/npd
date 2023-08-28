@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import Box from "@mui/material/Box";
 import { IconButton, Grid } from "@mui/material";
 import * as React from "react";
@@ -14,18 +15,18 @@ import { styled } from "@mui/material/styles";
 import { useAuth } from "../../utils/context/AuthContext";
 
 import ResponsiveAvatar from "./ResponsiveAvatar";
-import {
-  getStorage,
-  ref,
-  uploadString,
-  getDownloadURL,
-} from "firebase/storage";
-import { updateDoc, doc } from "firebase/firestore";
+// import {
+//   getStorage,
+//   ref,
+//   uploadString,
+//   getDownloadURL,
+// } from "firebase/storage";
+// import { updateDoc, doc } from "firebase/firestore";
 import {
   associateContext,
   updateAssociatesContext,
 } from "../../utils/context/contexts";
-import { db } from "../../utils/firebase";
+// import { db } from "../../utils/firebase";
 
 const style = {
   position: "absolute",
@@ -46,23 +47,23 @@ const AssociatePic = () => {
   const { isDemo } = useAuth();
 
   const updateProfileURL = async (url) => {
-    const associateCollectionRef = doc(db, "Associates", associateData.id);
-    await updateDoc(associateCollectionRef, {
-      profilePicture: url,
-    });
+    // const associateCollectionRef = doc(db, "Associates", associateData.id);
+    // await updateDoc(associateCollectionRef, {
+    //   profilePicture: url,
+    // });
   };
 
-  const UploadToFirebase = (image) => {
-    const storage = getStorage();
-    const storageRef = ref(storage, `associateImages/${associateData.id}.jpg`);
-    uploadString(storageRef, image.split(",")[1], "base64").then(() => {
-      getDownloadURL(ref(storageRef)).then((url) => {
-        setAssociateData({ ...associateData, profilePicture: url });
-        updateProfileURL(url);
-        setUpdateAssociates((updateAssociates) => updateAssociates + 1);
-      });
-    });
-  };
+  // const UploadToFirebase = (image) => {
+  //   const storage = getStorage();
+  //   const storageRef = ref(storage, `associateImages/${associateData.id}.jpg`);
+  //   uploadString(storageRef, image.split(",")[1], "base64").then(() => {
+  //     getDownloadURL(ref(storageRef)).then((url) => {
+  //       setAssociateData({ ...associateData, profilePicture: url });
+  //       updateProfileURL(url);
+  //       setUpdateAssociates((updateAssociates) => updateAssociates + 1);
+  //     });
+  //   });
+  // };
 
   const [image, setImage] = useState(null);
   const Input = styled("input")({
@@ -98,7 +99,7 @@ const AssociatePic = () => {
 
   const onUpload = async () => {
     const result = await generateCropFile(image, croppedArea);
-    UploadToFirebase(result);
+    // UploadToFirebase(result);
     handleClose();
   };
 

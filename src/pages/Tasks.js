@@ -1,8 +1,13 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
+import React from "react";
 import Page from "../components/Page";
 import AddTask from "../components/Tasks/AddTask";
 import { styled, alpha } from "@mui/material/styles";
 import { useEffect, useState, useContext } from "react";
 import PaidIcon from "@mui/icons-material/Paid";
+import { Formik, Form, ErrorMessage, Field } from "formik";
+import { TextField, Select, FormControl, InputLabel } from "@mui/material";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import {
   Button,
@@ -15,16 +20,22 @@ import {
   Backdrop,
   Modal,
   Fade,
+  Card,
 } from "@mui/material";
 import { tasksToApproveContext } from "../utils/context/contexts";
 import { useAuth } from "../utils/context/AuthContext";
-import { getDoc, doc } from "firebase/firestore";
-import { db } from "../utils/firebase";
+// import { getDoc, doc } from "firebase/firestore";
+// import { db } from "../utils/firebase";
 import TaskCard from "../components/Tasks/TaskCard";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import DataTable from "../components/table";
+import NPDModal from "../components/modal";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DatePicker from "@mui/lab/DatePicker";
 
 const MyTasks = () => {
-  const { userData } = useAuth();
+  // const { userData } = useAuth();
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const openMenu = Boolean(anchorEl);
@@ -33,25 +44,24 @@ const MyTasks = () => {
   // const { associates } = useContext(associatesContext);
   const [userDetails, setUserDetails] = useState();
   const [myManager, setMyManager] = useState();
-  const { tasks, tasksToApprove } = useContext(tasksToApproveContext);
+  // const { tasks, tasksToApprove } = useContext(tasksToApproveContext);
 
   useEffect(() => {
-    if (!userData) return;
-    else {
-      const AssociatesCollectionRef = doc(db, "Associates", userData.id);
-      getDoc(AssociatesCollectionRef).then((result) => {
-        setUserDetails(result.data());
-        const ManagerCollectionRef = doc(
-          db,
-          "Associates",
-          result.data().Manager
-        );
-
-        getDoc(ManagerCollectionRef).then((results) =>
-          setMyManager(results.data())
-        );
-      });
-    }
+    // if (!userData) return;
+    // else {
+    //   const AssociatesCollectionRef = doc(db, "Associates", userData.id);
+    //   getDoc(AssociatesCollectionRef).then((result) => {
+    //     setUserDetails(result.data());
+    //     const ManagerCollectionRef = doc(
+    //       db,
+    //       "Associates",
+    //       result.data().Manager
+    //     );
+    //     getDoc(ManagerCollectionRef).then((results) =>
+    //       setMyManager(results.data())
+    //     );
+    //   });
+    // }
   }, []);
 
   const filterObject = (obj, filter, filterValue) =>
@@ -65,13 +75,17 @@ const MyTasks = () => {
           : acc,
       {}
     );
-  const pendingTasks = filterObject(tasks, "status", "pending");
-  const approvedTasks = filterObject(tasks, "status", "approved");
-  const rejectedTasks = filterObject(tasks, "status", "rejected");
+  // const pendingTasks = filterObject(tasks, "status", "pending");
+  // const approvedTasks = filterObject(tasks, "status", "approved");
+  // const rejectedTasks = filterObject(tasks, "status", "rejected");
 
-  const completeTasks = { ...approvedTasks, ...rejectedTasks };
+  // const completeTasks = { ...approvedTasks, ...rejectedTasks };
+  const [showModalAddNew, setShowModalAddNew] = React.useState(false);
   const handleClickAction = (event) => {
-    setAnchorEl(event.currentTarget);
+    setShowModalAddNew(true);
+  };
+  const handleClose = () => {
+    setShowModalAddNew(false);
   };
   const handleCloseAction = () => {
     setAnchorEl(null);
@@ -88,9 +102,6 @@ const MyTasks = () => {
   };
 
   // const onSubmit = (data) => uploadFile(data);
-  const handleClose = () => {
-    // setPopupOpen(false);
-  };
 
   const StyledMenu = styled((props) => (
     <Menu
@@ -147,35 +158,288 @@ const MyTasks = () => {
     // boxShadow: 20,
     p: 4,
   };
+  const columns = [
+    { field: "id", headerName: "ID", width: 70 },
+    { field: "name", headerName: "Project Name", width: 130 },
+    { field: "manager", headerName: "Project Manager", width: 160 },
+    {
+      field: "site",
+      headerName: "Project Site",
+      width: 190,
+    },
+    {
+      field: "timeline",
+      headerName: "Time Line",
+      width: 230,
+    },
+
+    {
+      field: "",
+      headerName: "Action",
+      type: "actions",
+      width: 300,
+      getActions: (params) => [
+        <div className="actions_button">
+          <Button
+            style={{
+              borderRadius: "8px",
+              border: "1px solid  #DCDFE5",
+              background: "#F9FAFB",
+              color: "#1090CB",
+              fontSize: "14px",
+              fontWeight: "600",
+              lineHeight: "normal",
+            }}
+            // onClick={() => handleAssignAsset(params)}
+          >
+            Edit
+          </Button>
+        </div>,
+        <div className="actions_button">
+          <Button
+            style={{
+              borderRadius: "8px",
+              border: "1px solid  #DCDFE5",
+              background: "#F9FAFB",
+              color: "red",
+              fontSize: "14px",
+              fontWeight: "600",
+              lineHeight: "normal",
+            }}
+            // onClick={() => handleAssignAsset(params)}
+          >
+            Delete
+          </Button>
+        </div>,
+        <div className="actions_button">
+          <Button
+            style={{
+              borderRadius: "8px",
+              border: "1px solid  #DCDFE5",
+              background: "#F9FAFB",
+              color: "green",
+              fontSize: "14px",
+              fontWeight: "600",
+              lineHeight: "normal",
+            }}
+            // onClick={() => handleAssignAsset(params)}
+          >
+            More
+          </Button>
+        </div>,
+      ],
+    },
+  ];
+
+  const rows = [
+    {
+      id: 1,
+      name: "Snow",
+      manager: "Jon",
+      site: "Kabeza",
+      timeline: "2023/11/03 -  2025/11/03",
+    },
+    {
+      id: 2,
+      name: "Lannister",
+      manager: "Cersei",
+      site: "Kabeza",
+      timeline: "2023/11/03 -  2025/11/03",
+    },
+    {
+      id: 3,
+      name: "Lannister",
+      manager: "Jaime",
+      site: "Kabeza",
+      timeline: "2023/11/03 -  2025/11/03",
+    },
+    {
+      id: 4,
+      name: "Stark",
+      manager: "Arya",
+      site: "Kabeza",
+      timeline: "2023/11/03 -  2025/11/03",
+    },
+    {
+      id: 5,
+      name: "Targaryen",
+      manager: "Daenerys",
+      site: "Kabeza",
+      timeline: "2023/11/03 -  2025/11/03",
+    },
+    {
+      id: 6,
+      name: "Melisandre",
+      manager: null,
+      site: "Kabeza",
+      timeline: "2023/11/03 -  2025/11/03",
+    },
+    {
+      id: 7,
+      name: "Clifford",
+      manager: "Ferrara",
+    },
+    {
+      id: 8,
+      name: "Frances",
+      manager: "Rossini",
+      site: "Kabeza",
+      timeline: "2023/11/03 -  2025/11/03",
+    },
+    {
+      id: 9,
+      name: "Roxie",
+      manager: "Harvey",
+      site: "Kabeza",
+      timeline: "2023/11/03 -  2025/11/03",
+    },
+  ];
   return (
     <Page title="HR Core - Tasks">
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={PopupOpen}
-        onClose={() => {
-          handleClose();
-        }}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 200,
-        }}
+      <NPDModal
+        title={"Add New Project"}
+        show={showModalAddNew}
+        handleClose={handleClose}
       >
-        <Fade in={PopupOpen}>
-          <Box sx={style}>
-            {userDetails && myManager && (
-              <AddTask
-                userDetails={userDetails}
-                myManager={myManager}
-                taskType={taskType}
-                handleCloseAction={handleCloseAction}
-                setPopupOpen={setPopupOpen}
-              />
-            )}
-          </Box>
-        </Fade>
-      </Modal>
+        <Formik
+          // validationSchema={stepOneValidationSchema}
+          // onSubmit={handleSubmit}
+          initialValues={{
+            Email: "",
+            Password: "",
+          }}
+        >
+          {({ values, validateOnMount, resetForm }) => (
+            <Form>
+              <Grid container>
+                <Box sx={{ flexGrow: 1 }}>
+                  <Grid container spacing={2} sx={{ marginBottom: "15px" }}>
+                    <Grid item xs={6}>
+                      <Field
+                        as={TextField}
+                        label="Name"
+                        type="text"
+                        name="name"
+                        fullWidth
+                        size="small"
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <FormControl fullWidth>
+                        <InputLabel>Manager</InputLabel>
+                        <Field
+                          as={Select}
+                          name="manager"
+                          required
+                          size="small"
+                          label="Manager"
+                          fullWidth
+                        >
+                          <MenuItem value={"1"}>Annet</MenuItem>
+                          <MenuItem value={"1"}>Sandrine</MenuItem>
+                          <MenuItem value={"1"}>Jule</MenuItem>
+                        </Field>
+                      </FormControl>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <FormControl fullWidth>
+                        <InputLabel>Site</InputLabel>
+                        <Field
+                          as={Select}
+                          name="site"
+                          required
+                          size="small"
+                          label="Site"
+                          fullWidth
+                        >
+                          <MenuItem value={"1"}>Kabeza</MenuItem>
+                          <MenuItem value={"1"}>Konombe</MenuItem>
+                          <MenuItem value={"1"}>Nyarutarama</MenuItem>
+                        </Field>
+                      </FormControl>
+                    </Grid>
+                    <Grid item sx={6} sm={6} xl={6}>
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <Field
+                          component={DatePicker}
+                          label="Start Date"
+                          size="small"
+                          name="startDate"
+                          value={values.StartDate}
+                          inputFormat="dd-MM-yyyy"
+                          onChange={(StartDate) => {
+                            // setFieldValue(
+                            //   "StartDate",
+                            //   new Date(StartDate)
+                            //   // Timestamp.fromDate(new Date(StartDate))
+                            // );
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              size="small"
+                              {...params}
+                              sx={{
+                                "min-width": "100% !important",
+                              }}
+                            />
+                          )}
+                        />
+                      </LocalizationProvider>
+                    </Grid>
+                    <Grid item sx={6} sm={6} xl={6}>
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <Field
+                          fullWidth
+                          component={DatePicker}
+                          label="End Date"
+                          size="small"
+                          name="endDate"
+                          value={values.StartDate}
+                          inputFormat="dd-MM-yyyy"
+                          onChange={(StartDate) => {
+                            // setFieldValue(
+                            //   "StartDate",
+                            //   new Date(StartDate)
+                            //   // Timestamp.fromDate(new Date(StartDate))
+                            // );
+                          }}
+                          renderInput={(params) => (
+                            <TextField size="small" {...params} />
+                          )}
+                        />
+                      </LocalizationProvider>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Field
+                        as={TextField}
+                        label="Description"
+                        type="text"
+                        name="description"
+                        fullWidth
+                        size="small"
+                        multiline
+                        rows={4}
+                        placeholder="Enter Description Value"
+                        variant="outlined"
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Button
+                      sx={{ width: "100%", mb: 2 }}
+                      type="submit"
+                      variant="contained"
+                    >
+                      Save
+                    </Button>
+                  </Grid>
+                </Box>
+              </Grid>
+            </Form>
+          )}
+        </Formik>
+      </NPDModal>
       <Grid
         container
         direction="row"
@@ -184,7 +448,7 @@ const MyTasks = () => {
       >
         <Grid item>
           <Typography variant="h4" gutterBottom>
-            Tasks
+            Projects
           </Typography>
         </Grid>
         <Grid item>
@@ -195,7 +459,7 @@ const MyTasks = () => {
             onClick={handleClickAction}
             endIcon={<AddCircleIcon color="white" fontSize="large" />}
           >
-            Add Task
+            Add New Project
           </Button>
         </Grid>
 
@@ -249,7 +513,7 @@ const MyTasks = () => {
                   alignItems="center"
                 >
                   <Typography variant="h6" color="black">
-                    My Tasks
+                    My Projects
                   </Typography>
                   <Box
                     sx={{
@@ -261,12 +525,12 @@ const MyTasks = () => {
                       minWidth: "25px",
                     }}
                   >
-                    {Object.keys(pendingTasks).length}
+                    {/* {Object.keys(pendingTasks).length} */}120
                   </Box>
                 </Stack>
               </Box>
             </Grid>
-            {pendingTasks &&
+            {/* {pendingTasks &&
               Object.keys(pendingTasks).map((task, index) => {
                 return (
                   <Grid item xs={12} md={4} lg={4} key={index}>
@@ -277,7 +541,7 @@ const MyTasks = () => {
                     />
                   </Grid>
                 );
-              })}
+              })} */}
           </Grid>
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
@@ -311,13 +575,14 @@ const MyTasks = () => {
                       minWidth: "25px",
                     }}
                   >
-                    {Object.keys(tasksToApprove).length}
+                    {/* {Object.keys(tasksToApprove).length} */}
+                    13
                   </Box>
                 </Stack>
               </Box>
             </Grid>
 
-            {tasksToApprove &&
+            {/* {tasksToApprove &&
               Object.keys(tasksToApprove).map((task, index) => {
                 return (
                   <Grid item xs={12} md={4} lg={4} key={index}>
@@ -327,7 +592,7 @@ const MyTasks = () => {
                     />
                   </Grid>
                 );
-              })}
+              })} */}
           </Grid>
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
@@ -361,22 +626,40 @@ const MyTasks = () => {
                       minWidth: "25px",
                     }}
                   >
-                    {Object.keys(completeTasks).length}
+                    {/* {Object.keys(completeTasks).length} */}
+                    17
                   </Box>
                 </Stack>
               </Box>
             </Grid>
-            {completeTasks &&
+            {/* {completeTasks &&
               Object.keys(completeTasks).map((task, index) => {
                 return (
                   <Grid item xs={12} md={4} lg={4} key={index}>
                     <TaskCard task={completeTasks[task]} userID={userData.id} />
                   </Grid>
                 );
-              })}
+              })} */}
           </Grid>
         </Grid>
       </Grid>
+      <Card
+        sx={{
+          padding: "2rem",
+        }}
+      >
+        <DataTable
+          rows={rows}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: { page: 0, pageSize: 5 },
+            },
+          }}
+          pageSizeOptions={[5, 10]}
+          checkboxSelection
+        />
+      </Card>
     </Page>
   );
 };

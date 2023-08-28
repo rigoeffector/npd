@@ -10,7 +10,7 @@ import OfficesModify from "../components/Associate/Admin/DatabaseModify/OfficesM
 import Page from "../components/Page";
 
 const Admin = () => {
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(true);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);

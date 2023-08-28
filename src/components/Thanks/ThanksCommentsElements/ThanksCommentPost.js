@@ -1,9 +1,9 @@
 import { Grid, Chip, TextField, Button, Typography } from "@mui/material";
 import { useState } from "react";
-import { doc, updateDoc } from "firebase/firestore";
-import { v4 as uuidv4 } from "uuid";
-import { db } from "../../../utils/firebase";
-import { addNotification } from "../thanksFunctions";
+// import { doc, updateDoc } from "firebase/firestore";
+// import { v4 as uuidv4 } from "uuid";
+// import { db } from "../../../utils/firebase";
+// import { addNotification } from "../thanksFunctions";
 
 const ThanksCommentPost = ({ count, thanksId, fromUser, toUser }) => {
   const [commentField, setCommentField] = useState();
@@ -16,17 +16,17 @@ const ThanksCommentPost = ({ count, thanksId, fromUser, toUser }) => {
     "Amazing work 😎",
   ];
   const postComment = () => {
-    const thisUUID = uuidv4();
-    const docREf = doc(db, `Thanks-Comments-Likes`, thanksId);
-    updateDoc(docREf, {
-      [`Comments.${thisUUID}`]: {
-        Comment: commentField,
-        Id: fromUser.id,
-        Timestamp: Math.round(new Date().getTime() / 1000),
-      },
-    });
-    addNotification(toUser.id, fromUser, "comment");
-    setCommentField("");
+    // const thisUUID = uuidv4();
+    // const docREf = doc(db, `Thanks-Comments-Likes`, thanksId);
+    // updateDoc(docREf, {
+    //   [`Comments.${thisUUID}`]: {
+    //     Comment: commentField,
+    //     Id: fromUser.id,
+    //     Timestamp: Math.round(new Date().getTime() / 1000),
+    //   },
+    // });
+    // addNotification(toUser.id, fromUser, "comment");
+    // setCommentField("");
   };
 
   return (

@@ -35,12 +35,6 @@ const Container = styled.div`
   min-width: 50wh;
   cursor: pointer;
 `;
-const ContainerText = styled.div`
-  margin: auto;
-  top: 50%;
-  left: 50%;
-  text-align: center;
-`;
 function StyledDropzone(props) {
   const {
     acceptedFiles,

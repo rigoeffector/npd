@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-computed-key */
+/* eslint-disable no-unused-vars */
 import {
   MenuItem,
   TextField,
@@ -19,12 +21,11 @@ import DatePicker from "@mui/lab/DatePicker";
 import {
   associateContext,
   officesContext,
-  updateAssociatesContext,
   updatedAssociateContext,
   departmentsContext,
 } from "../../../utils/context/contexts";
 import { useContext, useState } from "react";
-import { Timestamp } from "firebase/firestore";
+// import { Timestamp } from "firebase/firestore";
 
 const AssociateInfo = ({ updateFirebaseAndState }) => {
   const { associateData, setAssociateData } = useContext(associateContext);
@@ -331,10 +332,10 @@ const AssociateInfo = ({ updateFirebaseAndState }) => {
                   value={updatedAssociate.DOB.toDate()}
                   inputFormat="dd-MM-yyyy"
                   onChange={(newDate) => {
-                    setUpdatedAssociate({
-                      ...updatedAssociate,
-                      ["DOB"]: Timestamp.fromDate(new Date(newDate)),
-                    });
+                    // setUpdatedAssociate({
+                    //   ...updatedAssociate,
+                    //   ["DOB"]: Timestamp.fromDate(new Date(newDate)),
+                    // });
                   }}
                   renderInput={(params) => (
                     <TextField
@@ -360,10 +361,10 @@ const AssociateInfo = ({ updateFirebaseAndState }) => {
                   value={updatedAssociate.StartDate.toDate()}
                   inputFormat="dd-MM-yyyy"
                   onChange={(newDate) => {
-                    setUpdatedAssociate({
-                      ...updatedAssociate,
-                      ["StartDate"]: Timestamp.fromDate(new Date(newDate)),
-                    });
+                    // setUpdatedAssociate({
+                    //   ...updatedAssociate,
+                    //   ["StartDate"]: Timestamp.fromDate(new Date(newDate)),
+                    // });
                   }}
                   renderInput={(params) => (
                     <TextField

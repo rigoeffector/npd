@@ -12,8 +12,6 @@ import {
   updatedAssociateContext,
 } from "../../../utils/context/contexts";
 import { useContext, useState } from "react";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
-import { db } from "../../../utils/firebase";
 import EditIcon from "@mui/icons-material/Edit";
 
 const AssociateEmergencyInfo = ({ updateFirebaseAndState }) => {
@@ -52,9 +50,7 @@ const AssociateEmergencyInfo = ({ updateFirebaseAndState }) => {
       },
     });
   };
-  const SaveDetails = async () => {
-    await updateDoc(doc(db, "Associates", associateData.id), associateData);
-  };
+  
 
   //   const SaveDetails = async (id) => {
   //     const res = await fetch(`http://localhost:5000/associates/${id}`, {

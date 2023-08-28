@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { merge } from "lodash";
 import ReactApexChart from "react-apexcharts";
 // material

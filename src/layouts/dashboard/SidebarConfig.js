@@ -1,9 +1,7 @@
+/* eslint-disable no-unused-vars */
 import { Icon } from "@iconify/react";
 import pieChart2Fill from "@iconify/icons-eva/pie-chart-2-fill";
 import peopleFill from "@iconify/icons-eva/people-fill";
-import lockFill from "@iconify/icons-eva/lock-fill";
-import personAddFill from "@iconify/icons-eva/person-add-fill";
-import alertTriangleFill from "@iconify/icons-eva/alert-triangle-fill";
 import settingsFill from "@iconify/icons-eva/settings-fill";
 import clipboardTaskListLtr20Filled from "@iconify/icons-fluent/clipboard-task-list-ltr-20-filled";
 import awardIcon from "@iconify/icons-fa-solid/award";
@@ -24,12 +22,12 @@ const sidebarConfig = [
     icon: getIcon(peopleFill),
     children: [
       {
-        title: "all associates",
-        path: "/dashboard/associates/",
+        title: "All Employees",
+        path: "/dashboard/associates",
       },
       {
-        title: "New Associate",
-        path: "/dashboard/associates/newassociate",
+        title: "New Employee",
+        path: "/dashboard/associates/new/employee",
       },
     ],
   },
@@ -39,27 +37,49 @@ const sidebarConfig = [
   //   icon: getIcon(lockFill),
   // },
   {
-    title: "Tasks",
-    path: "/tasks",
+    title: "Projects",
+    // path: "/dashboard/projects",
     icon: getIcon(clipboardTaskListLtr20Filled),
+    children: [
+      {
+        title: "All Projects",
+        path: "/dashboard/projects",
+      },
+      {
+        title: "Assigned Projects",
+        path: "/dashboard/assigned/projects",
+      },
+      {
+        title: "Mark Attendance",
+        path: "/dashboard/assigned/projects/attendance",
+      },
+    ],
   },
+  // {
+  //   title: "Holidays",
+  //   path: "/holidays",
+  //   icon: getIcon(umbrellaBeach),
+  // },
   {
-    title: "Holidays",
-    path: "/holidays",
-    icon: getIcon(umbrellaBeach),
-  },
-  {
-    title: "Thanks",
+    title: "Settings",
     path: "/thanks",
     icon: getIcon(awardIcon),
     children: [
       {
-        title: "all thanks",
-        path: "/thanks",
+        title: "Roles",
+        path: "/settings/roles",
       },
       {
-        title: "Give thanks",
-        path: "/thanks/givethanks",
+        title: "Departments",
+        path: "/settings/departments",
+      },
+      {
+        title: "Offices",
+        path: "/settings/offices",
+      },
+      {
+        title: "Sites",
+        path: "/settings/sites",
       },
     ],
   },
@@ -68,21 +88,21 @@ const sidebarConfig = [
   //   path: "/dashboard/register",
   //   icon: getIcon(personAddFill),
   // },
-  {
-    title: "admin",
-    path: "/admin",
-    icon: getIcon(settingsFill),
-    children: [
-      {
-        title: "Database",
-        path: "/admin/database",
-      },
-      {
-        title: "Import Data",
-        path: "/admin/import",
-      },
-    ],
-  },
+  // {
+  //   title: "admin",
+  //   path: "/admin",
+  //   icon: getIcon(settingsFill),
+  //   children: [
+  //     {
+  //       title: "Database",
+  //       path: "/admin/database",
+  //     },
+  //     {
+  //       title: "Import Data",
+  //       path: "/admin/import",
+  //     },
+  //   ],
+  // },
   // {
   //   title: "Not found",
   //   path: "/dashboard/error",

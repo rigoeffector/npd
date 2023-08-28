@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import PropTypes from "prop-types";
 import { Icon } from "@iconify/react";
 import menu2Fill from "@iconify/icons-eva/menu-2-fill";
@@ -57,13 +58,13 @@ DashboardNavbar.propTypes = {
 };
 
 export default function DashboardNavbar({ onOpenSidebar }) {
-  const { associates, setAssciates } = useContext(associatesContext);
+  // const { associates, setAssciates } = useContext(associatesContext);
 
   const location = useLocation();
   let pathArray = location.pathname.split("/").filter((x) => x);
   const getAssociateDetails = (id) => {
-    const associate = associates.filter((associatee) => associatee.id === id);
-    return associate[0];
+    // const associate = associates.filter((associatee) => associatee.id === id);
+    // return associate[0];
   };
   const associatedetails = getAssociateDetails(pathArray[2]);
   function capitalizeFirstLetter(string) {
@@ -98,7 +99,7 @@ export default function DashboardNavbar({ onOpenSidebar }) {
             )
           )}
         </Breadcrumbs>
-        {/* <Searchbar /> */}
+        <Searchbar />
 
         {/* </Grid> */}
 

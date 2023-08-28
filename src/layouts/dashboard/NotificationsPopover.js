@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // import faker from "faker";
 import { noCase } from "change-case";
 import { useRef, useState, useContext } from "react";
@@ -8,7 +9,7 @@ import clockFill from "@iconify/icons-eva/clock-fill";
 import doneAllFill from "@iconify/icons-eva/done-all-fill";
 import { LikeIcon } from "../../components/Thanks/ThanksCardElements/LikeIcon";
 
-import { useAuth } from "../../utils/context/AuthContext";
+// import { useAuth } from "../../utils/context/AuthContext";
 
 // material
 import { alpha } from "@mui/material/styles";
@@ -26,15 +27,13 @@ import {
   ListSubheader,
   ListItemAvatar,
   ListItemButton,
-  Skeleton,
-  Grid,
 } from "@mui/material";
 
 import Scrollbar from "../../components/Scrollbar";
 import MenuPopover from "../../components/MenuPopover";
 import moment from "moment";
 import { notificationsContext } from "../../utils/context/contexts";
-import { ref, getDatabase, update } from "firebase/database";
+// import { ref, getDatabase, update } from "firebase/database";
 // ----------------------------------------------------------------------
 
 function renderContent(notification) {
@@ -137,13 +136,13 @@ function renderContent(notification) {
 
 function NotificationItem({ notification, click, handleClose }) {
   const { avatar, title } = renderContent(notification);
-  const { userData } = useAuth();
+  // const { userData } = useAuth();
 
   return (
-    userData && (
+    // userData && (
       <ListItemButton
         onClick={() => {
-          click(notification.ID, userData.id);
+          // click(notification.ID, userData.id);
           handleClose();
         }}
         to="/thanks"
@@ -185,20 +184,21 @@ function NotificationItem({ notification, click, handleClose }) {
         />
       </ListItemButton>
     )
-  );
+  // );
 }
 
 export default function NotificationsPopover() {
-  const { userData } = useAuth();
+  // const { userData } = useAuth();
   const anchorRef = useRef(null);
+  const totalUnRead = 12;
   const [open, setOpen] = useState(false);
-  const { notifications } = useContext(notificationsContext);
-  const dbrt = getDatabase();
+  // const { notifications } = useContext(notificationsContext);
+  // const dbrt = getDatabase();
 
-  const unRead = notifications.filter((item) => item.isUnRead === true);
-  const Read = notifications.filter((item) => item.isUnRead === false);
-  const totalUnRead = unRead.length;
-  const noun = totalUnRead.length >= 2 ? "notifications" : "notification";
+  // const unRead = notifications.filter((item) => item.isUnRead === true);
+  // const Read = notifications.filter((item) => item.isUnRead === false);
+  // const totalUnRead = unRead.length;
+  // const noun = totalUnRead.length >= 2 ? "notifications" : "notification";
   const handleOpen = () => {
     setOpen(true);
   };
@@ -208,15 +208,15 @@ export default function NotificationsPopover() {
   };
 
   const handleMarkAllAsRead = () => {
-    unRead.forEach((not) => {
-      handleMarkRead(not.ID, userData.id);
-    });
+    // unRead.forEach((not) => {
+    //   handleMarkRead(not.ID, userData.id);
+    // });
   };
 
   const handleMarkRead = (notificationId, userId) => {
-    update(ref(dbrt, `Notifications/${userId}/${notificationId}`), {
-      isUnRead: false,
-    });
+    // update(ref(dbrt, `Notifications/${userId}/${notificationId}`), {
+    //   isUnRead: false,
+    // });
   };
   return (
     <>
@@ -235,7 +235,7 @@ export default function NotificationsPopover() {
           }),
         }}
       >
-        <Badge badgeContent={totalUnRead} color="error">
+        <Badge badgeContent={12} color="error">
           <Icon icon={bellFill} width={20} height={20} />
         </Badge>
       </IconButton>
@@ -250,17 +250,17 @@ export default function NotificationsPopover() {
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="subtitle1">Notifications</Typography>
             <Typography variant="body2" sx={{ color: "text.secondary" }}>
-              You have {totalUnRead} unread {noun}
+              You have 10 unread messages
             </Typography>
           </Box>
 
-          {totalUnRead > 0 && (
+          {/* {totalUnRead > 0 && ( */}
             <Tooltip title=" Mark all as read">
               <IconButton color="primary" onClick={handleMarkAllAsRead}>
                 <Icon icon={doneAllFill} width={20} height={20} />
               </IconButton>
             </Tooltip>
-          )}
+          {/* )} */}
         </Box>
         <Divider />
         <Scrollbar sx={{ height: { xs: 340, sm: 400, lg: 400 } }}>
@@ -277,17 +277,17 @@ export default function NotificationsPopover() {
                 </ListSubheader>
               }
             >
-              {unRead.map((notification) => (
+              {/* {unRead.map((notification) => (
                 <NotificationItem
                   key={notification.id}
                   notification={notification}
                   click={handleMarkRead}
                   close={handleClose}
                 />
-              ))}
+              ))} */}
             </List>
           )}
-          {Read.length > 0 && (
+          {/* {Read.length > 0 && (
             <List
               disablePadding
               subheader={
@@ -315,7 +315,7 @@ export default function NotificationsPopover() {
             >
               No notifications...
             </Typography>
-          ) : null}
+          ) : null} */}
         </Scrollbar>
 
         <Divider />

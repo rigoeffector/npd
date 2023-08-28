@@ -1,8 +1,10 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import AssociateHeader from "../components/Associate/associateHeader";
 import { useEffect, useState, React, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { transform, isEqual, isObject } from "lodash";
-import { Timestamp } from "firebase/firestore";
+// import { Timestamp } from "firebase/firestore";
 
 import { Grid, Snackbar, Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -12,8 +14,8 @@ import {
   updatedAssociateContext,
   updateAssociatesContext,
 } from "../utils/context/contexts";
-import { db } from "../utils/firebase";
-import { getDoc, doc, setDoc, addDoc, collection } from "firebase/firestore";
+// import { db } from "../utils/firebase";
+// import { getDoc, doc, setDoc, addDoc, collection } from "firebase/firestore";
 import { useAuth } from "../utils/context/AuthContext";
 import Page from "../components/Page";
 const AssociateDetails = () => {
@@ -39,10 +41,10 @@ const AssociateDetails = () => {
   }, []);
 
   const fetchDetails = async () => {
-    const associateCollectionRef = doc(db, "Associates", id);
+    // const associateCollectionRef = doc(db, "Associates", id);
     setLoadingProgress(true);
-    const data = await getDoc(associateCollectionRef);
-    return data.data();
+    // const data = await getDoc(associateCollectionRef);
+    // return data.data();
   };
 
   const GetDifferences = (object, base) => {
@@ -57,16 +59,16 @@ const AssociateDetails = () => {
   };
 
   const RecordChanges = async (Data) => {
-    for (const [key, value] of Object.entries(Data)) {
-      const changesObject = {
-        ChangedBy: userData.FirstName + " " + userData.LastName,
-        Timestamp: Timestamp.fromDate(new Date()),
-        Category: key,
-        Value: value,
-        AssociateID: updatedAssociate.id,
-      };
-      await addDoc(collection(db, "Changes"), changesObject);
-    }
+    // for (const [key, value] of Object.entries(Data)) {
+    //   const changesObject = {
+    //     ChangedBy: userData.FirstName + " " + userData.LastName,
+    //     Timestamp: Timestamp.fromDate(new Date()),
+    //     Category: key,
+    //     Value: value,
+    //     AssociateID: updatedAssociate.id,
+    //   };
+    //   await addDoc(collection(db, "Changes"), changesObject);
+    // }
   };
 
   const updateFirebaseAndState = async () => {
@@ -88,16 +90,16 @@ const AssociateDetails = () => {
     }
 
     !isDemo &&
-      setDoc(doc(db, "Associates", `${associateData.id}`), updatedAssociate)
-        .then(() => {
-          setUpdateAssociates((updateAssociates) => updateAssociates + 1);
-        })
-        .catch((error) => {
-          setAlertMessage(error.message);
-          setSeverity("error");
-          setAlert(true);
-          // setEdited(false);
-        });
+      // setDoc(doc(db, "Associates", `${associateData.id}`), updatedAssociate)
+      //   .then(() => {
+      //     setUpdateAssociates((updateAssociates) => updateAssociates + 1);
+      //   })
+      //   .catch((error) => {
+      //     setAlertMessage(error.message);
+      //     setSeverity("error");
+      //     setAlert(true);
+      //     // setEdited(false);
+      //   });
 
     setAssociateData(updatedAssociate);
     setSeverity("success");

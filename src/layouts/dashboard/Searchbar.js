@@ -40,7 +40,7 @@ const SearchbarStyle = styled("div")(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Searchbar() {
-  const [isOpen, setOpen] = useState(false);
+  const [isOpen, setOpen] = useState(true);
   const inputRef = useRef(null);
   const handleOpen = () => {
     setOpen((prev) => !prev);

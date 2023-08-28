@@ -1,3 +1,8 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable default-case */
+/* eslint-disable no-lone-blocks */
+/* eslint-disable no-unused-vars */
 import { useState, useContext, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { filter } from "lodash";
@@ -21,15 +26,15 @@ import {
   Button,
   Select,
 } from "@mui/material";
-import {
-  getStorage,
-  ref,
-  listAll,
-  getMetadata,
-  getDownloadURL,
-  deleteObject,
-  uploadBytesResumable,
-} from "firebase/storage";
+// import {
+//   getStorage,
+//   ref,
+//   listAll,
+//   getMetadata,
+//   getDownloadURL,
+//   deleteObject,
+//   uploadBytesResumable,
+// } from "firebase/storage";
 import DownloadIcon from "@mui/icons-material/Download";
 import { loadingContext } from "../../../utils/context/contexts";
 import UserListToolbar from "./UserListToolbar";
@@ -47,17 +52,17 @@ import { Controller, useForm } from "react-hook-form";
 import Scrollbar from "../../Scrollbar";
 import { useAuth } from "../../../utils/context/AuthContext";
 
-import {
-  collection,
-  getDocs,
-  query,
-  where,
-  addDoc,
-  doc,
-  deleteDoc,
-  updateDoc,
-} from "firebase/firestore";
-import { db } from "../../../utils/firebase";
+// import {
+//   collection,
+//   getDocs,
+//   query,
+//   where,
+//   addDoc,
+//   doc,
+//   deleteDoc,
+//   updateDoc,
+// } from "firebase/firestore";
+// import { db } from "../../../utils/firebase";
 const TABLE_HEAD = [
   { id: "fileName", label: "Name", alignRight: false },
   { id: "size", label: "Size", alignRight: false },
@@ -104,8 +109,8 @@ const AssociateDocuments = ({ userID }) => {
   const [isLoading, setLoading] = useState(false);
   const prettyBytes = require("pretty-bytes");
   const [fileList, setFileList] = useState([]);
-  const storage = getStorage();
-  const listRef = ref(storage, `documents/${userID}`);
+  // const storage = getStorage();
+  // const listRef = ref(storage, `documents/${userID}`);
   const [alert, setAlert] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
@@ -150,9 +155,9 @@ const AssociateDocuments = ({ userID }) => {
   const onSubmit = (data) => uploadFile(data);
 
   const getAllCategories = async () => {
-    const querySnapshot = await getDocs(collection(db, "DocumentCategories"));
-    const all = querySnapshot.docs.map((doc) => doc.data().Name);
-    setAllCategories(all);
+    // const querySnapshot = await getDocs(collection(db, "DocumentCategories"));
+    // const all = querySnapshot.docs.map((doc) => doc.data().Name);
+    // setAllCategories(all);
   };
   const onDeleteFiles = () => {
     selected.forEach((filename) => {
@@ -169,23 +174,23 @@ const AssociateDocuments = ({ userID }) => {
   };
 
   const deleteFileFromFirebase = async (fileName) => {
-    const deleteRef = ref(storage, `documents/${userID}/${fileName}`);
-    deleteObject(deleteRef)
-      .then(() => {})
-      .catch((error) => {
-        // Uh-oh, an error occurred!
-      });
+    // const deleteRef = ref(storage, `documents/${userID}/${fileName}`);
+    // deleteObject(deleteRef)
+    //   .then(() => {})
+    //   .catch((error) => {
+    //     // Uh-oh, an error occurred!
+    //   });
     // Delete from Associate_Document_Metadata
-    const q = query(
-      collection(db, "Associate_Document_Metadata"),
-      where("AssociateID", "==", userID)
-    );
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((Doc) => {
-      if (Doc.data().FileName === fileName) {
-        deleteDoc(doc(db, "Associate_Document_Metadata", Doc.id));
-      }
-    });
+    // const q = query(
+    //   collection(db, "Associate_Document_Metadata"),
+    //   where("AssociateID", "==", userID)
+    // );
+    // const querySnapshot = await getDocs(q);
+    // querySnapshot.forEach((Doc) => {
+    //   if (Doc.data().FileName === fileName) {
+    //     deleteDoc(doc(db, "Associate_Document_Metadata", Doc.id));
+    //   }
+    // });
   };
   const onSelectFile = (event) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -224,68 +229,68 @@ const AssociateDocuments = ({ userID }) => {
       Category: Meta.Metadata,
       FileName: uploadName,
     };
-    await addDoc(collection(db, "Associate_Document_Metadata"), dataToUpload);
+    // await addDoc(collection(db, "Associate_Document_Metadata"), dataToUpload);
     setPopupOpen(false);
     reset();
   };
 
   const uploadFile = (data) => {
-    const storageRef = ref(listRef, `${uploadName}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-    UploadDocumentMetadata(data);
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setLoadingProgress(progress);
-        // console.log("Upload is " + progress + "% done");
-        switch (snapshot.state) {
-          case "paused":
-            console.log("Upload is paused");
-            break;
-          case "running":
-            console.log("Upload is running");
-            break;
-        }
-      },
-      (error) => {
-        // Handle unsuccessful uploads
-      },
-      () => {
-        // Handle successful uploads on complete
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setLoadingProgress(null);
-          GetMetadata(uploadTask.snapshot.ref);
-          GetDocMetadata(userID);
-          setUploadSuccess(true);
-          setFile(null);
-        });
-      }
-    );
+    // const storageRef = ref(listRef, `${uploadName}`);
+    // const uploadTask = uploadBytesResumable(storageRef, file);
+    // UploadDocumentMetadata(data);
+    // uploadTask.on(
+    //   "state_changed",
+    //   (snapshot) => {
+    //     const progress =
+    //       (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    //     setLoadingProgress(progress);
+    //     // console.log("Upload is " + progress + "% done");
+    //     switch (snapshot.state) {
+    //       case "paused":
+    //         console.log("Upload is paused");
+    //         break;
+    //       case "running":
+    //         console.log("Upload is running");
+    //         break;
+    //     }
+    //   },
+    //   (error) => {
+    //     // Handle unsuccessful uploads
+    //   },
+    //   () => {
+    //     // Handle successful uploads on complete
+    //     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+    //       setLoadingProgress(null);
+    //       GetMetadata(uploadTask.snapshot.ref);
+    //       GetDocMetadata(userID);
+    //       setUploadSuccess(true);
+    //       setFile(null);
+    //     });
+    //   }
+    // );
   };
 
   const DownloadFile = (fileName) => {
-    getDownloadURL(ref(storage, `documents/${userID}/${fileName}`))
-      .then((url) => {
-        const xhr = new XMLHttpRequest();
-        xhr.responseType = "blob";
-        xhr.open("GET", url, true);
-        xhr.onload = (event) => {
-          function saveBlob(blob, fileName) {
-            var a = document.createElement("a");
-            a.href = window.URL.createObjectURL(blob);
-            a.download = fileName;
-            a.dispatchEvent(new MouseEvent("click"));
-          }
-          const blob = xhr.response;
-          saveBlob(blob, fileName);
-        };
-        xhr.send();
-      })
-      .catch((error) => {
-        console.log("download error", error);
-      });
+    // getDownloadURL(ref(storage, `documents/${userID}/${fileName}`))
+    //   .then((url) => {
+    //     const xhr = new XMLHttpRequest();
+    //     xhr.responseType = "blob";
+    //     xhr.open("GET", url, true);
+    //     xhr.onload = (event) => {
+    //       function saveBlob(blob, fileName) {
+    //         var a = document.createElement("a");
+    //         a.href = window.URL.createObjectURL(blob);
+    //         a.download = fileName;
+    //         a.dispatchEvent(new MouseEvent("click"));
+    //       }
+    //       const blob = xhr.response;
+    //       saveBlob(blob, fileName);
+    //     };
+    //     xhr.send();
+    //   })
+    //   .catch((error) => {
+    //     console.log("download error", error);
+    //   });
   };
 
   useEffect(() => {
@@ -304,47 +309,47 @@ const AssociateDocuments = ({ userID }) => {
   }, []);
 
   const GetDocMetadata = async (userID) => {
-    const q = query(
-      collection(db, "Associate_Document_Metadata"),
-      where("AssociateID", "==", userID)
-    );
-    const querySnapshot = await getDocs(q);
-    const all = querySnapshot.docs.map((doc) => ({
-      ...doc.data(),
-      docID: doc.id,
-    }));
-    setAdditionalMeta(all);
+    // const q = query(
+    //   // collection(db, "Associate_Document_Metadata"),
+    //   where("AssociateID", "==", userID)
+    // );
+    // const querySnapshot = await getDocs(q);
+    // const all = querySnapshot.docs.map((doc) => ({
+    //   ...doc.data(),
+    //   docID: doc.id,
+    // }));
+    // setAdditionalMeta(all);
   };
 
   const GetMetadata = (theRef) => {
-    getMetadata(theRef).then((metadata) => {
-      setFileList((fileList) => [
-        ...fileList,
-        {
-          fileName: metadata.name,
-          size: prettyBytes(metadata.size),
-          uploadDate: metadata.timeCreated,
-          fullPath: metadata.fullPath,
-          type: metadata.contentType,
-        },
-      ]);
-    });
+    // getMetadata(theRef).then((metadata) => {
+    //   setFileList((fileList) => [
+    //     ...fileList,
+    //     {
+    //       fileName: metadata.name,
+    //       size: prettyBytes(metadata.size),
+    //       uploadDate: metadata.timeCreated,
+    //       fullPath: metadata.fullPath,
+    //       type: metadata.contentType,
+    //     },
+    //   ]);
+    // });
   };
 
   const ListFiles = () => {
-    listAll(listRef)
-      .then((res) => {
-        res.prefixes.forEach((folderRef) => {
-          // All the prefixes under listRef.
-          // You may call listAll() recursively on them.
-        });
-        res.items.forEach((itemRef) => {
-          GetMetadata(itemRef);
-        });
-      })
-      .catch((error) => {
-        console.log("err", error);
-      });
+    // listAll(listRef)
+    //   .then((res) => {
+    //     res.prefixes.forEach((folderRef) => {
+    //       // All the prefixes under listRef.
+    //       // You may call listAll() recursively on them.
+    //     });
+    //     res.items.forEach((itemRef) => {
+    //       GetMetadata(itemRef);
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     console.log("err", error);
+    //   });
   };
 
   const handleRequestSort = (event, property) => {
@@ -395,10 +400,10 @@ const AssociateDocuments = ({ userID }) => {
 
   const updateDocCategory = async (e, docID) => {
     setWorking(true);
-    const documentRef = doc(db, "Associate_Document_Metadata", docID);
-    await updateDoc(documentRef, {
-      Category: e.target.value,
-    });
+    // const documentRef = doc(db, "Associate_Document_Metadata", docID);
+    // await updateDoc(documentRef, {
+    //   Category: e.target.value,
+    // });
     setWorking(false);
   };
 

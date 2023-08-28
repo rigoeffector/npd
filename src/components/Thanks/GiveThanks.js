@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-computed-key */
 import {
   Container,
   Card,
@@ -8,10 +9,10 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import { ref, push, serverTimestamp } from "firebase/database";
-import { rtdb } from "../../utils/firebase";
-import { doc, setDoc } from "firebase/firestore";
-import { db } from "../../utils/firebase";
+// import { ref, push, serverTimestamp } from "firebase/database";
+// import { rtdb } from "../../utils/firebase";
+// import { doc, setDoc } from "firebase/firestore";
+// import { db } from "../../utils/firebase";
 import React, { useState, useRef, useCallback, useContext } from "react";
 import { associatesContext } from "../../utils/context/contexts";
 import ReactCanvasConfetti from "react-canvas-confetti";
@@ -27,7 +28,7 @@ const GiveThanks = () => {
     To: undefined,
     From: "",
     // Timestamp: Math.round(new Date().getTime() / 1000),
-    Timestamp: serverTimestamp(),
+    // Timestamp: serverTimestamp(),
     // Times: serverTimestamp(),
     Category: undefined,
   });
@@ -86,21 +87,21 @@ const GiveThanks = () => {
   }, [makeShot]);
 
   const onSubmit = () => {
-    push(ref(rtdb, `Thanks`), giveThanksData).then((result) => {
-      setGiveThanksData({
-        Comment: undefined,
-        To: undefined,
-        From: "",
-        // Timestamp: Math.round(new Date().getTime() / 1000),
-        Timestamp: serverTimestamp(),
-        // Times: serverTimestamp(),
-        Category: undefined,
-      });
-      setDoc(doc(db, "Thanks-Comments-Likes", result.key), {
-        Comments: {},
-        Likes: [],
-      });
-    });
+    // push(ref(rtdb, `Thanks`), giveThanksData).then((result) => {
+    //   setGiveThanksData({
+    //     Comment: undefined,
+    //     To: undefined,
+    //     From: "",
+    //     // Timestamp: Math.round(new Date().getTime() / 1000),
+    //     Timestamp: serverTimestamp(),
+    //     // Times: serverTimestamp(),
+    //     Category: undefined,
+    //   });
+    //   setDoc(doc(db, "Thanks-Comments-Likes", result.key), {
+    //     Comments: {},
+    //     Likes: [],
+    //   });
+    // });
   };
   return (
     <Page title="HR Core - Give Thanks">

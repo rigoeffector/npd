@@ -1,24 +1,20 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { Box, Button, Grid } from "@mui/material";
 import List from "@mui/material/List";
 import { ListItem, TextField } from "@mui/material";
-import {
-  collection,
-  getDocs,
-  addDoc,
-  getDoc,
-  doc,
-  deleteDoc,
-  updateDoc,
-} from "firebase/firestore";
-import { db } from "../../../../utils/firebase";
+// import {
+//   collection,
+//   getDocs,
+// } from "firebase/firestore";
+// import { db } from "../../../../utils/firebase";
 
 const DocCategoriesModify = () => {
   const [allCategories, setAllCategories] = useState();
   const getAllCategories = async () => {
-    const querySnapshot = await getDocs(collection(db, "DocumentCategories"));
-    const all = querySnapshot.docs.map((doc) => doc.data().Name);
-    setAllCategories(all);
+    // const querySnapshot = await getDocs(collection(db, "DocumentCategories"));
+    // const all = querySnapshot.docs.map((doc) => doc.data().Name);
+    // setAllCategories(all);
   };
   useEffect(() => {
     const getCat = async () => {

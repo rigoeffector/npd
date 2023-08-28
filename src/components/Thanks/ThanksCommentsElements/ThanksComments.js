@@ -8,8 +8,8 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import { doc, updateDoc, deleteField } from "firebase/firestore";
-import { db } from "../../../utils/firebase";
+// import { doc, updateDoc, deleteField } from "firebase/firestore";
+// import { db } from "../../../utils/firebase";
 
 import React, { useState } from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
@@ -30,17 +30,17 @@ const ThanksComments = ({
 
   const user = GetAssociateDetails(id);
   const deleteComment = (commentID, thanksId) => {
-    const commentRef = doc(db, "Thanks-Comments-Likes", thanksId);
-    updateDoc(commentRef, {
-      [`Comments.${commentID}`]: deleteField(),
-    });
+    // const commentRef = doc(db, "Thanks-Comments-Likes", thanksId);
+    // updateDoc(commentRef, {
+    //   [`Comments.${commentID}`]: deleteField(),
+    // });
   };
   const editComment = (commentID, thanksId, newComment) => {
-    const commentRef = doc(db, "Thanks-Comments-Likes", thanksId);
-    updateDoc(commentRef, {
-      [`Comments.${commentID}.Comment`]: newComment,
-    });
-    setEdit(false);
+    // const commentRef = doc(db, "Thanks-Comments-Likes", thanksId);
+    // updateDoc(commentRef, {
+    //   [`Comments.${commentID}.Comment`]: newComment,
+    // });
+    // setEdit(false);
   };
 
   const pressEdit = () => {
