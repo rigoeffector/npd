@@ -49,7 +49,7 @@ const Attendance = () => {
                 />
               </Grid>
               <Grid item sx={4} sm={4} xl={4}>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <Field
                     component={DatePicker}
                     label="Date"
@@ -65,7 +65,7 @@ const Attendance = () => {
                       <TextField size="small" {...params} />
                     )}
                   />
-                </LocalizationProvider>
+                </LocalizationProvider> */}
               </Grid>
             </Grid>
           </Box>
