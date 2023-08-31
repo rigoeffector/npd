@@ -1,8 +1,16 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
-import { Box, Button, Grid } from "@mui/material";
 import List from "@mui/material/List";
-import { ListItem, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  Card,
+  CardContent,
+  CardActions,
+  Typography,
+} from "@mui/material";
+import DocumentIcon from "@mui/icons-material/Description";
 // import {
 //   collection,
 //   getDocs,
@@ -24,57 +32,103 @@ const DocCategoriesModify = () => {
   }, []);
 
   return (
-    <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
-      <Grid container direction="rows" justify="flex-start">
-        <Grid item xs={6} lg={6}>
-          <List component="nav">
-            {allCategories &&
-              allCategories.map((Cat) => {
-                return (
-                  <ListItem key={Cat}>
-                    <TextField
-                      name={Cat}
-                      sx={{ pr: 2, minWidth: 300 }}
-                      size="small"
-                      defaultValue={Cat}
-                      onChange={(e) => {
-                        console.log(e.target.value);
-                      }}
-                    />
-                    <Button
-                      color="error"
-                      variant="contained"
-                      size="small"
-                      onClick={() => console.log(Cat)}
-                    >
-                      Delete
-                    </Button>
-                    {/* <ListItemButton>ss</ListItemButton> */}
-                  </ListItem>
-                );
-              })}
-            <ListItem key={"Add"}>
-              <TextField
-                name="Add"
-                sx={{ pr: 2, minWidth: 300 }}
-                size="small"
-                defaultValue={""}
-                onChange={(e) => {
-                  console.log(e.target.value);
-                }}
-              />
+    <Grid container direction="rows" justify="flex-start">
+      <Grid item xs={12} lg={12} container spacing={2}>
+        <Grid item xs={4} lg={4}>
+          <Card
+            variant="outlined"
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            <CardContent>
+              <DocumentIcon fontSize="large" color="primary" />
+              <Typography variant="h6">Document Name</Typography>
+              <Typography variant="body2">Uploaded by: John Doe</Typography>
+              <Typography variant="body2">
+                Created on: August 31, 2023
+              </Typography>
+            </CardContent>
+            <CardActions
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
               <Button
                 variant="contained"
-                size="small"
-                onClick={() => console.log("Added")}
+                color="primary"
+                startIcon={<DocumentIcon />}
               >
-                Add
+                Download
               </Button>
-            </ListItem>
-          </List>
+            </CardActions>
+          </Card>
+        </Grid>
+        <Grid item xs={4} lg={4}>
+          <Card
+            variant="outlined"
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            <CardContent>
+              <DocumentIcon fontSize="large" color="primary" />
+              <Typography variant="h6">Document Name</Typography>
+              <Typography variant="body2">Uploaded by: John Doe</Typography>
+              <Typography variant="body2">
+                Created on: August 31, 2023
+              </Typography>
+            </CardContent>
+            <CardActions
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<DocumentIcon />}
+              >
+                Download
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
+        <Grid item xs={4} lg={4}>
+          <Card
+            variant="outlined"
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            <CardContent>
+              <DocumentIcon fontSize="large" color="primary" />
+              <Typography variant="h6">Document Name</Typography>
+              <Typography variant="body2">Uploaded by: John Doe</Typography>
+              <Typography variant="body2">
+                Created on: August 31, 2023
+              </Typography>
+            </CardContent>
+            <CardActions
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<DocumentIcon />}
+              >
+                Download
+              </Button>
+            </CardActions>
+          </Card>
         </Grid>
       </Grid>
-    </Box>
+    </Grid>
   );
 };
 export default DocCategoriesModify;

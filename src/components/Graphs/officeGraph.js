@@ -108,7 +108,7 @@ export default function OfficeGraph() {
     sx={{
       height: 'fit-content !important'
     }}>
-     <CardHeader title="Offices" />
+     <CardHeader title="Sites" />
       {/* {loadingOffice && ( */}
       {/* <Stack
         // direction="row"

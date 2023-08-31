@@ -348,7 +348,7 @@ function App() {
               }
             />
             <Route
-              path="admin/database"
+              path="dashboard/settings/sites"
               element={
                 // <PrivateRoute role="Admin">
                   <Admin />

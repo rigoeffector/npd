@@ -66,20 +66,8 @@ const sidebarConfig = [
     icon: getIcon(awardIcon),
     children: [
       {
-        title: "Roles",
-        path: "/settings/roles",
-      },
-      {
-        title: "Departments",
-        path: "/settings/departments",
-      },
-      {
-        title: "Offices",
-        path: "/settings/offices",
-      },
-      {
-        title: "Sites",
-        path: "/settings/sites",
+        title: "All Settings",
+        path: "/dashboard/settings/sites",
       },
     ],
   },

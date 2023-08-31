@@ -207,7 +207,7 @@ const Associates = () => {
               All Employees
             </Typography>
 
-            <Button variant="contained" component={Link} to={"/new/employee"}>
+            <Button variant="contained" component={Link} to={"/dashboard/associates/new/employee"}>
               New Employee
             </Button>
           </Stack>

@@ -1,24 +1,58 @@
 import React from "react";
-import { Container, Typography, Card, Box } from "@mui/material";
-import ModifyDatabase from "../components/Associate/Admin/DatabaseModify";
+import { Container, Typography, Card, Box, Button, Grid } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DocCategoriesModify from "../components/Associate/Admin/DatabaseModify/DocCategoriessModify";
-import OfficesModify from "../components/Associate/Admin/DatabaseModify/OfficesModify";
+import AddIcon from "@mui/icons-material/Add";
 import Page from "../components/Page";
+import DocumentIcon from "@mui/icons-material/Description";
+import Sites from "./Sites";
+import NPDModal from "../components/modal";
+import NewSiteForm from "./forms/new.site.form";
+import FileUploadForm from "./forms/upload.document";
 
 const Admin = () => {
   const [expanded, setExpanded] = React.useState(true);
-
+  const [showNewModal,setShowNewModal]= React.useState(false);
+  const [showNewUploadModal,setShowNewUploadModal]= React.useState(false);
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
+
+  const showModalAddNew = () => {
+    setShowNewModal(true);
+  };
+  const showModalUploadNew = () => {
+    setShowNewUploadModal(true);
+  };
+  const handleClose = () => {
+    setShowNewModal(false);
+    setShowNewUploadModal(false)
+  };
   return (
-    <Page title="HR Core - Admin">
+    <Page title="">
+      {/* Modals to add new and upload  */}
+
+      <NPDModal
+        title={"Add New Site"}
+        show={showNewModal}
+        handleClose={handleClose}
+      >
+        <NewSiteForm/>
+      </NPDModal>
+
+      <NPDModal
+        title={"Upload New Doc"}
+        show={showNewUploadModal}
+        handleClose={handleClose}
+      >
+        <FileUploadForm/>
+      </NPDModal>
+
       <Container maxWidth="lg">
-        <h1>Admin</h1>
+        <h1>Settings</h1>
         <Card>
           <Box p={2}>
             <Accordion
@@ -31,15 +65,41 @@ const Admin = () => {
                 id="panel1bh-header"
                 sx={{ backgroundColor: "#eef0f2" }}
               >
-                <Typography sx={{ width: "33%", flexShrink: 0 }}>
-                  Departments...
+                <Typography
+                  sx={{ width: "33%", fontWeight: "700", flexShrink: 0 }}
+                >
+                  Sites...
                 </Typography>
-                <Typography sx={{ color: "text.secondary" }}>
-                  Add, rename, delete
-                </Typography>
+                <Typography sx={{ color: "text.secondary" }}></Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <ModifyDatabase />
+                <Grid xs={12}>
+                  <Box
+                    sx={{
+                      margin: "30px 0px",
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontWeight: "700",
+                      }}
+                    >
+                      All Company Sites
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      startIcon={<AddIcon />}
+                      onClick={showModalAddNew}
+                    >
+                      Add New Site
+                    </Button>
+                  </Box>
+                </Grid>
+                <Sites />
               </AccordionDetails>
             </Accordion>
             <Accordion
@@ -52,36 +112,41 @@ const Admin = () => {
                 id="panel1bh-header"
                 sx={{ backgroundColor: "#eef0f2" }}
               >
-                <Typography sx={{ width: "33%", flexShrink: 0 }}>
-                  Document categories...
-                </Typography>
-                <Typography sx={{ color: "text.secondary" }}>
-                  Add, rename, delete
+                <Typography
+                  sx={{ width: "33%", fontWeight: "700", flexShrink: 0 }}
+                >
+                  Reports
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
+                <Grid xs={12}>
+                  <Box
+                    sx={{
+                      margin: "30px 0px",
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontWeight: "700",
+                      }}
+                    >
+                      All Uploaded Reports
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={showModalUploadNew}
+                      startIcon={<DocumentIcon />}
+                    >
+                      Upload New Document
+                    </Button>
+                  </Box>
+                </Grid>
+
                 <DocCategoriesModify />
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              expanded={expanded === "panel3"}
-              onChange={handleChange("panel3")}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1bh-content"
-                id="panel1bh-header"
-                sx={{ backgroundColor: "#eef0f2" }}
-              >
-                <Typography sx={{ width: "33%", flexShrink: 0 }}>
-                  Offices...
-                </Typography>
-                <Typography sx={{ color: "text.secondary" }}>
-                  Add, rename, delete
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <OfficesModify />
               </AccordionDetails>
             </Accordion>
           </Box>

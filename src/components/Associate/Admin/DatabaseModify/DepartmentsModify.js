@@ -6,21 +6,21 @@ import { ListItem, TextField } from "@mui/material";
 import { departmentsContext } from "../../../../utils/context/contexts";
 
 const DepartmentsModify = () => {
-  const { allDepartments } = useContext(departmentsContext);
+  // const { allDepartments } = useContext(departmentsContext);
 
   return (
     <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
       <Grid container direction="rows" justify="flex-start">
         <Grid item xs={6} lg={6}>
           <List component="nav">
-            {allDepartments.map((Dep) => {
-              return (
-                <ListItem key={Dep}>
+            {/* {allDepartments.map((Dep) => { */}
+             
+                <ListItem key={''}>
                   <TextField
-                    name={Dep}
+                    name={'Nyarutarama'}
                     sx={{ pr: 2, minWidth: 300 }}
                     size="small"
-                    defaultValue={Dep}
+                    defaultValue={''}
                     onChange={(e) => {
                       console.log(e.target.value);
                     }}
@@ -29,14 +29,14 @@ const DepartmentsModify = () => {
                     color="error"
                     variant="contained"
                     size="small"
-                    onClick={() => console.log(Dep)}
+                    onClick={() => console.log('')}
                   >
                     Delete
                   </Button>
                   {/* <ListItemButton>ss</ListItemButton> */}
                 </ListItem>
-              );
-            })}
+            
+            {/* })} */}
             <ListItem key={"Add"}>
               <TextField
                 name="Add"

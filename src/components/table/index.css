@@ -1,0 +1,91 @@
+.css-jk1lh6-MuiDataGrid-root .MuiDataGrid-cell {
+    white-space: normal;
+  }
+  .MuiDataGrid-cell.MuiDataGrid-cell--textLeft {
+    white-space: normal;
+  }
+  .pinned-column-header {
+    position: sticky;
+    z-index: 900;
+    left: 0;
+    background-color: #f9fafb;
+  }
+  
+  .pinned-column-cell {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background-color: #f9fafb;
+  }
+  div#search_table_v2 {
+    position: absolute;
+    top: -15.5%;
+    /* left: -27%; */
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+}
+  .MuiFormControl-root.MuiTextField-root.css-3be3ve-MuiFormControl-root-MuiTextField-root-MuiDataGrid-toolbarQuickFilter {
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    border-radius: 8px;
+    /* width: 100%; */
+  }
+  .MuiDataGrid-cell {
+    color: var(--dark-blue-500);
+    height: 72px !important;
+    font-size: 14px;
+    max-height: none !important;
+    line-height: unset !important;
+    white-space: normal;
+    border-bottom: 1px solid #ddd!important;
+}
+  .css-qyij5s-MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before {
+    border-bottom: 1px solid !important;
+  }
+  .css-qyij5s-MuiInputBase-root-MuiInput-root:not(.Mui-disabled):before {
+    border-bottom: 1px solid !important;
+  }
+  .css-qyij5s-MuiInputBase-root-MuiInput-root:focus:not(.Mui-disabled):before {
+    border-bottom: 1px solid !important;
+  }
+  .MuiTablePagination-root {
+    color: #6b7a99 !important;
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+  .MuiTablePagination-root p {
+    color: #6b7a99 !important;
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+  .MuiInputBase-root.MuiInputBase-colorPrimary.css-cfbis4-MuiInputBase-root-MuiTablePagination-select {
+    border: 1px solid #e6e9f0;
+    border-radius: 8px;
+    background: #edeff3;
+    font-weight: 900;
+  }
+  
+  div#actions_table_v2 {
+    display: flex;
+  }
+  div#search_table_v2 .MuiFormControl-root {
+    transform: translate(-8%, -5%);
+    /* right: 20%; */
+    width: 47%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+}
+div#filter_astest {
+  transform: translate(38%, -130%);
+  position: absolute;
+  width: 50%;
+  left: 50%;
+}
+div#search_table_v2 .MuiInputBase-root.MuiInput-root.MuiInput-underline::before {
+    display: none !important;
+}
+div#search_table_v2 .MuiInputBase-root.MuiInput-root.MuiInput-underline::after {
+    display: none !important;
+}

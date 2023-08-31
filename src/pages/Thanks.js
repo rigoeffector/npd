@@ -24,10 +24,11 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../utils/context/AuthContext";
 import ThanksCard from "../components/Thanks/ThanksCard";
 import Page from "../components/Page";
+import NPDModal from "../components/modal";
 
 const Thanks = () => {
   // const { userData } = useAuth();
-  const [thanks, setThanks] = useState();
+  const [showModal, setShowModal] = useState(false);
   const [filterID, setFilterID] = useState();
   const [pagination, setPagination] = useState(3);
   const paginationChoices = [3, 10, 20, 30, 40];
@@ -57,18 +58,24 @@ const Thanks = () => {
     // });
   }, []);
 
-  const filteredThanks = (array, id) => {
-    if (id) {
-      return array.filter((thank) => {
-        return thank.To === id;
-      });
-    }
-    return array;
-  };
+ 
 
+
+  const handleShowAddNew=()=>{
+    setShowModal(true);
+  }
+
+  const handleClose =()=>{
+    
+  }
   return (
     <>
-      <Page title="HR Core - Thanks">
+      <Page title="">
+      <NPDModal
+      title='Assign Employee to a Project'
+      show={showModal}
+      handleClose={handleClose}
+      ></NPDModal>
         <Box
           sx={{
             px: 1,
@@ -107,7 +114,7 @@ const Thanks = () => {
               </Grid>
             </Grid>
             <Grid item>
-              <Button variant="contained" component={Link} to={"givethanks"}>
+              <Button variant="contained" onClick={handleShowAddNew}>
                 Assign Employee To a Project
               </Button>
             </Grid>
