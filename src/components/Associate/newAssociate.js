@@ -42,6 +42,7 @@ import * as Yup from "yup";
 // import { Timestamp } from "firebase/firestore";
 import AssociateDocuments from "./subdetails/associateDocuments";
 import Page from "../Page";
+import FileUploadForm from "../../pages/forms/upload.document";
 export default function NewAssociate() {
   // const { isDemo } = useAuth();
   // const [currentStep, setCurrentStep] = useState(0);
@@ -188,101 +189,10 @@ const StepOne = (props) => {
   const handleSubmit = (values) => {
     props.next(values);
   };
-  const associates = [
-    {
-      id: 1,
-      lastName: "Snow",
-      firstName: "Jon",
-      age: 35,
-      title: "Project Manager",
-      department: "Management",
-      startDate: "2022/09/12",
-      employeeStatus: "Active",
-    },
-    {
-      id: 2,
-      lastName: "Lannister",
-      firstName: "Cersei",
-      age: 42,
-      title: "Techinician Manager",
-      department: "IT",
-      startDate: "2022/09/12",
-      employeeStatus: "Active",
-    },
-    {
-      id: 3,
-      lastName: "Lannister",
-      firstName: "Jaime",
-      age: 45,
-      title: "Site Manager",
-      department: "Developer",
-      startDate: "2022/09/12",
-      employeeStatus: "Active",
-    },
-    {
-      id: 4,
-      lastName: "Stark",
-      firstName: "Arya",
-      age: 16,
-      title: "Capita",
-      department: "Developer",
-      startDate: "2022/09/12",
-      employeeStatus: "Active",
-    },
-    {
-      id: 5,
-      lastName: "Targaryen",
-      firstName: "Daenerys",
-      age: null,
-      title: "Project Manager",
-      department: "Management",
-      startDate: "2022/09/12",
-      employeeStatus: "Active",
-    },
-    {
-      id: 6,
-      lastName: "Melisandre",
-      firstName: null,
-      age: 150,
-      title: "Project Manager",
-      department: "Management",
-      startDate: "2022/09/12",
-      employeeStatus: "Active",
-    },
-    {
-      id: 7,
-      lastName: "Clifford",
-      firstName: "Ferrara",
-      age: 44,
-      title: "Employee",
-      department: "Management",
-      startDate: "2022/09/12",
-      employeeStatus: "Active",
-    },
-    {
-      id: 8,
-      lastName: "Frances",
-      firstName: "Rossini",
-      age: 36,
-      title: "Project Manager",
-      department: "Management",
-      startDate: "2022/09/12",
-      employeeStatus: "Active",
-    },
-    {
-      id: 9,
-      lastName: "Roxie",
-      firstName: "Harvey",
-      age: 65,
-      title: "Project Manager",
-      department: "Management",
-      startDate: "2022/09/12",
-      employeeStatus: "Active",
-    },
-  ];
+
   return (
     <Formik
-      validationSchema={stepOneValidationSchema}
+      // validationSchema={stepOneValidationSchema}
       initialValues={props.data}
       onSubmit={handleSubmit}
     >
@@ -319,54 +229,7 @@ const StepOne = (props) => {
               />
               <ErrorMessage name="LastName" />
             </Grid>
-            <Grid item sx={4} sm={4} xl={4}>
-              <Field
-                fullWidth
-                required
-                name="Title"
-                size="small"
-                label="Title"
-                as={TextField}
-              />
-              <ErrorMessage name="Title" />
-            </Grid>
-            {/* {allDepartments && ( */}
-            <Grid item sx={4} sm={4} xl={4}>
-              <FormControl fullWidth>
-                <InputLabel>Department</InputLabel>
-                <Field
-                  as={Select}
-                  name="Department"
-                  required
-                  size="small"
-                  label="Department"
-                  fullWidth
-                >
-                  {/* {allDepartments.map((department, index) => ( */}
-                  <MenuItem value={"1"}>IT Department</MenuItem>
-                  <MenuItem value={"1"}>Developer</MenuItem>
-                  <MenuItem value={"1"}>Management</MenuItem>
-                  {/* ))} */}
-                </Field>
-                {/* <Field
-                  fullWidth
-                  as={Select}
-                  name="Department"
-                  // sx={{ width: "100%" }}
-                  required
-                  size="small"
-                  label="Department"
-                >
-                  {allDepartments.map((department, index) => (
-                    <MenuItem key={index} value={`${department}`}>
-                      {department}
-                    </MenuItem>
-                  ))}
-                </Field> */}
-                <ErrorMessage name="Department" />
-              </FormControl>
-            </Grid>
-            {/* )} */}
+
             <Grid item sx={4} sm={4} xl={4}>
               <Field
                 fullWidth
@@ -390,6 +253,18 @@ const StepOne = (props) => {
                 as={TextField}
               />
               <ErrorMessage name="PhoneNumber" />
+            </Grid>
+            <Grid item sx={4} sm={4} xl={4}>
+              <Field
+                // type="email"
+                required
+                fullWidth
+                name="Age"
+                size="small"
+                label="Age"
+                as={TextField}
+              />
+              <ErrorMessage name="Age" />
             </Grid>
             <Grid item sx={4} sm={4} xl={4}>
               <Field
@@ -436,14 +311,14 @@ const StepOne = (props) => {
             {/* {allOffices && ( */}
             <Grid item sx={4} sm={4} xl={4}>
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Office</InputLabel>
+                <InputLabel id="demo-simple-select-label">Sites</InputLabel>
                 <Field
                   as={Select}
-                  name="Office"
+                  name="Sites"
                   // sx={{ width: 195 }}
                   required
                   size="small"
-                  label="Office"
+                  label="Sites"
                   fullWidth={true}
                 >
                   <MenuItem value={`1`}>Kinamba Office</MenuItem>
@@ -456,32 +331,33 @@ const StepOne = (props) => {
             {/* )} */}
             <Grid item sx={4} sm={4} xl={4}>
               <Field
-                name="Manager"
+                name="Role"
                 fullWidth
                 component={Autocomplete}
                 size="small"
-                options={associates}
-                getOptionLabel={(associates) =>
-                  associates.firstName + " " + associates.lastName
-                }
+                options={[
+                  { name: "Project Manager", id: "project_manager" },
+                  { name: "Site Manager", id: "site_manager" },
+                  { name: "Capita", id: "capita" },
+                  { name: "Employee", id: "default_employee" },
+                ]}
+                getOptionLabel={(role) => role.name}
                 onChange={(e, value) => {
                   if (value != null) {
-                    setFieldValue("Manager", value.id);
+                    setFieldValue("Role", value.id);
                   }
                 }}
-                // onChange={(selected) => (selected = selected.FirstName)}
-                // style={{ width: 300 }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Manager"
+                    label="Roles"
                     required
                     variant="outlined"
                     fullWidth={true}
                   />
                 )}
               />
-              <ErrorMessage name="Manager" />
+              <ErrorMessage name="Roles" />
             </Grid>
 
             <Grid item sx={4} sm={4} xl={4}>
@@ -566,7 +442,7 @@ const StepTwo = (props) => {
 
   return (
     <Formik
-      validationSchema={stepTwoValidationSchema}
+      // validationSchema={stepTwoValidationSchema}
       initialValues={props.data}
       onSubmit={handleSubmit}
     >
@@ -649,7 +525,7 @@ const StepTwo = (props) => {
   );
 };
 const StepThree = ({ id }) => {
-  const { isDemo } = useAuth();
+  // const { isDemo } = useAuth();
 
   // const handleClickOpen = () => {
   //   setOpen(true);
@@ -693,7 +569,7 @@ const StepThree = ({ id }) => {
       {/* </Dialog> */}
       <Grid container sx={{ padding: 2 }}>
         <Grid item xs={12} lg={12} md={12}>
-          <AssociateDocuments userID={id} />
+          {<FileUploadForm />}
         </Grid>
         <Grid
           container

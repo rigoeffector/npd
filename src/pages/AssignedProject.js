@@ -71,11 +71,7 @@ const Thanks = () => {
   return (
     <>
       <Page title="">
-      <NPDModal
-      title='Assign Employee to a Project'
-      show={showModal}
-      handleClose={handleClose}
-      ></NPDModal>
+     
         <Box
           sx={{
             px: 1,
@@ -114,7 +110,7 @@ const Thanks = () => {
               </Grid>
             </Grid>
             <Grid item>
-              <Button variant="contained" onClick={handleShowAddNew}>
+              <Button variant="contained" component={Link} to={"/dashboard/new/assign"}>
                 Assign Employee To a Project
               </Button>
             </Grid>

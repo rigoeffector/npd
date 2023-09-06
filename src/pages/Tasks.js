@@ -563,7 +563,7 @@ const MyTasks = () => {
                   alignItems="center"
                 >
                   <Typography variant="h6" color="black">
-                    To approve
+                  Currently Running
                   </Typography>
                   <Box
                     sx={{
