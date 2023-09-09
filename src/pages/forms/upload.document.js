@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { Button, Container, Paper, Typography } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
 const AcceptedFileTypes = ['.docx', 'image/*', '.pdf'];
-const FileUploadForm = () => {
+const FileUploadForm = ({handleUploadProductImages}) => {
   const onDrop = useCallback(acceptedFiles => {
     // Handle the uploaded file here
     console.log('Uploaded files:', acceptedFiles);
@@ -22,7 +22,7 @@ const FileUploadForm = () => {
           <input {...getInputProps()} />
           <Typography variant="body1">Drag and drop a document here, or click to select a file</Typography>
         </div>
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary" onCli>
           Upload
         </Button>
       </Paper>

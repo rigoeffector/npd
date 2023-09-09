@@ -11,67 +11,41 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-// import {
-//   ref,
-//   onValue,
-//   getDatabase,
-//   query,
-//   orderByChild,
-//   limitToLast,
-// } from "firebase/database";
 import { Link } from "react-router-dom";
-
 import { useAuth } from "../utils/context/AuthContext";
 import ThanksCard from "../components/Thanks/ThanksCard";
 import Page from "../components/Page";
 import NPDModal from "../components/modal";
+import { useDispatch, useSelector } from "react-redux";
+import { GET_ASSIGN_EMPLOYEES_LIST_REQUEST } from "../reducers/assign/constants";
 
 const Thanks = () => {
-  // const { userData } = useAuth();
   const [showModal, setShowModal] = useState(false);
   const [filterID, setFilterID] = useState();
   const [pagination, setPagination] = useState(3);
-  const paginationChoices = [3, 10, 20, 30, 40];
+  const [searchField, setSearchField] = useState("");
+  const [distance, setDistance] = useState(6);
+  const [anchorEl, setAnchorEl] = useState(false);
+  const dispatch = useDispatch();
+
+  const {
+    listAssignEmployees: {
+      data: listAssignEmployeesData,
+      success,
+      loading: listAssignEmployeesLoading,
+    },
+  } = useSelector((state) => state);
+
   useEffect(() => {
-    // const dbrt = getDatabase();
-    // // const AllNotifications = query(ref(dbrt, `Notifications/${userData.id}`));
-    // const AllThanks = query(
-    //   ref(dbrt, "Thanks"),
-    //   orderByChild("Timestamp"),
-    //   // startAt(monthAgo),
-    //   limitToLast(pagination)
-    //   // endAt("TeamPlayer")
-    // );
-    // onValue(AllThanks, (snapshot) => {
-    //   if (snapshot.val() != null) {
-    //     const data = snapshot.val();
-    //     console.log(data, "all thanks");
-    //     const tempArray = [];
-    //     Object.entries(data).forEach(([key, value]) => {
-    //       tempArray.push({ ...value, ThanksID: key });
-    //     });
-    //     setThanks(
-    //       tempArray.sort((a, b) => (a.Timestamp < b.Timestamp ? 1 : -1))
-    //     );
-    //   } else {
-    //   }
-    // });
-  }, []);
+    // Dispatch the action to fetch data when the component mounts
+    dispatch({
+      type: GET_ASSIGN_EMPLOYEES_LIST_REQUEST,
+    });
+  }, [dispatch]);
 
- 
-
-
-  const handleShowAddNew=()=>{
-    setShowModal(true);
-  }
-
-  const handleClose =()=>{
-    
-  }
   return (
     <>
       <Page title="">
-     
         <Box
           sx={{
             px: 1,
@@ -102,7 +76,7 @@ const Thanks = () => {
                 <Typography
                   sx={{
                     marginLeft: "20px",
-                    fontweight: "800",
+                    fontWeight: "800",
                   }}
                 >
                   All Assigned Projects
@@ -110,7 +84,11 @@ const Thanks = () => {
               </Grid>
             </Grid>
             <Grid item>
-              <Button variant="contained" component={Link} to={"/dashboard/new/assign"}>
+              <Button
+                variant="contained"
+                component={Link}
+                to={"/dashboard/new/assign"}
+              >
                 Assign Employee To a Project
               </Button>
             </Grid>
@@ -126,21 +104,20 @@ const Thanks = () => {
             flexWrap: "wrap",
           }}
         >
-          <Grid item xs={4}>
-            <ThanksCard />
-          </Grid>
-          <Grid item xs={4}>
-            <ThanksCard />
-          </Grid>
-          <Grid item xs={4}>
-            <ThanksCard />
-          </Grid>
-          <Grid item xs={4}>
-            <ThanksCard />
-          </Grid>
-          <Grid item xs={4}>
-            <ThanksCard />
-          </Grid>
+           {listAssignEmployeesLoading ? (
+          <CircularProgress />
+        ) : (
+          <>
+            {/* Check if listAssignEmployeesData is not null or undefined */}
+            {listAssignEmployeesData && listAssignEmployeesData.length > 0 ? (
+              listAssignEmployeesData.map((item) => (
+                <ThanksCard key={item.assignmentId} data={item} />
+              ))
+            ) : (
+              <p>No assigned projects found.</p>
+            )}
+          </>
+        )}
         </Grid>
       </Page>
     </>

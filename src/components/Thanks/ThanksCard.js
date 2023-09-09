@@ -11,11 +11,22 @@ import {
   Divider,
   Skeleton,
   Button,
+  Chip
 } from "@mui/material";
-
 import "./ThanksCardElements/cardMedia.css";
+import NPDModal from "../modal";
 
-const ThanksCard = ({ thanksId, thanksData, userId }) => {
+const ThanksCard = ({ data }) => {
+  const [showMore, setShowMore] = useState(false);
+  const [moreInfo, setMoreInfo] = useState({});
+  const handleClose = () => {
+    setShowMore(false);
+  };
+
+  const handleShowMore = (d) => {
+    setShowMore(true);
+    setMoreInfo(d);
+  };
   return (
     <>
       <Card
@@ -41,18 +52,9 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
               textAlign: "center",
             }}
           >
-            Stade AMAHORO Construction
+            {data?.projectName}
           </Typography>
-          <p
-            style={{
-              fontSize: "15px",
-              fontWeight: "400",
-              color: "#a0a0a0",
-              margin: "10px",
-            }}
-          >
-            200 Employees
-          </p>
+
           <span
             style={{
               fontSize: "13px",
@@ -62,7 +64,7 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
               fontStyle: "italic",
             }}
           >
-            From 2023/12/10 to 2024/12/10
+            From {data?.projectStartDate} to {data?.projectEndDate}
           </span>
           <span
             style={{
@@ -73,11 +75,14 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
               fontStyle: "italic",
             }}
           >
-            Manager: GAKWAYA Innocent
+            Manager: {data?.projectManagerName}
           </span>
-          <Button variant="contained">View More</Button>
+          <Chip label={data?.projectStatus} color={data?.projectStatus === 'completed'? 'success': 'primary'}/>
+          
         </Box>
       </Card>
+
+      {/* <NPDModal  title={'More'} show={showMore} handleClose={handleClose}></NPDModal> */}
     </>
   );
 };

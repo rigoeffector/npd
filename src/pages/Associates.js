@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import UserListHead from "../components/Associates/UserListHead";
 import UserListToolbar from "../components/Associates/UserListToolbar";
@@ -25,37 +25,54 @@ import {
   TableContainer,
   TablePagination,
   Box,
+  CircularProgress,
 } from "@mui/material";
 import {
   associatesContext,
   resultsPerPageContext,
 } from "../utils/context/contexts";
+import { useDispatch, useSelector } from "react-redux";
+import { GET_EMPLOYEES_LIST_REQUEST } from "../reducers/employees/constants";
 
 const Associates = () => {
-  const { associates: associatesData, setAssociates: setAssociatesData } =
-    useContext(associatesContext);
-  const [filterName, setFilterName] = useState("");
+  const dispatch = useDispatch();
 
-  const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("LastName");
+  const {
+    listEmployees: {
+      data: listEmployeesData,
+      success,
+      loading: listEmployeesLoading,
+    },
+  } = useSelector((state) => state);
+  useEffect(() => {
+    dispatch({
+      type: GET_EMPLOYEES_LIST_REQUEST,
+    });
+  }, [dispatch]);
 
   const columns = [
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "firstName", headerName: "First name", width: 130 },
-    { field: "lastName", headerName: "Last name", width: 130 },
+    // { field: "id", headerName: "ID", width: 70 },
+    { field: "fname", headerName: "First name", width: 130 },
+    { field: "lname", headerName: "Last name", width: 130 },
     {
       field: "age",
       headerName: "Age",
       width: 90,
     },
+
     {
-      field: "title",
-      headerName: "Title",
+      field: "idnumber",
+      headerName: "ID Number",
       width: 130,
     },
     {
-      field: "department",
-      headerName: "Department",
+      field: "role",
+      headerName: "Role",
+      width: 130,
+    },
+    {
+      field: "salary",
+      headerName: "Salary",
       width: 130,
     },
     {
@@ -100,99 +117,6 @@ const Associates = () => {
     },
   ];
 
-  const rows = [
-    {
-      id: 1,
-      lastName: "Snow",
-      firstName: "Jon",
-      age: 35,
-      title: "Project Manager",
-      department: "Management",
-      startDate: "2022/09/12",
-      employeeStatus: "Active",
-    },
-    {
-      id: 2,
-      lastName: "Lannister",
-      firstName: "Cersei",
-      age: 42,
-      title: "Techinician Manager",
-      department: "IT",
-      startDate: "2022/09/12",
-      employeeStatus: "Active",
-    },
-    {
-      id: 3,
-      lastName: "Lannister",
-      firstName: "Jaime",
-      age: 45,
-      title: "Site Manager",
-      department: "Developer",
-      startDate: "2022/09/12",
-      employeeStatus: "Active",
-    },
-    {
-      id: 4,
-      lastName: "Stark",
-      firstName: "Arya",
-      age: 16,
-      title: "Capita",
-      department: "Developer",
-      startDate: "2022/09/12",
-      employeeStatus: "Active",
-    },
-    {
-      id: 5,
-      lastName: "Targaryen",
-      firstName: "Daenerys",
-      age: null,
-      title: "Project Manager",
-      department: "Management",
-      startDate: "2022/09/12",
-      employeeStatus: "Active",
-    },
-    {
-      id: 6,
-      lastName: "Melisandre",
-      firstName: null,
-      age: 150,
-      title: "Project Manager",
-      department: "Management",
-      startDate: "2022/09/12",
-      employeeStatus: "Active",
-    },
-    {
-      id: 7,
-      lastName: "Clifford",
-      firstName: "Ferrara",
-      age: 44,
-      title: "Employee",
-      department: "Management",
-      startDate: "2022/09/12",
-      employeeStatus: "Active",
-    },
-    {
-      id: 8,
-      lastName: "Frances",
-      firstName: "Rossini",
-      age: 36,
-      title: "Project Manager",
-      department: "Management",
-      startDate: "2022/09/12",
-      employeeStatus: "Active",
-    },
-    {
-      id: 9,
-      lastName: "Roxie",
-      firstName: "Harvey",
-      age: 65,
-      title: "Project Manager",
-      department: "Management",
-      startDate: "2022/09/12",
-      employeeStatus: "Active",
-    },
-  ];
-
   return (
     <Page title="HR Core - Associates">
       <Box>
@@ -207,7 +131,11 @@ const Associates = () => {
               All Employees
             </Typography>
 
-            <Button variant="contained" component={Link} to={"/dashboard/associates/new/employee"}>
+            <Button
+              variant="contained"
+              component={Link}
+              to={"/dashboard/associates/new/employee"}
+            >
               New Employee
             </Button>
           </Stack>
@@ -217,17 +145,21 @@ const Associates = () => {
               padding: "2rem",
             }}
           >
-            <DataTable
-              rows={rows}
-              columns={columns}
-              initialState={{
-                pagination: {
-                  paginationModel: { page: 0, pageSize: 5 },
-                },
-              }}
-              pageSizeOptions={[5, 10]}
-              checkboxSelection
-            />
+            {listEmployeesLoading ? (
+              <CircularProgress />
+            ) : (
+              <DataTable
+                rows={listEmployeesData || []}
+                columns={columns}
+                initialState={{
+                  pagination: {
+                    paginationModel: { page: 0, pageSize: 5 },
+                  },
+                }}
+                pageSizeOptions={[5, 10]}
+                checkboxSelection
+              />
+            )}
           </Card>
           {/* )} */}
         </Container>
