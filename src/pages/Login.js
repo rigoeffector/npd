@@ -191,7 +191,7 @@ const Login = (props, { className, ...rest }) => {
                   <Button
                     variant="contained"
                     color="primary"
-                    type='submit'
+                    type="submit"
                     disabled={isSubmitting || loading}
                   >
                     {"Sign In"}
@@ -200,16 +200,17 @@ const Login = (props, { className, ...rest }) => {
               </form>
             )}
           </Formik>
-          {!success && !loading && message && (
-            <Alert
-              variant="filled"
-              severity="error"
-              message={message}
-              handleClose={handleClose}
-            />
-          )}
+          
         </React.Fragment>
       </Box>
+      <Box sx={{marginTop:'20px'}}>
+      {!success && !loading && message && (
+            <Alert variant="filled" severity="error">
+              {message}
+            </Alert>
+          )}
+      </Box>
+      
     </Box>
   );
 };
