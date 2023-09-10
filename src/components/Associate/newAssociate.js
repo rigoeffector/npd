@@ -803,16 +803,16 @@ const StepThree = (props) => {
             </Button>
           </Grid>
         </Grid>
-        <Box sx={{ marginTop: "20px" }}>
+        <Box sx={{ marginTop: "20px", width: '100%' }}>
           {createEmployee &&
             !createEmployee?.success &&
             createEmployee.message && (
-              <Alert severity="error">{createEmployee?.message}</Alert>
+              <Alert variant="filled" severity="error">{createEmployee?.message}</Alert>
             )}
           {createEmployee &&
             createEmployee?.success &&
             createEmployee?.message && (
-              <Alert severity="success">{createEmployee?.message}</Alert>
+              <Alert variant="filled" severity="success">{createEmployee?.message}</Alert>
             )}
         </Box>
       </Grid>

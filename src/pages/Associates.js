@@ -26,16 +26,23 @@ import {
   TablePagination,
   Box,
   CircularProgress,
+  Alert,
 } from "@mui/material";
 import {
   associatesContext,
   resultsPerPageContext,
 } from "../utils/context/contexts";
 import { useDispatch, useSelector } from "react-redux";
-import { GET_EMPLOYEES_LIST_REQUEST } from "../reducers/employees/constants";
+import {
+  DELETE_EMPLOYEE_REQUEST,
+  GET_EMPLOYEES_LIST_REQUEST,
+} from "../reducers/employees/constants";
+import AlertConfirmDialog from "../components/modal/confitm";
 
 const Associates = () => {
   const dispatch = useDispatch();
+  const [showDelete, setShowDelete] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
 
   const {
     listEmployees: {
@@ -43,13 +50,13 @@ const Associates = () => {
       success,
       loading: listEmployeesLoading,
     },
+    deleteEmployee,
   } = useSelector((state) => state);
   useEffect(() => {
     dispatch({
       type: GET_EMPLOYEES_LIST_REQUEST,
     });
   }, [dispatch]);
-
   const columns = [
     // { field: "id", headerName: "ID", width: 70 },
     { field: "fname", headerName: "First name", width: 130 },
@@ -94,7 +101,7 @@ const Associates = () => {
             }}
             // onClick={() => handleAssignAsset(params)}
           >
-            Edit
+            View more
           </Button>
         </div>,
         <div className="actions_button">
@@ -108,7 +115,7 @@ const Associates = () => {
               fontWeight: "600",
               lineHeight: "normal",
             }}
-            // onClick={() => handleAssignAsset(params)}
+            onClick={() => handleDelete(params)}
           >
             Delete
           </Button>
@@ -116,7 +123,31 @@ const Associates = () => {
       ],
     },
   ];
+  const handleDelete = (data) => {
+    debugger;
+    setShowDelete(true);
+    setDeleteId(data?.row?.id);
+  };
 
+  const handleClose = () => {
+    setShowDelete(false);
+  };
+
+  const handleConfirm = () => {
+    const payload = {
+      id: deleteId,
+    };
+    dispatch({
+      type: DELETE_EMPLOYEE_REQUEST,
+      payload,
+    });
+  };
+
+  useEffect(() => {
+    if (deleteEmployee?.success) {
+      handleClose();
+    }
+  }, [deleteEmployee?.success]);
   return (
     <Page title="HR Core - Associates">
       <Box>
@@ -139,12 +170,47 @@ const Associates = () => {
               New Employee
             </Button>
           </Stack>
-          {/* {associatesData && ( */}
+          <AlertConfirmDialog
+            show={showDelete}
+            title={"Delete employee"}
+            handleClose={handleClose}
+            action={
+              <Box>
+                <Button onClick={handleClose}>No</Button>
+                <Button onClick={handleConfirm} autoFocus variant="contained">
+                  {deleteEmployee && deleteEmployee?.loading ? (
+                    <CircularProgress />
+                  ) : (
+                    "  Yes, Delete"
+                  )}
+                </Button>
+              </Box>
+            }
+          >
+            <Typography>Are you sure you want to delete this info</Typography>
+            <Box sx={{ marginTop: "20px", width: "100%" }}>
+              {deleteEmployee &&
+                !deleteEmployee?.success &&
+                deleteEmployee.message && (
+                  <Alert variant="filled" severity="error">
+                    {deleteEmployee?.message}
+                  </Alert>
+                )}
+            </Box>
+          </AlertConfirmDialog>
+
           <Card
             sx={{
               padding: "2rem",
             }}
           >
+            {deleteEmployee &&
+              deleteEmployee?.success &&
+              deleteEmployee?.message && (
+                <Alert variant="filled" severity="success">
+                  {deleteEmployee?.message}
+                </Alert>
+              )}
             {listEmployeesLoading ? (
               <CircularProgress />
             ) : (

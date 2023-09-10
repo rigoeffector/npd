@@ -26,6 +26,8 @@ export function* deleteEmployeeRequestSaga(action) {
             yield* listEmployeesRequestSaga({
                 type: GET_EMPLOYEES_LIST_REQUEST,
             });
+            yield delay(2000);
+            yield put({type: DELETE_EMPLOYEE_RESET});
         } else {
             yield put(error(DELETE_EMPLOYEE_ERROR, response));
             yield delay(2000);
