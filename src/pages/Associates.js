@@ -1,49 +1,37 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-import UserListHead from "../components/Associates/UserListHead";
-import UserListToolbar from "../components/Associates/UserListToolbar";
-import Label from "../components/Label";
 import { Link } from "react-router-dom";
-import Scrollbar from "../components/Scrollbar";
 import * as moment from "moment";
 import Page from "../components/Page";
 import { DataTable } from "../components/table";
 // import { CSVLink, CSVDownload } from "react-csv";
-import { sentenceCase } from "change-case";
 import {
   Card,
-  Table,
   Stack,
-  Avatar,
   Button,
-  TableRow,
-  TableBody,
-  TableCell,
   Container,
   Typography,
-  TableContainer,
-  TablePagination,
   Box,
   CircularProgress,
   Alert,
+  fabClasses,
+  Grid,
 } from "@mui/material";
-import {
-  associatesContext,
-  resultsPerPageContext,
-} from "../utils/context/contexts";
 import { useDispatch, useSelector } from "react-redux";
 import {
   DELETE_EMPLOYEE_REQUEST,
   GET_EMPLOYEES_LIST_REQUEST,
 } from "../reducers/employees/constants";
 import AlertConfirmDialog from "../components/modal/confitm";
+import NPDModal from "../components/modal";
 
 const Associates = () => {
   const dispatch = useDispatch();
   const [showDelete, setShowDelete] = useState(false);
   const [deleteId, setDeleteId] = useState("");
-
+  const [showMore, setShowMore]= useState(false);
+  const [moreInfo, setMoreInfo]= useState({});
   const {
     listEmployees: {
       data: listEmployeesData,
@@ -99,7 +87,7 @@ const Associates = () => {
               fontWeight: "600",
               lineHeight: "normal",
             }}
-            // onClick={() => handleAssignAsset(params)}
+            onClick={() => handleViewMore(params)}
           >
             View more
           </Button>
@@ -131,7 +119,16 @@ const Associates = () => {
 
   const handleClose = () => {
     setShowDelete(false);
+    setShowMore(false);
+    setMoreInfo({});
+
   };
+
+  const handleViewMore =(data)=>{
+    const {row}= data;
+    setShowMore(true);
+    setMoreInfo(row);
+  }
 
   const handleConfirm = () => {
     const payload = {
@@ -143,11 +140,14 @@ const Associates = () => {
     });
   };
 
+  
   useEffect(() => {
     if (deleteEmployee?.success) {
       handleClose();
     }
   }, [deleteEmployee?.success]);
+
+  
   return (
     <Page title="HR Core - Associates">
       <Box>
@@ -229,6 +229,272 @@ const Associates = () => {
           </Card>
           {/* )} */}
         </Container>
+        <NPDModal show={showMore} handleClose={handleClose} title={'More Information'}>
+        <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                borderBottom: '1px solid #ddd',
+                                padding: '5px 0px'
+                            }}
+                        >
+                            <Typography>Employee Name</Typography>
+                            <Typography
+                                sx={{
+                                    fontWeight: '700',
+                                    color: '#494577'
+                                }}
+                            >
+                                {moreInfo?.fname} {moreInfo?.lname}
+                            </Typography>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                borderBottom: '1px solid #ddd',
+                                padding: '5px 0px'
+                            }}
+                        >
+                            <Typography>ID Number</Typography>
+                            <Typography
+                                sx={{
+                                    fontWeight: '700',
+                                    color: '#494577'
+                                }}
+                            >
+                                {moreInfo?.idnumber}
+                            </Typography>
+                        </Box>
+                    </Grid>
+
+                   
+                    <Grid item xs={12}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                borderBottom: '1px solid #ddd',
+                                padding: '5px 0px'
+                            }}
+                        >
+                            <Typography>Phone Number</Typography>
+                            <Typography
+                                sx={{
+                                    fontWeight: '700',
+                                    color: '#494577'
+                                }}
+                            >
+                                {moreInfo.phonenumber}
+                            </Typography>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                borderBottom: '1px solid #ddd',
+                                padding: '5px 0px'
+                            }}
+                        >
+                            <Typography>Age</Typography>
+                            <Typography
+                                sx={{
+                                    fontWeight: '700',
+                                    color: '#494577'
+                                }}
+                            >
+                                {moreInfo?.age}
+                            </Typography>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                borderBottom: '1px solid #ddd',
+                                padding: '5px 0px'
+                            }}
+                        >
+                            <Typography>Salary (RWF)</Typography>
+                            <Typography
+                                sx={{
+                                    fontWeight: '700',
+                                    color: '#494577'
+                                }}
+                            >
+                                {moreInfo?.salary}
+                            </Typography>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                borderBottom: '1px solid #ddd',
+                                padding: '5px 0px'
+                            }}
+                        >
+                            <Typography>Gender</Typography>
+                            <Typography
+                                sx={{
+                                    fontWeight: '700',
+                                    color: '#494577'
+                                }}
+                            >
+                                {moreInfo?.gender}
+                            </Typography>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                borderBottom: '1px solid #ddd',
+                                padding: '5px 0px'
+                            }}
+                        >
+                            <Typography>Role</Typography>
+                            <Typography
+                                sx={{
+                                    fontWeight: '700',
+                                    color: '#494577'
+                                }}
+                            >
+                                {moreInfo?.role}
+                            </Typography>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                borderBottom: '1px solid #ddd',
+                                padding: '5px 0px'
+                            }}
+                        >
+                            <Typography>Emergency Names</Typography>
+                            <Typography
+                                sx={{
+                                    fontWeight: '700',
+                                    color: '#494577'
+                                }}
+                            >
+                                {moreInfo?.emfname} {moreInfo?.emlname}
+                            </Typography>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                borderBottom: '1px solid #ddd',
+                                padding: '5px 0px'
+                            }}
+                        >
+                            <Typography>Emergency Phone</Typography>
+                            <Typography
+                                sx={{
+                                    fontWeight: '700',
+                                    color: '#494577'
+                                }}
+                            >
+                                {moreInfo?.emphone} 
+                            </Typography>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                borderBottom: '1px solid #ddd',
+                                padding: '5px 0px'
+                            }}
+                        >
+                            <Typography>Emergency Relation</Typography>
+                            <Typography
+                                sx={{
+                                    fontWeight: '700',
+                                    color: '#494577'
+                                }}
+                            >
+                                {moreInfo?.emrelation} 
+                            </Typography>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                borderBottom: '1px solid #ddd',
+                                padding: '5px 0px'
+                            }}
+                        >
+                            <Typography>Site Name</Typography>
+                            <Typography
+                                sx={{
+                                    fontWeight: '700',
+                                    color: '#494577'
+                                }}
+                            >
+                                {moreInfo?.site_name} 
+                            </Typography>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                borderBottom: '1px solid #ddd',
+                                padding: '5px 0px'
+                            }}
+                        >
+                            <Typography>Site Location</Typography>
+                            <Typography
+                                sx={{
+                                    fontWeight: '700',
+                                    color: '#494577'
+                                }}
+                            >
+                                {moreInfo?.site_location} 
+                            </Typography>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+
+                                padding: '5px 0px'
+                            }}
+                        >
+                            <Typography>Date of Birth</Typography>
+                            <Typography
+                                sx={{
+                                    fontWeight: '700',
+                                    color: '#494577'
+                                }}
+                            >
+                                {moment(moreInfo?.dob).format('YYYY/MM/DD')}
+                            </Typography>
+                        </Box>
+                    </Grid>
+                </Grid>
+        </NPDModal>
       </Box>
     </Page>
   );
