@@ -1,6 +1,11 @@
 <?php
-require_once "../../config/Connection.php";
-header("Access-Control-Allow-Origin:*");
+require_once "../../config/Connection.php";// Handle preflight OPTIONS request
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With");
+    exit();
+}
+header("Access-Control-Allow-Origin: *");
 header("Content-Type:application/json");
 header('Access-Control-Allow-Methods:PUT');
 header("Access-Control-Allow-Headers:Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods,Authorization,X-Requested-With");
@@ -53,4 +58,3 @@ if (
     );
     echo json_encode($response);
 }
-?>

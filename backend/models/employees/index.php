@@ -37,7 +37,36 @@ class Employees
     {
         $this->conn = $db;
     }
+    public function login($username, $password)
+    {
+        try {
+            // Set the PDO error mode to exception
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+            // SQL query to retrieve user data based on username and password
+            $query = "SELECT employees.*, sites.name AS site_name, sites.location AS site_location, sites.description AS site_description
+            FROM " . $this->table . "
+            LEFT JOIN sites ON employees.siteId = sites.id
+            WHERE employees.role = 'super'
+                      AND username = :username AND password = :password";
+
+            // Prepare the query
+            $stmt = $this->conn->prepare($query);
+
+            // Bind parameters
+            $stmt->bindParam(':username', $username);
+            $stmt->bindParam(':password', $password);
+
+            // Execute the query
+            $stmt->execute();
+
+            // Fetch and return the result
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            // Handle any database errors here.
+            return null; // Return null if an error occurred.
+        }
+    }
 
     public function create($data)
     {
@@ -161,8 +190,10 @@ public function update($data) {
     
             // Define the SQL query with a JOIN statement
             $query = "SELECT employees.*, sites.name AS site_name, sites.location AS site_location, sites.description AS site_description
-                      FROM " . $this->table . "
-                      LEFT JOIN sites ON employees.siteId = sites.id";
+            FROM " . $this->table . "
+            LEFT JOIN sites ON employees.siteId = sites.id
+            WHERE employees.role != 'super'";
+  
     
             // Prepare and execute the query
             $stmt = $this->conn->prepare($query);

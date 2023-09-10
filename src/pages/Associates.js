@@ -112,7 +112,6 @@ const Associates = () => {
     },
   ];
   const handleDelete = (data) => {
-    debugger;
     setShowDelete(true);
     setDeleteId(data?.row?.id);
   };

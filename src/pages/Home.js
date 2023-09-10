@@ -22,19 +22,24 @@ import TotalEmployedHistory from "../components/Graphs/TotalEmployedHistory";
 import AverageSalary from "../components/Graphs/AverageSalary";
 import Page from "../components/Page";
 import CasualWorkers from "../components/Graphs/CausalWorkers";
-// import { useAuth } from "../utils/context/AuthContext";
-
+import DoughnutChart from "../components/Graphs/officeGraph";
+import { useDispatch, useSelector } from "react-redux";
+import { GET_PROJECTS_LIST_REQUEST } from "../reducers/project/constants";
 
 const Home = () => {
-  // const { isDemo } = useAuth();
-
+  const dispatch = useDispatch();
+  const {
+    listProjects: { data: projects, loading },
+  } = useSelector((state) => state);
+  useEffect(() => {
+    dispatch({
+      type: GET_PROJECTS_LIST_REQUEST,
+    });
+  }, [dispatch]);
   const [isOpen, setOpen] = useState(true);
   const handleClose = () => {
     setOpen(false);
   };
-  // useEffect(() => {
-  //   setOpen(isDemo);
-  // }, []);
 
   const style = {
     position: "absolute",
@@ -51,71 +56,34 @@ const Home = () => {
   };
   return (
     <Page title="HR Core - Dashboard">
-      {/* <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={!isOpen}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={!isOpen}>
-          {/* <Box sx={style}> */}
-          {/* <Card sx={style} onClick={handleClose}>
-            <CardMedia component="img" height="60%" image="/images/demo.jpg" />
-            <CardContent>
-              <Container>
-                <Typography variant="h3" sx={{ pb: { xs: 1, md: 2, lg: 2 } }}>
-                  Welcome to NPD Management!
-                </Typography>
-                Please manage your employees in ease way and efficient.
-                <br /> we gonna help you to proceed.
-              </Container>
-            </CardContent>
-          </Card> */}
-          {/* </Box> */}
-        {/* </Fade> */}
-      {/* </Modal> */} 
       <Container maxWidth="xl">
         <Grid container direction="row" spacing={3} sx={{ paddingTop: 1 }}>
           <Grid item xs={12} sm={7} md={7}>
             <WelcomeCard />
           </Grid>
           <Grid item xs={12} sm={5} md={5}>
-            <TotalEmployedHistory />
+            {projects && !loading && (
+              <DoughnutChart
+                completed={
+                  projects &&
+                  projects.length &&
+                  projects &&
+                  projects.filter((project) => project.status === "completed")
+                    .length
+                }
+                running={
+                  projects &&
+                  projects.length &&
+                  projects &&
+                  projects.filter((project) => project.status === "running")
+                    .length
+                }
+              />
+            )}
           </Grid>
 
-          {/* <Grid item xs={12} sm={6} md={2}>
-            <TotalEmployed />
-          </Grid> */}
-          {/* <Grid item xs={12} md={6} lg={3}></Grid> */}
-          <Grid item xs={12} md={6} lg={3}>
-            <OfficeGraph />
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <DepartmentGraph />
-          </Grid>
-          {/* <Grid item xs={12} md={6} lg={2}>
-            <MaleVSFemaleGraph />
-          </Grid> */}
-
-          {/* <Grid item xs={12} md={6} lg={4}>
-            <StarterTimeline />
-          </Grid> */}
-          <Grid item xs={12} sm={6} md={2}>
-            <AverageSalary />
-          </Grid>
-          {/* <Grid item xs={12} md={6} lg={4}>
-            <BirthdayTimeline />
-          </Grid> */}
-          <Grid item xs={12} sm={5} md={2}>
-            <TotalEmployed />
-          </Grid>
-          <Grid item xs={12} sm={5} md={2}>
-            <CasualWorkers />
+          <Grid item xs={12} sm={12} md={12}>
+            <Typography>Pending Reports</Typography>
           </Grid>
         </Grid>
       </Container>

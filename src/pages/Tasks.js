@@ -2,175 +2,127 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import Page from "../components/Page";
-import AddTask from "../components/Tasks/AddTask";
-import { styled, alpha } from "@mui/material/styles";
-import { useEffect, useState, useContext } from "react";
-import PaidIcon from "@mui/icons-material/Paid";
-import { Formik, Form, ErrorMessage, Field } from "formik";
-import { TextField, Select, FormControl, InputLabel } from "@mui/material";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import { styled } from "@mui/material/styles";
+import { useEffect, useState } from "react";
+import {
+  TextField,
+  FormControl,
+  CircularProgress,
+  Alert,
+  Skeleton,
+} from "@mui/material";
 import {
   Button,
   Grid,
   Box,
   Typography,
   Stack,
-  Menu,
   MenuItem,
-  Backdrop,
-  Modal,
-  Fade,
   Card,
 } from "@mui/material";
-import { tasksToApproveContext } from "../utils/context/contexts";
-import { useAuth } from "../utils/context/AuthContext";
-// import { getDoc, doc } from "firebase/firestore";
-// import { db } from "../utils/firebase";
-import TaskCard from "../components/Tasks/TaskCard";
+import * as Yup from "yup";
+
+import { useFormik } from "formik";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DataTable from "../components/table";
 import NPDModal from "../components/modal";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DatePicker from "@mui/lab/DatePicker";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  CREATE_PROJECT_REQUEST,
+  DELETE_PROJECT_REQUEST,
+  GET_PROJECTS_LIST_REQUEST,
+} from "../reducers/project/constants";
+import AlertConfirmDialog from "../components/modal/confitm";
+import { GET_EMPLOYEES_LIST_BYROLE_REQUEST } from "../reducers/employees/constants";
+import { GET_SITES_LIST_REQUEST } from "../reducers/sites/constants";
+import moment from "moment";
 
 const MyTasks = () => {
   // const { userData } = useAuth();
   const [open, setOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const openMenu = Boolean(anchorEl);
-  const [PopupOpen, setPopupOpen] = useState(false);
-  const [taskType, setTaskType] = useState();
-  // const { associates } = useContext(associatesContext);
-  const [userDetails, setUserDetails] = useState();
-  const [myManager, setMyManager] = useState();
-  // const { tasks, tasksToApprove } = useContext(tasksToApproveContext);
+  const [showModalAddNew, setShowModalAddNew] = React.useState(false);
+  const [showModalEditNew, setShowModalEditNew] = React.useState(false);
+  const [moreInfo, setMoreInfo] = useState({});
+  const [showMore, setShowMore] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
+  const [isEdit, setIsEdit] = useState(false);
+  const dispatch = useDispatch();
+
+  const {
+    listProjects: { data, success, loading },
+    deleteProject,
+    listSites,
+    listEmployeeByRole,
+    createProject,
+  } = useSelector((state) => state);
 
   useEffect(() => {
-    // if (!userData) return;
-    // else {
-    //   const AssociatesCollectionRef = doc(db, "Associates", userData.id);
-    //   getDoc(AssociatesCollectionRef).then((result) => {
-    //     setUserDetails(result.data());
-    //     const ManagerCollectionRef = doc(
-    //       db,
-    //       "Associates",
-    //       result.data().Manager
-    //     );
-    //     getDoc(ManagerCollectionRef).then((results) =>
-    //       setMyManager(results.data())
-    //     );
-    //   });
-    // }
-  }, []);
+    dispatch({
+      type: GET_PROJECTS_LIST_REQUEST,
+    });
+  }, [dispatch]);
+  useEffect(() => {
+    dispatch({
+      type: GET_SITES_LIST_REQUEST,
+    });
+  }, [dispatch]);
+  useEffect(() => {
+    dispatch({
+      type: GET_EMPLOYEES_LIST_BYROLE_REQUEST,
+      payload: {
+        role: "projectmanager",
+      },
+    });
+  }, [dispatch]);
 
-  const filterObject = (obj, filter, filterValue) =>
-    Object.keys(obj).reduce(
-      (acc, val) =>
-        obj[val][filter] === filterValue
-          ? {
-              ...acc,
-              [val]: obj[val],
-            }
-          : acc,
-      {}
-    );
-  // const pendingTasks = filterObject(tasks, "status", "pending");
-  // const approvedTasks = filterObject(tasks, "status", "approved");
-  // const rejectedTasks = filterObject(tasks, "status", "rejected");
+  useEffect(() => {
+    if (createProject.success) handleClose();
+  }, [createProject.success]);
 
-  // const completeTasks = { ...approvedTasks, ...rejectedTasks };
-  const [showModalAddNew, setShowModalAddNew] = React.useState(false);
   const handleClickAction = (event) => {
     setShowModalAddNew(true);
   };
   const handleClose = () => {
     setShowModalAddNew(false);
-  };
-  const handleCloseAction = () => {
-    setAnchorEl(null);
-    setTaskType(null);
-    setPopupOpen(false);
-  };
-  const handleClickOpen = (type) => {
-    setTaskType(type);
-    setPopupOpen(true);
-    console.log(PopupOpen);
-    // handleCloseAction();
-    setAnchorEl(null);
-    setOpen(true);
+    setShowMore(false);
+    setShowModalEditNew(false);
+    setShowDelete(false);
   };
 
-  // const onSubmit = (data) => uploadFile(data);
-
-  const StyledMenu = styled((props) => (
-    <Menu
-      elevation={0}
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "right",
-      }}
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      {...props}
-    />
-  ))(({ theme }) => ({
-    "& .MuiPaper-root": {
-      borderRadius: 6,
-      marginTop: theme.spacing(1),
-      minWidth: 180,
-      color:
-        theme.palette.mode === "light"
-          ? "rgb(55, 65, 81)"
-          : theme.palette.grey[300],
-      boxShadow:
-        "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
-      "& .MuiMenu-list": {
-        padding: "4px 0",
-      },
-      "& .MuiMenuItem-root": {
-        "& .MuiSvgIcon-root": {
-          fontSize: 18,
-          color: theme.palette.text.secondary,
-          marginRight: theme.spacing(1.5),
-        },
-        "&:active": {
-          backgroundColor: alpha(
-            theme.palette.primary.main,
-            theme.palette.action.selectedOpacity
-          ),
-        },
-      },
-    },
-  }));
-
-  const style = {
-    position: "absolute",
-    top: { xs: "50%", md: "30%" },
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: { md: "35vw", xs: "95vw" },
-    height: { md: "40vh", xs: "100vh" },
-    // bgcolor: "background.paper",
-    // border: "2px solid #000",
-    // boxShadow: 20,
-    p: 4,
+  const handleViewMore = (data) => {
+    const { row } = data;
+    setMoreInfo(row);
+    setShowMore(true);
   };
+  const handleDelete = (data) => {
+    setShowDelete(true);
+    setDeleteId(data?.row?.id);
+  };
+
+  const handleConfirm = () => {
+    const payload = {
+      id: deleteId,
+    };
+    dispatch({
+      type: DELETE_PROJECT_REQUEST,
+      payload,
+    });
+  };
+
+  useEffect(() => {
+    if (deleteProject?.success) {
+      handleClose();
+    }
+  }, [deleteProject?.success]);
   const columns = [
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "name", headerName: "Project Name", width: 130 },
-    { field: "manager", headerName: "Project Manager", width: 160 },
+    { field: "name", headerName: "Project Name", width: 300 },
+    { field: "startdate", headerName: "Start Date", width: 160 },
+    { field: "enddate", headerName: "End Date", width: 160 },
     {
-      field: "site",
-      headerName: "Project Site",
-      width: 190,
-    },
-    {
-      field: "timeline",
-      headerName: "Time Line",
-      width: 230,
+      field: "status",
+      headerName: "Status",
+      width: 150,
     },
 
     {
@@ -179,22 +131,22 @@ const MyTasks = () => {
       type: "actions",
       width: 300,
       getActions: (params) => [
-        <div className="actions_button">
-          <Button
-            style={{
-              borderRadius: "8px",
-              border: "1px solid  #DCDFE5",
-              background: "#F9FAFB",
-              color: "#1090CB",
-              fontSize: "14px",
-              fontWeight: "600",
-              lineHeight: "normal",
-            }}
-            // onClick={() => handleAssignAsset(params)}
-          >
-            Edit
-          </Button>
-        </div>,
+        // <div className="actions_button">
+        //   <Button
+        //     style={{
+        //       borderRadius: "8px",
+        //       border: "1px solid  #DCDFE5",
+        //       background: "#F9FAFB",
+        //       color: "#1090CB",
+        //       fontSize: "14px",
+        //       fontWeight: "600",
+        //       lineHeight: "normal",
+        //     }}
+        //     onClick={() => handleEdit(params)}
+        //   >
+        //     Edit
+        //   </Button>
+        // </div>,
         <div className="actions_button">
           <Button
             style={{
@@ -206,7 +158,7 @@ const MyTasks = () => {
               fontWeight: "600",
               lineHeight: "normal",
             }}
-            // onClick={() => handleAssignAsset(params)}
+            onClick={() => handleDelete(params)}
           >
             Delete
           </Button>
@@ -222,7 +174,7 @@ const MyTasks = () => {
               fontWeight: "600",
               lineHeight: "normal",
             }}
-            // onClick={() => handleAssignAsset(params)}
+            onClick={() => handleViewMore(params)}
           >
             More
           </Button>
@@ -230,70 +182,48 @@ const MyTasks = () => {
       ],
     },
   ];
+  const StyledDateTextField = styled(TextField)({
+    width: "100%",
+    height: "50px", // Set the width to 100%
+    '& input[type="date"]': {
+      padding: "10px",
+      height: "30px", // You can adjust the padding as needed
+    },
+  });
 
-  const rows = [
-    {
-      id: 1,
-      name: "Snow",
-      manager: "Jon",
-      site: "Kabeza",
-      timeline: "2023/11/03 -  2025/11/03",
+  const validationSchema = Yup.object({
+    name: Yup.string().required("Name is required").nullable(),
+    managerId: Yup.string().required("Manager is required").nullable(),
+    siteId: Yup.string().required("Site is required").nullable(),
+    startdate: Yup.date().required("Start Date is required").nullable(),
+    enddate: Yup.date().required("End Date is required").nullable(),
+    description: Yup.string().required("Description is required").nullable(),
+  });
+  const formik = useFormik({
+    initialValues: {
+      name: isEdit ? moreInfo.name : "",
+      managerId: isEdit ? moreInfo?.manager.id : "",
+      siteId: isEdit ? moreInfo.site.id : "",
+      startdate: isEdit ? moreInfo.startdate : "",
+      enddate: isEdit ? moreInfo.enddate : "",
+      description: isEdit ? moreInfo.description : "",
     },
-    {
-      id: 2,
-      name: "Lannister",
-      manager: "Cersei",
-      site: "Kabeza",
-      timeline: "2023/11/03 -  2025/11/03",
+    validationSchema: validationSchema,
+    onSubmit: async (values, { resetForm }) => {
+      const payload = {
+        name: values.name,
+        managerId: values.managerId,
+        siteId: values.siteId,
+        startdate: moment(values.startdate).format("YYYY/MM/DD"),
+        enddate: moment(values.enddate).format("YYYY/MM/DD"),
+        description: values.description,
+        status: "running",
+      };
+
+      dispatch({ type: CREATE_PROJECT_REQUEST, payload });
+      resetForm();
     },
-    {
-      id: 3,
-      name: "Lannister",
-      manager: "Jaime",
-      site: "Kabeza",
-      timeline: "2023/11/03 -  2025/11/03",
-    },
-    {
-      id: 4,
-      name: "Stark",
-      manager: "Arya",
-      site: "Kabeza",
-      timeline: "2023/11/03 -  2025/11/03",
-    },
-    {
-      id: 5,
-      name: "Targaryen",
-      manager: "Daenerys",
-      site: "Kabeza",
-      timeline: "2023/11/03 -  2025/11/03",
-    },
-    {
-      id: 6,
-      name: "Melisandre",
-      manager: null,
-      site: "Kabeza",
-      timeline: "2023/11/03 -  2025/11/03",
-    },
-    {
-      id: 7,
-      name: "Clifford",
-      manager: "Ferrara",
-    },
-    {
-      id: 8,
-      name: "Frances",
-      manager: "Rossini",
-      site: "Kabeza",
-      timeline: "2023/11/03 -  2025/11/03",
-    },
-    {
-      id: 9,
-      name: "Roxie",
-      manager: "Harvey",
-      site: "Kabeza",
-      timeline: "2023/11/03 -  2025/11/03",
-    },
-  ];
+  });
   return (
     <Page title="HR Core - Tasks">
       <NPDModal
@@ -301,145 +231,236 @@ const MyTasks = () => {
         show={showModalAddNew}
         handleClose={handleClose}
       >
-        <Formik
-          // validationSchema={stepOneValidationSchema}
-          // onSubmit={handleSubmit}
-          initialValues={{
-            Email: "",
-            Password: "",
-          }}
-        >
-          {({ values, validateOnMount, resetForm }) => (
-            <Form>
-              <Grid container>
-                <Box sx={{ flexGrow: 1 }}>
-                  <Grid container spacing={2} sx={{ marginBottom: "15px" }}>
-                    <Grid item xs={6}>
-                      <Field
-                        as={TextField}
-                        label="Name"
-                        type="text"
-                        name="name"
-                        fullWidth
-                        size="small"
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <FormControl fullWidth>
-                        <InputLabel>Manager</InputLabel>
-                        <Field
-                          as={Select}
-                          name="manager"
-                          required
-                          size="small"
-                          label="Manager"
-                          fullWidth
-                        >
-                          <MenuItem value={"1"}>Annet</MenuItem>
-                          <MenuItem value={"1"}>Sandrine</MenuItem>
-                          <MenuItem value={"1"}>Jule</MenuItem>
-                        </Field>
-                      </FormControl>
-                    </Grid>
+        <form onSubmit={formik.handleSubmit}>
+          <Grid container>
+            <Box sx={{ flexGrow: 1 }}>
+              <Grid container spacing={2} sx={{ marginBottom: "15px" }}>
+                <Grid item sx={6} sm={6} xl={6}>
+                  <TextField
+                    fullWidth
+                    name="name"
+                    InputLabelProps={{
+                      shrink: true,
+                      // Add red color to the label
+                    }}
+                    label={
+                      <div>
+                        Project Name{" "}
+                        <span style={{ color: "red", fontSize: "20px" }}>
+                          *
+                        </span>
+                      </div>
+                    }
+                    value={formik.name}
+                    onChange={formik.handleChange}
+                    error={formik.touched.name && Boolean(formik.errors.name)}
+                    helperText={formik.touched.name && formik.errors.name}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  {listEmployeeByRole && listEmployeeByRole.loading ? (
+                    <Skeleton />
+                  ) : (
+                    <FormControl fullWidth>
+                      <TextField
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        InputLabelProps={{
+                          shrink: true,
+                          // Add red color to the label
+                        }}
+                        label={
+                          <div>
+                            Project Manager{" "}
+                            <span style={{ color: "red", fontSize: "20px" }}>
+                              *
+                            </span>
+                          </div>
+                        }
+                        name="managerId"
+                        select
+                        value={formik.values.managerId}
+                        onChange={formik.handleChange}
+                        error={
+                          formik.touched.managerId &&
+                          Boolean(formik.errors.managerId)
+                        }
+                        helperText={
+                          formik.touched.managerId && formik.errors.managerId
+                        }
+                      >
+                        {listEmployeeByRole &&
+                        listEmployeeByRole.data?.length > 0 ? (
+                          listEmployeeByRole &&
+                          listEmployeeByRole.data.map((manager, i) => (
+                            <MenuItem key={i} value={manager.id}>
+                              {manager.fname} {manager.lname}
+                            </MenuItem>
+                          ))
+                        ) : (
+                          <MenuItem value="Select Manager">Select</MenuItem>
+                        )}
+                      </TextField>
+                    </FormControl>
+                  )}
+                </Grid>
 
-                    <Grid item xs={12}>
-                      <FormControl fullWidth>
-                        <InputLabel>Site</InputLabel>
-                        <Field
-                          as={Select}
-                          name="site"
-                          required
-                          size="small"
-                          label="Site"
-                          fullWidth
-                        >
-                          <MenuItem value={"1"}>Kabeza</MenuItem>
-                          <MenuItem value={"1"}>Konombe</MenuItem>
-                          <MenuItem value={"1"}>Nyarutarama</MenuItem>
-                        </Field>
-                      </FormControl>
-                    </Grid>
-                    <Grid item sx={6} sm={6} xl={6}>
-                      <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <Field
-                          component={DatePicker}
-                          label="Start Date"
-                          size="small"
-                          name="startDate"
-                          value={values.StartDate}
-                          inputFormat="dd-MM-yyyy"
-                          onChange={(StartDate) => {
-                            // setFieldValue(
-                            //   "StartDate",
-                            //   new Date(StartDate)
-                            //   // Timestamp.fromDate(new Date(StartDate))
-                            // );
-                          }}
-                          renderInput={(params) => (
-                            <TextField
-                              size="small"
-                              {...params}
-                              sx={{
-                                "min-width": "100% !important",
-                              }}
-                            />
-                          )}
-                        />
-                      </LocalizationProvider>
-                    </Grid>
-                    <Grid item sx={6} sm={6} xl={6}>
-                      <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <Field
-                          fullWidth
-                          component={DatePicker}
-                          label="End Date"
-                          size="small"
-                          name="endDate"
-                          value={values.StartDate}
-                          inputFormat="dd-MM-yyyy"
-                          onChange={(StartDate) => {
-                            // setFieldValue(
-                            //   "StartDate",
-                            //   new Date(StartDate)
-                            //   // Timestamp.fromDate(new Date(StartDate))
-                            // );
-                          }}
-                          renderInput={(params) => (
-                            <TextField size="small" {...params} />
-                          )}
-                        />
-                      </LocalizationProvider>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Field
-                        as={TextField}
-                        label="Description"
-                        type="text"
-                        name="description"
-                        fullWidth
-                        size="small"
-                        multiline
-                        rows={4}
-                        placeholder="Enter Description Value"
-                        variant="outlined"
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Button
-                      sx={{ width: "100%", mb: 2 }}
-                      type="submit"
-                      variant="contained"
-                    >
-                      Save
-                    </Button>
-                  </Grid>
-                </Box>
+                <Grid item xs={12}>
+                  {listSites && listSites?.loading ? (
+                    <Skeleton />
+                  ) : (
+                    <FormControl fullWidth>
+                      <TextField
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        InputLabelProps={{
+                          shrink: true,
+                          // Add red color to the label
+                        }}
+                        label={
+                          <div>
+                            Site Name{" "}
+                            <span style={{ color: "red", fontSize: "20px" }}>
+                              *
+                            </span>
+                          </div>
+                        }
+                        name="siteId"
+                        select
+                        value={formik.values.siteId}
+                        onChange={formik.handleChange}
+                        error={
+                          formik.touched.siteId && Boolean(formik.errors.siteId)
+                        }
+                        helperText={
+                          formik.touched.siteId && formik.errors.siteId
+                        }
+                      >
+                        {listSites &&
+                        listSites.data &&
+                        listSites.data.length > 0 ? (
+                          listSites &&
+                          listSites.data.map((site, i) => (
+                            <MenuItem key={i} value={site.id}>
+                              {site.name}
+                            </MenuItem>
+                          ))
+                        ) : (
+                          <MenuItem value={"select"}>Select Site</MenuItem>
+                        )}
+                      </TextField>
+                    </FormControl>
+                  )}
+                </Grid>
+                <Grid item sx={6} sm={6} xl={6}>
+                  <StyledDateTextField
+                    InputLabelProps={{
+                      shrink: true,
+                      // Add red color to the label
+                    }}
+                    label={
+                      <div>
+                        Start Date{" "}
+                        <span style={{ color: "red", fontSize: "20px" }}>
+                          *
+                        </span>
+                      </div>
+                    }
+                    name="startdate"
+                    type="date"
+                    value={formik.values.startdate}
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.startdate &&
+                      Boolean(formik.errors.startdate)
+                    }
+                    helperText={
+                      formik.touched.startdate && formik.errors.startdate
+                    }
+                  />
+                </Grid>
+                <Grid item sx={6} sm={6} xl={6}>
+                  <StyledDateTextField
+                    InputLabelProps={{
+                      shrink: true,
+                      // Add red color to the label
+                    }}
+                    label={
+                      <div>
+                        expanded Date{" "}
+                        <span style={{ color: "red", fontSize: "20px" }}>
+                          *
+                        </span>
+                      </div>
+                    }
+                    name="enddate"
+                    type="date"
+                    value={formik.values.enddate}
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.enddate && Boolean(formik.errors.enddate)
+                    }
+                    helperText={formik.touched.enddate && formik.errors.enddate}
+                  />
+                </Grid>
+                <Grid item xs={12} sx={{ marginTop: "15px" }}>
+                  <TextField
+                    fullWidth
+                    name="description"
+                    InputLabelProps={{
+                      shrink: true,
+                      // Add red color to the label
+                    }}
+                    label={
+                      <div>
+                        Description{" "}
+                        <span style={{ color: "red", fontSize: "20px" }}>
+                          *
+                        </span>
+                      </div>
+                    }
+                    value={formik.description}
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.description &&
+                      Boolean(formik.errors.description)
+                    }
+                    helperText={
+                      formik.touched.description && formik.errors.description
+                    }
+                    // size="small"
+                    multiline
+                    rows={4}
+                    placeholder="Enter Description Value"
+                    variant="outlined"
+                  />
+                </Grid>
               </Grid>
-            </Form>
-          )}
-        </Formik>
+              <Grid item xs={4}>
+                <Button
+                  sx={{ width: "100%", mb: 2 }}
+                  type="submit"
+                  variant="contained"
+                >
+                  {createProject && createProject.loading ? (
+                    <CircularProgress />
+                  ) : (
+                    "Save"
+                  )}
+                </Button>
+              </Grid>
+            </Box>
+            {createProject &&
+              !createProject?.success &&
+              createProject.message && (
+                <Alert variant="filled" severity="error">
+                  {createProject?.message}
+                </Alert>
+              )}
+          </Grid>
+        </form>
       </NPDModal>
+
       <Grid
         container
         direction="row"
@@ -462,35 +483,6 @@ const MyTasks = () => {
             Add New Project
           </Button>
         </Grid>
-
-        <StyledMenu
-          id="demo-customized-menu"
-          MenuListProps={{
-            "aria-labelledby": "demo-customized-button",
-          }}
-          anchorEl={anchorEl}
-          open={openMenu}
-          onClose={() => {
-            setAnchorEl(null);
-          }}
-        >
-          <MenuItem
-            onClick={() => {
-              handleClickOpen("Salary Increase");
-            }}
-            disableRipple
-          >
-            <PaidIcon sx={{ color: "#ff0000" }} />
-            Salary Increase
-          </MenuItem>
-          <MenuItem
-            onClick={() => handleClickOpen("Title Change")}
-            disableRipple
-          >
-            <ManageAccountsIcon color={"#ff0000"} />
-            Title Change
-          </MenuItem>
-        </StyledMenu>
       </Grid>
 
       <Grid container direction="row" sx={{ p: 2 }} spacing={2} rowSpacing={2}>
@@ -525,23 +517,11 @@ const MyTasks = () => {
                       minWidth: "25px",
                     }}
                   >
-                    {/* {Object.keys(pendingTasks).length} */}120
+                    {data && data.length}
                   </Box>
                 </Stack>
               </Box>
             </Grid>
-            {/* {pendingTasks &&
-              Object.keys(pendingTasks).map((task, index) => {
-                return (
-                  <Grid item xs={12} md={4} lg={4} key={index}>
-                    <TaskCard
-                      task={pendingTasks[task]}
-                      userID={userData.id}
-                      taskPath={task}
-                    />
-                  </Grid>
-                );
-              })} */}
           </Grid>
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
@@ -563,7 +543,7 @@ const MyTasks = () => {
                   alignItems="center"
                 >
                   <Typography variant="h6" color="black">
-                  Currently Running
+                    Currently Running
                   </Typography>
                   <Box
                     sx={{
@@ -575,24 +555,17 @@ const MyTasks = () => {
                       minWidth: "25px",
                     }}
                   >
-                    {/* {Object.keys(tasksToApprove).length} */}
-                    13
+                    {
+                      data &&
+                      data.length &&
+                      data &&
+                      data.filter(
+                        (project) => project.status === "running"
+                      ).length}
                   </Box>
                 </Stack>
               </Box>
             </Grid>
-
-            {/* {tasksToApprove &&
-              Object.keys(tasksToApprove).map((task, index) => {
-                return (
-                  <Grid item xs={12} md={4} lg={4} key={index}>
-                    <TaskCard
-                      task={tasksToApprove[task]}
-                      userID={userData.id}
-                    />
-                  </Grid>
-                );
-              })} */}
           </Grid>
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
@@ -626,20 +599,17 @@ const MyTasks = () => {
                       minWidth: "25px",
                     }}
                   >
-                    {/* {Object.keys(completeTasks).length} */}
-                    17
+                    {
+                      data &&
+                      data.length &&
+                      data &&
+                      data.filter(
+                        (project) => project.status === "completed"
+                      ).length}
                   </Box>
                 </Stack>
               </Box>
             </Grid>
-            {/* {completeTasks &&
-              Object.keys(completeTasks).map((task, index) => {
-                return (
-                  <Grid item xs={12} md={4} lg={4} key={index}>
-                    <TaskCard task={completeTasks[task]} userID={userData.id} />
-                  </Grid>
-                );
-              })} */}
           </Grid>
         </Grid>
       </Grid>
@@ -648,18 +618,206 @@ const MyTasks = () => {
           padding: "2rem",
         }}
       >
-        <DataTable
-          rows={rows}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
-          }}
-          pageSizeOptions={[5, 10]}
-          checkboxSelection
-        />
+        {createProject && createProject?.success && createProject?.message && (
+          <Alert variant="filled" severity="success">
+            {createProject?.message}
+          </Alert>
+        )}
+        {loading && <CircularProgress />}
+        {data && data.length > 0 ? (
+          <DataTable
+            rows={data || []}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 5 },
+              },
+            }}
+            pageSizeOptions={[5, 10]}
+            checkboxSelection
+          />
+        ) : (
+          "No Projects Found"
+        )}
       </Card>
+
+      <NPDModal
+        show={showMore}
+        handleClose={handleClose}
+        title={"More Information"}
+      >
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                borderBottom: "1px solid #ddd",
+                padding: "5px 0px",
+              }}
+            >
+              <Typography>Project Name</Typography>
+              <Typography
+                sx={{
+                  fontWeight: "700",
+                  color: "#494577",
+                }}
+              >
+                {moreInfo?.name}
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={12}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                borderBottom: "1px solid #ddd",
+                padding: "5px 0px",
+              }}
+            >
+              <Typography>Start Date</Typography>
+              <Typography
+                sx={{
+                  fontWeight: "700",
+                  color: "#494577",
+                }}
+              >
+                {moreInfo?.startdate}
+              </Typography>
+            </Box>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                borderBottom: "1px solid #ddd",
+                padding: "5px 0px",
+              }}
+            >
+              <Typography>End Date</Typography>
+              <Typography
+                sx={{
+                  fontWeight: "700",
+                  color: "#494577",
+                }}
+              >
+                {moreInfo.enddate}
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={12}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                borderBottom: "1px solid #ddd",
+                padding: "5px 0px",
+              }}
+            >
+              <Typography>Description</Typography>
+              <Typography
+                sx={{
+                  fontWeight: "700",
+                  color: "#494577",
+                }}
+              >
+                {moreInfo?.description}
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={12}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                borderBottom: "1px solid #ddd",
+                padding: "5px 0px",
+              }}
+            >
+              <Typography>Manager</Typography>
+              <Typography
+                sx={{
+                  fontWeight: "700",
+                  color: "#494577",
+                }}
+              >
+                {moreInfo?.manager?.fname} {moreInfo?.manager?.lname}
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={12}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                borderBottom: "1px solid #ddd",
+                padding: "5px 0px",
+              }}
+            >
+              <Typography>Site</Typography>
+              <Typography
+                sx={{
+                  fontWeight: "700",
+                  color: "#494577",
+                }}
+              >
+                {moreInfo?.site?.name}
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={12}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                borderBottom: "1px solid #ddd",
+                padding: "5px 0px",
+              }}
+            >
+              <Typography>Status</Typography>
+              <Typography
+                sx={{
+                  fontWeight: "700",
+                  color: "#494577",
+                }}
+              >
+                {moreInfo?.status}
+              </Typography>
+            </Box>
+          </Grid>
+        </Grid>
+      </NPDModal>
+      <AlertConfirmDialog
+        show={showDelete}
+        title={"Delete Project"}
+        handleClose={handleClose}
+        action={
+          <Box>
+            <Button onClick={handleClose}>No</Button>
+            <Button onClick={handleConfirm} autoFocus variant="contained">
+              {deleteProject && deleteProject?.loading ? (
+                <CircularProgress />
+              ) : (
+                "  Yes, Delete"
+              )}
+            </Button>
+          </Box>
+        }
+      >
+        <Typography>Are you sure you want to delete this info</Typography>
+        <Box sx={{ marginTop: "20px", width: "100%" }}>
+          {deleteProject &&
+            !deleteProject?.success &&
+            deleteProject.message && (
+              <Alert variant="filled" severity="error">
+                {deleteProject?.message}
+              </Alert>
+            )}
+        </Box>
+      </AlertConfirmDialog>
     </Page>
   );
 };

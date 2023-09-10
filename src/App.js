@@ -30,57 +30,50 @@ function App() {
           <Route
             path="/"
             element={
-              // <PrivateRoute role="Standard">
+              <PrivateRoute passedRole="super">
               <DashboardLayout />
-              // </PrivateRoute>
+              </PrivateRoute>
             }
           >
             <Route
               path="/"
               element={
-                // <PrivateRoute role="Standard">
+                <PrivateRoute passedRole="super">
                 <Navigate to="/dashboard/home" />
-                // </PrivateRoute>
+                 </PrivateRoute>
               }
             ></Route>
             <Route
               path="dashboard/associates"
               element={
-                // <PrivateRoute role="Standard">
+                <PrivateRoute passedRole="super">
                 <Associates />
-                // </PrivateRoute>
+                </PrivateRoute>
               }
             ></Route>
-            <Route
-              path="dashboard/associates/:id"
-              element={
-                // <PrivateRoute role="Standard">
-                <AssociateDetails />
-                // </PrivateRoute>
-              }
-            ></Route>
+            
             <Route
               path="dashboard/associates/new/employee"
               element={
-                // <PrivateRoute role="Standard">
+                <PrivateRoute passedRole="super">
                 <NewAssociate />
-                // </PrivateRoute>
+                 </PrivateRoute>
               }
             ></Route>
             <Route
               path="dashboard/home"
               element={
-                // <PrivateRoute role="Standard">
+                <PrivateRoute passedRole="super">
                 <Home />
-                // </PrivateRoute>
+                </PrivateRoute>
               }
             ></Route>
             <Route
               exactpath="/"
               element={
-                // <PrivateRoute role="Standard">
+                <PrivateRoute passedRole="super">
                 <Home />
-                // </PrivateRoute>
+                </PrivateRoute>
               }
             ></Route>
             <Route
@@ -91,71 +84,57 @@ function App() {
                 // </PrivateRoute>
               }
             ></Route>
-            <Route
-              path="dashboard/register"
-              element={
-                // <PrivateRoute role="Admin">
-                <SignUp />
-                // </PrivateRoute>
-              }
-            ></Route>
+            
             <Route
               path="/dashboard/projects"
               element={
-                // <PrivateRoute role="Standard">
+                <PrivateRoute passedRole="super">
                 <MyTasks />
-                // </PrivateRoute>
+                 </PrivateRoute>
               }
             ></Route>
             <Route
               path="/dashboard/assigned/projects"
               element={
-                // <PrivateRoute role="Standard">
+                <PrivateRoute passedRole="super">
                 <AssignedProject />
-                // </PrivateRoute>
+                 </PrivateRoute>
               }
             ></Route>
             <Route
               path="/dashboard/assigned/projects/attendance"
               element={
-                // <PrivateRoute role="Standard">
+                <PrivateRoute passedRole="super">
                 <Attendance />
 
-                // </PrivateRoute>
+                 </PrivateRoute>
               }
             ></Route>
             <Route
               path="dashboard/associates/newassociate"
               element={
-                // <PrivateRoute role="Standard">
+                <PrivateRoute passedRole="super">
                 <NewAssociate />
-                // </PrivateRoute>
+                </PrivateRoute>
               }
             ></Route>
             <Route
               path="dashboard/new/assign"
               element={
-                // <PrivateRoute role="Stabdard">
+                <PrivateRoute passedRole="super">
                 <AssingNewEmployee />
-                // </PrivateRoute>
+                 </PrivateRoute>
               }
             />
             <Route
               path="dashboard/settings/sites"
               element={
-                // <PrivateRoute role="Admin">
+                <PrivateRoute passedRole="super">
                 <Admin />
-                // </PrivateRoute>
+                </PrivateRoute>
               }
             ></Route>
-            <Route
-              path="admin/import"
-              element={
-                // <PrivateRoute role="Admin">
-                <ImportAssociates />
-                // </PrivateRoute>
-              }
-            ></Route>
+           
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<Page404 />} />

@@ -20,6 +20,7 @@ import {
 // components
 import MenuPopover from "../../components/MenuPopover";
 import history from "../../history";
+import { useSelector } from "react-redux";
 //
 
 // ----------------------------------------------------------------------
@@ -27,11 +28,15 @@ import history from "../../history";
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
-  // const { logout, userData } = useAuth();
+  const {
+    auth: { data, loading, message, success, error },
+  } = useSelector((state) => state)
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
   const logout =()=>{
-    history.push('/')
+    localStorage.clear();
+    history.push('/login')
+    window.location.reload();
   }
   const handleOpen = () => {
     setOpen(true);
@@ -75,71 +80,16 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
-            BUTERA ISHEJA{" "}
-            Sandrine
+            {data?.fname} {data?.lname}{" "}
+           
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-            Project Manager
+          {data?.role === 'super'? 'Admin': data?.role}
           </Typography>
         </Box>
 
         <Divider sx={{ my: 1 }} />
-        <MenuItem
-          key={"Home"}
-          to={`#`}
-          // component={RouterLink}
-          onClick={handleClose}
-          sx={{ typography: "body2", py: 1, px: 2.5 }}
-        >
-          <Box
-            component={Icon}
-            icon={homeFill}
-            sx={{
-              mr: 2,
-              width: 24,
-              height: 24,
-            }}
-          />
-          {"Home"}
-        </MenuItem>
-       
-          <MenuItem
-            key={"Profile"}
-            // to={`/dashboard/associates/${userData.id}`}
-            // component={RouterLink}
-            onClick={handleClose}
-            sx={{ typography: "body2", py: 1, px: 2.5 }}
-          >
-            <Box
-              component={Icon}
-              icon={personFill}
-              sx={{
-                mr: 2,
-                width: 24,
-                height: 24,
-              }}
-            />
-            {"Profile"}
-          </MenuItem>
-       
-        <MenuItem
-          key={"Settings"}
-          to={`#`}
-          // component={RouterLink}
-          onClick={handleClose}
-          sx={{ typography: "body2", py: 1, px: 2.5 }}
-        >
-          <Box
-            component={Icon}
-            icon={settings2Fill}
-            sx={{
-              mr: 2,
-              width: 24,
-              height: 24,
-            }}
-          />
-          {"Settings"}
-        </MenuItem>
+        
 
         <Box sx={{ p: 2, pt: 1.5 }}>
           <Button

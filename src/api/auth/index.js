@@ -3,6 +3,6 @@ import request from '../request';
 
 export  const loginApi = {
     auth: {
-        login: (data) => request('POST', `user/login`, data, false)
+        login: (data) => request('POST', `auth/login.php`, data, false)
     }
 };

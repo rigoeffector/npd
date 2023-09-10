@@ -1,5 +1,13 @@
-import React from "react";
-import { Container, Typography, Card, Box, Button, Grid } from "@mui/material";
+import React, { useEffect } from "react";
+import {
+  Container,
+  Typography,
+  Card,
+  Box,
+  Button,
+  Grid,
+  Alert,
+} from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -12,11 +20,19 @@ import Sites from "./Sites";
 import NPDModal from "../components/modal";
 import NewSiteForm from "./forms/new.site.form";
 import FileUploadForm from "./forms/upload.document";
+import { useSelector } from "react-redux";
 
 const Admin = () => {
   const [expanded, setExpanded] = React.useState(true);
-  const [showNewModal,setShowNewModal]= React.useState(false);
-  const [showNewUploadModal,setShowNewUploadModal]= React.useState(false);
+  const [showNewModal, setShowNewModal] = React.useState(false);
+  const [showNewUploadModal, setShowNewUploadModal] = React.useState(false);
+  const { createSite } = useSelector((state) => state);
+
+  useEffect(() => {
+    if (createSite.success) {
+      handleClose();
+    }
+  }, [createSite.success]);
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
@@ -29,7 +45,7 @@ const Admin = () => {
   };
   const handleClose = () => {
     setShowNewModal(false);
-    setShowNewUploadModal(false)
+    setShowNewUploadModal(false);
   };
   return (
     <Page title="">
@@ -40,7 +56,7 @@ const Admin = () => {
         show={showNewModal}
         handleClose={handleClose}
       >
-        <NewSiteForm/>
+        <NewSiteForm />
       </NPDModal>
 
       <NPDModal
@@ -48,7 +64,7 @@ const Admin = () => {
         show={showNewUploadModal}
         handleClose={handleClose}
       >
-        <FileUploadForm/>
+        <FileUploadForm />
       </NPDModal>
 
       <Container maxWidth="lg">
@@ -99,6 +115,11 @@ const Admin = () => {
                     </Button>
                   </Box>
                 </Grid>
+                {createSite && createSite?.success && createSite.message && (
+                  <Alert variant="filled" severity="success">
+                    {createSite?.message}
+                  </Alert>
+                )}
                 <Sites />
               </AccordionDetails>
             </Accordion>

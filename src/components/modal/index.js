@@ -10,15 +10,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function NPDModal({ title, show, children, handleClose }) {
-  //   const [open, setOpen] = React.useState(false);
 
-  //   const handleClickOpen = () => {
-  //     setOpen(true);
-  //   };
-
-  //   const handleClose = () => {
-  //     setOpen(false);
-  //   };
 
   return (
     <div>
@@ -35,6 +27,7 @@ export default function NPDModal({ title, show, children, handleClose }) {
             id="alert-dialog-slide-description"
             sx={{
               "overflow-y": "revert !important",
+              paddingTop: '20px'
             }}
           >
             {children}

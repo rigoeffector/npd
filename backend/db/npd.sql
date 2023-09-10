@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Sep 09, 2023 at 04:45 PM
+-- Generation Time: Sep 10, 2023 at 12:29 PM
 -- Server version: 5.7.39
 -- PHP Version: 8.2.0
 
@@ -54,13 +54,6 @@ CREATE TABLE `assign` (
   `projectId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `assign`
---
-
-INSERT INTO `assign` (`id`, `employeeId`, `projectId`) VALUES
-(1, 4, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -74,15 +67,6 @@ CREATE TABLE `attendance` (
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` varchar(255) NOT NULL DEFAULT 'present'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `attendance`
---
-
-INSERT INTO `attendance` (`id`, `projectId`, `employeeId`, `time`, `status`) VALUES
-(18, 1, 4, '2023-09-09 14:13:10', 'present'),
-(19, 1, 5, '2023-09-09 14:12:41', 'sick'),
-(20, 1, 4, '2023-09-09 14:13:34', 'absent');
 
 -- --------------------------------------------------------
 
@@ -117,12 +101,10 @@ CREATE TABLE `employees` (
 --
 
 INSERT INTO `employees` (`id`, `fname`, `lname`, `idnumber`, `phonenumber`, `age`, `salary`, `gender`, `siteId`, `role`, `startdate`, `dob`, `emfname`, `emlname`, `emphone`, `emrelation`, `doclink`, `username`, `password`) VALUES
-(1, 'GAJU', 'Sandrine', '1199380041412206', '0784567890', '30', '34000', NULL, 7, 'capita', '2023-09-12', '1993-09-12', 'MUKANSKUSI', 'Marthe', NULL, 'Sister', 'www.google.com', 'user@gmail.com', '12345'),
-(3, 'MUSANA', 'Marc', '1199380041412200', '0784567890', '30', '34000', 'Male', 1, 'capita', '2023-09-12', '1993-09-12', 'MUKANSKUSI', 'Marthe', '0784638209', 'Sister', 'www.google.com', 'user@gmail.com', '12345'),
-(4, 'KALISA', 'Erneste', '1199380041412201', '0784567890', '30', '34000', 'Male', 2, 'capita', '2023-09-12', '1993-09-12', 'MUKANSKUSI', 'Marthe', '0784638209', 'Sister', 'www.google.com', 'user@gmail.com', '12345'),
-(5, 'KALISA', 'Erneste', '1199380041412204', '0784567890', '30', '34000', 'Male', 2, 'capita', '2023-09-12', '1993-09-12', 'MUKANSKUSI', 'Marthe', '0784638209', 'Sister', 'www.google.com', 'user@gmail.com', '12345'),
-(6, 'MANZI', 'Justin', '1199380041412205', '0784567890', '30', '34000', 'Male', 2, 'capita', '2023-09-12', '1993-09-12', 'MUKANSKUSI', 'Marthe', '0784638209', 'Sister', 'www.google.com', 'user@gmail.com', '12345'),
-(7, 'KALISA Marie Jean', 'Erneste', '1199380041412201', '0784567890', '30', '34000', 'Male', 2, 'projectmanager', '2023-09-12', '1993-09-12', 'MUKANSKUSI', 'Marthe', '0784638209', 'Sister', 'www.google.com', 'manzi23@gmail.com', '123456@!');
+(5, 'Sandrine', 'Isheja', '1199380041412204', '0784567890', '30', '34000', 'Male', 2, 'super', '2023-09-12', '1993-09-12', 'MUKANSKUSI', 'Marthe', '0784638209', 'Sister', 'www.google.com', 'admin@gmail.com', '12345'),
+(10, 'MUSANA', 'Manzi', '1199080041412209', '0784673890', '23', '670000', 'Female', 1, 'capita', '2023-09-10', '1993-01-10', 'MUKUNZI', 'Yannick', '0785678902', 'Father', 'https://firebasestorage.googleapis.com/v0/b/daada-poducts-images.appspot.com/o/products%2F5.png?alt=media&token=059bcfe9-9147-402c-ab30-f556a7332439', 'MUKUNZI234@gmail.com', '12345'),
+(11, 'MANZI Morris', 'Gasangwa', '1199380041412208', '0784567890', '30', '34000', 'Male', 2, 'projectmanager', '2023-09-12', '1993-09-12', 'MUKANSKUSI', 'Marthe', '0784638209', 'Sister', 'www.google.com', 'manzi23@gmail.com', '12345'),
+(12, 'Dophin Morris', 'CYUSA', '1199380041412201', '0784567892', '30', '34000', 'Male', 2, 'projectmanager', '2023-09-12', '1993-09-12', 'MUKANSKUSI', 'Marthe', '0784638209', 'Sister', 'www.google.com', 'manzi23@gmail.com', '12345');
 
 -- --------------------------------------------------------
 
@@ -146,7 +128,9 @@ CREATE TABLE `projects` (
 --
 
 INSERT INTO `projects` (`id`, `name`, `managerId`, `siteId`, `startdate`, `enddate`, `description`, `status`) VALUES
-(1, 'AMAHORO Stadium New Nshyaya', 1, 1, '2023-12-02', '2024-12-02', 'Sawa Projwct', 'completed');
+(4, 'AMAHORO Stadium New', 10, 1, '2023-12-02', '2024-12-02', 'Sawa Projwct', 'completed'),
+(5, 'KANOMBE Airport Revamp', 11, 2, '2023-09-11', '2026-09-10', 'Sawasaaaadasdas', 'running'),
+(6, 'Kabimba House', 11, 1, '2023-09-10', '2023-09-10', 'Sawa', 'running');
 
 -- --------------------------------------------------------
 
@@ -164,13 +148,6 @@ CREATE TABLE `reports` (
   `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `reports`
---
-
-INSERT INTO `reports` (`id`, `name`, `createdBy`, `status`, `updatedBy`, `link`, `createdAt`, `description`) VALUES
-(1, 'August Report', 4, 'approved', 4, 'www.google.com', '2023-09-09 15:52:58', 'sawa');
 
 -- --------------------------------------------------------
 
@@ -205,39 +182,39 @@ INSERT INTO `sites` (`id`, `name`, `location`, `description`, `createdAt`) VALUE
 --
 ALTER TABLE `assign`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `employeeId` (`employeeId`),
-  ADD KEY `projectId` (`projectId`);
+  ADD KEY `assign_ibfk_1` (`employeeId`),
+  ADD KEY `assign_ibfk_2` (`projectId`);
 
 --
 -- Indexes for table `attendance`
 --
 ALTER TABLE `attendance`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `employeeId` (`employeeId`),
-  ADD KEY `projectId` (`projectId`);
+  ADD KEY `attendance_ibfk_1` (`employeeId`),
+  ADD KEY `attendance_ibfk_2` (`projectId`);
 
 --
 -- Indexes for table `employees`
 --
 ALTER TABLE `employees`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `siteId` (`siteId`);
+  ADD KEY `employees_ibfk_1` (`siteId`);
 
 --
 -- Indexes for table `projects`
 --
 ALTER TABLE `projects`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `siteId` (`siteId`),
-  ADD KEY `managerId` (`managerId`);
+  ADD KEY `projects_ibfk_1` (`siteId`),
+  ADD KEY `projects_ibfk_2` (`managerId`);
 
 --
 -- Indexes for table `reports`
 --
 ALTER TABLE `reports`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `createdBy` (`createdBy`),
-  ADD KEY `updatedBy` (`updatedBy`);
+  ADD KEY `reports_ibfk_1` (`createdBy`),
+  ADD KEY `reports_ibfk_2` (`updatedBy`);
 
 --
 -- Indexes for table `sites`
@@ -253,37 +230,37 @@ ALTER TABLE `sites`
 -- AUTO_INCREMENT for table `assign`
 --
 ALTER TABLE `assign`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `sites`
 --
 ALTER TABLE `sites`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
@@ -293,35 +270,35 @@ ALTER TABLE `sites`
 -- Constraints for table `assign`
 --
 ALTER TABLE `assign`
-  ADD CONSTRAINT `assign_ibfk_1` FOREIGN KEY (`employeeId`) REFERENCES `employees` (`id`),
-  ADD CONSTRAINT `assign_ibfk_2` FOREIGN KEY (`projectId`) REFERENCES `projects` (`id`);
+  ADD CONSTRAINT `assign_ibfk_1` FOREIGN KEY (`employeeId`) REFERENCES `employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `assign_ibfk_2` FOREIGN KEY (`projectId`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `attendance`
 --
 ALTER TABLE `attendance`
-  ADD CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`employeeId`) REFERENCES `employees` (`id`),
-  ADD CONSTRAINT `attendance_ibfk_2` FOREIGN KEY (`projectId`) REFERENCES `projects` (`id`);
+  ADD CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`employeeId`) REFERENCES `employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `attendance_ibfk_2` FOREIGN KEY (`projectId`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `employees`
 --
 ALTER TABLE `employees`
-  ADD CONSTRAINT `employees_ibfk_1` FOREIGN KEY (`siteId`) REFERENCES `sites` (`id`);
+  ADD CONSTRAINT `employees_ibfk_1` FOREIGN KEY (`siteId`) REFERENCES `sites` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `projects`
 --
 ALTER TABLE `projects`
-  ADD CONSTRAINT `projects_ibfk_1` FOREIGN KEY (`siteId`) REFERENCES `sites` (`id`),
-  ADD CONSTRAINT `projects_ibfk_2` FOREIGN KEY (`managerId`) REFERENCES `employees` (`id`);
+  ADD CONSTRAINT `projects_ibfk_1` FOREIGN KEY (`siteId`) REFERENCES `sites` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `projects_ibfk_2` FOREIGN KEY (`managerId`) REFERENCES `employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `reports`
 --
 ALTER TABLE `reports`
-  ADD CONSTRAINT `reports_ibfk_1` FOREIGN KEY (`createdBy`) REFERENCES `employees` (`id`),
-  ADD CONSTRAINT `reports_ibfk_2` FOREIGN KEY (`updatedBy`) REFERENCES `employees` (`id`);
+  ADD CONSTRAINT `reports_ibfk_1` FOREIGN KEY (`createdBy`) REFERENCES `employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `reports_ibfk_2` FOREIGN KEY (`updatedBy`) REFERENCES `employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

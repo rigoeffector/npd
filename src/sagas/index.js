@@ -13,6 +13,7 @@ import { watchCreateProjectData } from "./project/create";
 import { watchListProjectsData } from "./project/read";
 import { watchUpdateProjectData } from "./project/update";
 import { watchDeleteProjectData } from "./project/delete";
+import { watchListEmployeesByRoleData } from "./employees/readByRole";
 
 export default function* rootSaga() {
   yield all([
@@ -29,6 +30,7 @@ export default function* rootSaga() {
     fork(watchCreateProjectData),
     fork(watchListProjectsData),
     fork(watchUpdateProjectData),
-    fork(watchDeleteProjectData)
+    fork(watchDeleteProjectData),
+    fork(watchListEmployeesByRoleData)
   ]);
 }

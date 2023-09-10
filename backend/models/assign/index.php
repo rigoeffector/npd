@@ -113,15 +113,18 @@ class Assign
                 e.doclink AS documentLink,
                 p.id AS projectId,
                 p.name AS projectName,
+                p.status AS projectStatus,
                 p.managerId AS projectManagerId,
                 p.siteId AS projectSiteId,
                 p.startdate AS projectStartDate,
                 p.enddate AS projectEndDate,
-                p.description AS projectDescription
+                p.description AS projectDescription,
+                CONCAT(pm.fname, ' ', pm.lname) AS projectManagerName
                 FROM assign a
                 JOIN employees e ON a.employeeId = e.id
-                JOIN projects p ON a.projectId = p.id";
-    
+                JOIN projects p ON a.projectId = p.id
+                JOIN employees pm ON p.managerId = pm.id"; // Join the employees table again to get the project manager's name
+        
             $stmt = $this->conn->prepare($query);
             $stmt->execute();
     
@@ -130,6 +133,7 @@ class Assign
             return false; // Return a failure indicator if an error occurred.
         }
     }
+    
     
 
     public function delete($id)

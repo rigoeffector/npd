@@ -1,137 +1,70 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react-hooks/exhaustive-deps */
-import { merge } from "lodash";
-import ReactApexChart from "react-apexcharts";
-// material
-import { useTheme, styled } from "@mui/material/styles";
-import { Card, CardHeader, Stack, Typography } from "@mui/material";
-// utils
-import { fNumber } from "../../utils/formatNumber";
-//
-import './index.css'
+import React, { useEffect, useRef } from "react";
+import Chart from "chart.js";
+import { Box, CircularProgress, Paper, Typography } from "@mui/material";
 
-import BaseOptionChart from "../charts/BaseOptionChart";
-import CircularProgress from "@mui/material/CircularProgress";
-import { useState, useEffect, useContext } from "react";
-import {
-  officesContext,
-  associatesContext,
-} from "../../utils/context/contexts";
-// ----------------------------------------------------------------------
+const DoughnutChart = ({ completed, running }) => {
+  const chartRef = useRef(null);
 
-const CHART_HEIGHT = 330;
-const LEGEND_HEIGHT = 60;
+  useEffect(() => {
+    const myChartRef = chartRef.current.getContext("2d");
 
-const ChartWrapperStyle = styled("div")(({ theme }) => ({
-  height: CHART_HEIGHT,
-  marginTop: theme.spacing(1),
-  "& .apexcharts-canvas svg": { height: CHART_HEIGHT },
-  "& .apexcharts-canvas svg,.apexcharts-canvas foreignObject": {
-    overflow: "visible",
-  },
-  "& .apexcharts-legend": {
-    height: LEGEND_HEIGHT,
-    alignContent: "center",
-    position: "relative !important",
-    borderTop: `solid 1px ${theme.palette.divider}`,
-    top: `calc(${CHART_HEIGHT - LEGEND_HEIGHT}px) !important`,
-  },
-}));
+    new Chart(myChartRef, {
+      type: "doughnut",
+      data: {
+        labels: ["Complete", "Running"],
+        datasets: [
+          {
+            data: [completed, running],
+            backgroundColor: ["#c4cc36", "#D9D9D9"],
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
+    });
+  }, [completed, running]);
 
-// ----------------------------------------------------------------------
-
-export default function OfficeGraph() {
-  // const { allOffices } = useContext(officesContext);
-  // const OFFICES = allOffices.flat(2);
-  const { associates } = useContext(associatesContext);
-  const theme = useTheme();
-  const [loadingOffice, setLoadingOffice] = useState(true);
-  const [officesData, setOfficesData] = useState();
-
-  // useEffect(() => {
-  //   const getOffice = async () => {
-  //     setLoadingOffice(true);
-  //     const officeData = [];
-  //     for (const off of OFFICES) {
-  //       // const ress = await fetchDetails(off);
-  //       // officeData.push(ress.docs.length);
-  //       officeData.push(fetchDetails(off));
-  //     }
-  //     setOfficesData(officeData);
-  //     setLoadingOffice(false);
-  //   };
-  //   getOffice();
-  // }, [allOffices]);
-
-  const fetchDetails = (off) => {
-    const filtered = associates.filter(
-      (associate) =>
-        associate.Office === off && associate.EmplStatus === "Employed"
-    );
-    return filtered.length;
-  };
-
-  const officeData = {
-    options: {},
-    series: [44, 55, 41],
-    labels: ["A", "B", "C",],
-  };
-  // const chartOptions = merge(BaseOptionChart(), {
-  //   // colors: [
-  //   //   theme.palette.primary.main,
-  //   //   theme.palette.info.main,
-  //   //   theme.palette.warning.main,
-  //   //   theme.palette.error.main,
-  //   // ],
-  //   // labels: OFFICES,
-  //   stroke: { colors: [theme.palette.background.paper] },
-  //   legend: { floating: true, horizontalAlign: "center" },
-  //   dataLabels: { enabled: true, dropShadow: { enabled: true } },
-  //   tooltip: {
-  //     fillSeriesColor: false,
-  //     y: {
-  //       formatter: (seriesName) => fNumber(seriesName) + " associates",
-  //       title: {
-  //         formatter: (seriesName) => `${seriesName} -`,
-  //       },
-  //     },
-  //   },
-  //   plotOptions: {
-  //     pie: { donut: { labels: { show: false } } },
-  //   },
-  // });
-  // console.log(officesData);
   return (
-    <Card 
-      id="office_card"
-    
-    sx={{
-      height: 'fit-content !important'
-    }}>
-     <CardHeader title="Sites" />
-      {/* {loadingOffice && ( */}
-      {/* <Stack
-        // direction="row"
-        alignItems="center"
-        justifyContent="center"
-        mb={5}
+    <Box
+      sx={{
+        background: "white",
+        padding: "10px",
+        borderRadius: "15px",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
       >
-        <CircularProgress />
-      </Stack> */}
-      {/* )} */}
-      {/* {officesData && officesData.length > 1 && ( */}
-      <ChartWrapperStyle dir="ltr">
-        <ReactApexChart
-           type="donut"
-          series={officeData.series}
-          options={officeData.options}
-          width="680"
-          height={280}
-
-        />
-        
-      </ChartWrapperStyle>
-      {/* )} */}
-    </Card>
+        <Typography
+          sx={{
+            fontSize: "14px !important",
+            fontWeight: "700",
+            color: "#4d5e80",
+            marginLeft: "27px",
+          }}
+        >
+          Completed VS Running Projects
+        </Typography>
+      </Box>
+      <Paper
+        className="py-4 px-2"
+        sx={{
+          height: "325px",
+          padding: "10px",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <canvas ref={chartRef} />
+      </Paper>
+    </Box>
   );
-}
+};
+
+export default DoughnutChart;

@@ -24,8 +24,9 @@ export function* deleteSiteRequestSaga(action) {
             yield put(success(DELETE_SITE_SUCCESS, response));
             yield* getSitesRequestSaga({
                 type: GET_SITES_LIST_REQUEST,
-               
             });
+            yield delay(2000);
+            yield put({type: DELETE_SITE_RESET});
         } else {
             yield put(error(DELETE_SITE_ERROR, response));
             yield delay(2000);

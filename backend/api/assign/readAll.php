@@ -9,13 +9,16 @@ include_once "../../models/assign/index.php";
 $db = $conn;
 $assign = new Assign($db);
 
-// Call the readAll function to retrieve assignment records with employee and project details
+// Call the readAll function to retrieve assignment records with employee, project, and project manager details
 $result = $assign->readAll();
 
 if ($result) {
     $assign_arr = array();
     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         extract($row);
+
+        // Create a project manager name by concatenating first and last name
+        $projectManagerName = $employeeFirstName . ' ' . $employeeLastName;
 
         $assignment_item = array(
             "assignmentId" => $assignmentId,
@@ -38,11 +41,13 @@ if ($result) {
             "documentLink" => $documentLink,
             "projectId" => $projectId,
             "projectName" => $projectName,
+            "projectStatus" => $projectStatus,
             "projectManagerId" => $projectManagerId,
             "projectSiteId" => $projectSiteId,
             "projectStartDate" => $projectStartDate,
             "projectEndDate" => $projectEndDate,
-            "projectDescription" => $projectDescription
+            "projectDescription" => $projectDescription,
+            "projectManagerName" => $projectManagerName // Add the project manager name to the response
         );
 
         array_push($assign_arr, $assignment_item);

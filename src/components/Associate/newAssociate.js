@@ -159,7 +159,6 @@ const StepOneEmployee = ({ next, listSites, data, setNew }) => {
   const [listSitesdata, setListSitesData] = useState([]);
 
   useEffect(() => {
-    debugger;
     if (listSites) {
       setListSitesData(listSites);
     }

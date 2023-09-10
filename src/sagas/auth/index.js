@@ -19,7 +19,6 @@ export function* loginRequestSaga(action) {
             saveState('ctx', ctx);
             yield put(success('CONTEXT', ctx));
             yield put(success(LOGIN_USER_SUCCESS, response));
-            // history.push('/daada/dashboard/home');
             history.push('/dashboard/home');
             yield delay(1000);
             window.location.reload();
@@ -38,7 +37,7 @@ function buildContext(data) {
     return {
         firstName: data && data.fname,
         lastName: data && data.lname,
-        token: data && data.role,
+        // token: data && data.role,
         role: data && data.USER?.role,
         username: data && data.username,
         password: data && data.password,
