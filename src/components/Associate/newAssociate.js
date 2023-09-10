@@ -40,7 +40,7 @@ export default function NewAssociate() {
   const dispatch = useDispatch();
   const stepLabels = ["Personal details", "Emergency contact", "Documents"];
 
-  const { listSites, createEmployee } = useSelector((state) => state);
+  const { listSites, createEmployee, auth } = useSelector((state) => state);
   useEffect(() => {
     // Dispatch the action to fetch data when the component mounts
     dispatch({
@@ -156,6 +156,7 @@ export default function NewAssociate() {
 }
 
 const StepOneEmployee = ({ next, listSites, data, setNew }) => {
+  const {auth} = useSelector((state)=> state);
   const [listSitesdata, setListSitesData] = useState([]);
 
   useEffect(() => {
@@ -506,7 +507,17 @@ const StepOneEmployee = ({ next, listSites, data, setNew }) => {
         alignItems="flex-end"
       >
         <Grid item>
-          <Button variant="contained" type="submit">
+          <Button
+            disabled={
+              (auth && auth.data && auth.data.role !== "super") ||
+              (auth && auth.data && auth.data.role !== "projectmanager") ||
+              (auth && auth.data && auth.data.role !== "sitemanager")
+                ? true
+                : false
+            }
+            variant="contained"
+            type="submit"
+          >
             Next
           </Button>
         </Grid>
@@ -802,16 +813,20 @@ const StepThree = (props) => {
             </Button>
           </Grid>
         </Grid>
-        <Box sx={{ marginTop: "20px", width: '100%' }}>
+        <Box sx={{ marginTop: "20px", width: "100%" }}>
           {createEmployee &&
             !createEmployee?.success &&
             createEmployee.message && (
-              <Alert variant="filled" severity="error">{createEmployee?.message}</Alert>
+              <Alert variant="filled" severity="error">
+                {createEmployee?.message}
+              </Alert>
             )}
           {createEmployee &&
             createEmployee?.success &&
             createEmployee?.message && (
-              <Alert variant="filled" severity="success">{createEmployee?.message}</Alert>
+              <Alert variant="filled" severity="success">
+                {createEmployee?.message}
+              </Alert>
             )}
         </Box>
       </Grid>

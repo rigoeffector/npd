@@ -52,6 +52,7 @@ const MyTasks = () => {
   const dispatch = useDispatch();
 
   const {
+    auth,
     listProjects: { data, success, loading },
     deleteProject,
     listSites,
@@ -144,6 +145,9 @@ const MyTasks = () => {
       headerName: "Action",
       type: "actions",
       width: 300,
+      hide:
+        (auth && auth.data && auth.data.role !== "super") ||
+        (auth && auth.data && auth.data.role !== "projectmanager"),
       getActions: (params) => [
         // <div className="actions_button">
         //   <Button
@@ -487,15 +491,18 @@ const MyTasks = () => {
           </Typography>
         </Grid>
         <Grid item>
-          <Button
-            variant="contained"
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-            onClick={handleClickAction}
-            endIcon={<AddCircleIcon color="white" fontSize="large" />}
-          >
-            Add New Project
-          </Button>
+          {(auth && auth.data && auth.data.role === "super") ||
+            (auth && auth.data && auth.data.role === "projectmanager" && (
+              <Button
+                variant="contained"
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClickAction}
+                endIcon={<AddCircleIcon color="white" fontSize="large" />}
+              >
+                Add New Project
+              </Button>
+            ))}
         </Grid>
       </Grid>
 
@@ -519,7 +526,7 @@ const MyTasks = () => {
                   alignItems="center"
                 >
                   <Typography variant="h6" color="black">
-                  All Projects
+                    All Projects
                   </Typography>
                   <Box
                     sx={{
@@ -790,16 +797,15 @@ const MyTasks = () => {
               <Typography>Status</Typography>
 
               <Chip
-          label={capitalize(moreInfo?.status)}
-          color={
-            moreInfo?.status === "completed"
-              ? "success"
-              : moreInfo?.status === "running"
-              ? "warning"
-              : "error"
-          }
-        />
-             
+                label={capitalize(moreInfo?.status)}
+                color={
+                  moreInfo?.status === "completed"
+                    ? "success"
+                    : moreInfo?.status === "running"
+                    ? "warning"
+                    : "error"
+                }
+              />
             </Box>
           </Grid>
         </Grid>

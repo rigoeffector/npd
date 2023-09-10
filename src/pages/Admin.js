@@ -228,7 +228,7 @@ const Admin = () => {
               ? {
                   display: "none",
                 }
-              : { display: "block", padding: '20px' }
+              : { display: "block", padding: "20px" }
           }
         >
           <Grid
@@ -362,10 +362,21 @@ const Admin = () => {
                     >
                       All Company Sites
                     </Typography>
+
                     <Button
                       variant="contained"
                       color="primary"
                       startIcon={<AddIcon />}
+                      sx={
+                        (auth && auth.data && auth.data.role === "super") ||
+                        (auth &&
+                          auth.data &&
+                          auth.data.role === "projectmanager")
+                          ? {
+                              display: "block",
+                            }
+                          : { display: "none" }
+                      }
                       onClick={showModalAddNew}
                     >
                       Add New Site
@@ -415,14 +426,18 @@ const Admin = () => {
                     >
                       All Uploaded Reports
                     </Typography>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={showModalUploadNew}
-                      startIcon={<DocumentIcon />}
-                    >
-                      Upload New Document
-                    </Button>
+                    {(auth && auth.data && auth.data.role === "super") ||
+                      (auth && auth.data && auth.data.role === "sitemanager") ||
+                      (auth && auth.data && auth.data.role === "capita" && (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={showModalUploadNew}
+                          startIcon={<DocumentIcon />}
+                        >
+                          Upload New Document
+                        </Button>
+                      ))}
                   </Box>
                 </Grid>
 

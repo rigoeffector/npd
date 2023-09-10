@@ -24,6 +24,7 @@ import Attendance from "./pages/Attendance";
 import { useSelector } from "react-redux";
 function App() {
   const { auth } = useSelector((state) => state);
+  console.log(auth);
   return (
     <>
       <ThemeConfig>
@@ -33,26 +34,23 @@ function App() {
             path="/"
             element={
               <PrivateRoute passedRole="super">
-                <DashboardLayout />
+                <DashboardLayout  />
               </PrivateRoute>
             }
           >
-            {auth && auth.data.role === "super" && (
-              <Route
-                path="/"
-                element={
-                  <PrivateRoute passedRole="super">
-                    <Navigate to="/dashboard/home" />
-                  </PrivateRoute>
-                }
-              ></Route>
-            )}
-
+            <Route
+              path="/"
+              element={
+                <PrivateRoute passedRole="super">
+                  <Navigate to="/dashboard/home" />
+                </PrivateRoute>
+              }
+            ></Route>
             <Route
               path="dashboard/associates"
               element={
-                <PrivateRoute passedRole={auth && auth.data.role}>
-                  <Associates />
+                <PrivateRoute passedRole="super">
+                  <Associates  />
                 </PrivateRoute>
               }
             ></Route>
@@ -60,19 +58,22 @@ function App() {
             <Route
               path="dashboard/associates/new/employee"
               element={
-                <PrivateRoute passedRole={auth && auth.data.role}>
+                <PrivateRoute passedRole="super">
                   <NewAssociate />
                 </PrivateRoute>
               }
             ></Route>
-            <Route
-              path="dashboard/home"
-              element={
-                <PrivateRoute passedRole={auth && auth.data.role}>
-                  <Home />
-                </PrivateRoute>
-              }
-            ></Route>
+
+                <Route
+                  path="dashboard/home"
+                  element={
+                    <PrivateRoute passedRole="super">
+                      <Home />
+                    </PrivateRoute>
+                  }
+                ></Route>
+            
+
             <Route
               exactpath="/"
               element={
@@ -89,55 +90,39 @@ function App() {
                 // </PrivateRoute>
               }
             ></Route>
-            {/* {(auth && auth.data.role === "super") ||
-              (auth && auth.data.role === "projectmanager" && ( */}
-                <Route
-                  path="/dashboard/projects"
-                  element={
-                    <PrivateRoute passedRole={auth && auth.data.role}>
-                      <MyTasks />
-                    </PrivateRoute>
-                  }
-                ></Route>
-              {/* ))} */}
-            {/* {(auth && auth.data.role === "super") ||
-              (auth && auth.data.role === "projectmanager" && ( */}
-                <Route
-                  path="/dashboard/assigned/projects"
-                  element={
-                    <PrivateRoute passedRole={auth && auth.data.role}>
-                      <AssignedProject />
-                    </PrivateRoute>
-                  }
-                ></Route>
-              {/* ))} */}
-            {/* {(auth && auth.data.role === "super") ||
-              (auth && auth.data.role === "sitemanager") ||
-              (auth && auth.data.role === "capita") ||
-              (auth && auth.data.role === "projectmanager" && ( */}
-                <Route
-                  path="/dashboard/assigned/projects/attendance"
-                  element={
-                    <PrivateRoute passedRole={auth && auth.data.role}>
-                      <Attendance />
-                    </PrivateRoute>
-                  }
-                ></Route>
-              {/* ))} */}
 
-            {/* {(auth && auth.data.role === "super") ||
-              (auth && auth.data.role === "sitemanager") ||
-              (auth && auth.data.role === "capita") ||
-              (auth && auth.data.role === "projectmanager" && ( */}
-                <Route
-                  path="dashboard/associates/newassociate"
-                  element={
-                    <PrivateRoute passedRole={auth && auth.data.role}>
-                      <NewAssociate />
-                    </PrivateRoute>
-                  }
-                ></Route>
-              {/* ))} */}
+            <Route
+              path="/dashboard/projects"
+              element={
+                <PrivateRoute passedRole="super">
+                  <MyTasks />
+                </PrivateRoute>
+              }
+            ></Route>
+            <Route
+              path="/dashboard/assigned/projects"
+              element={
+                <PrivateRoute passedRole="super">
+                  <AssignedProject />
+                </PrivateRoute>
+              }
+            ></Route>
+            <Route
+              path="/dashboard/assigned/projects/attendance"
+              element={
+                <PrivateRoute passedRole="super">
+                  <Attendance />
+                </PrivateRoute>
+              }
+            ></Route>
+            <Route
+              path="dashboard/associates/newassociate"
+              element={
+                <PrivateRoute passedRole="super">
+                  <NewAssociate />
+                </PrivateRoute>
+              }
+            ></Route>
             <Route
               path="dashboard/new/assign"
               element={
@@ -146,17 +131,14 @@ function App() {
                 </PrivateRoute>
               }
             />
-            {/* {(auth && auth.data.role === "sitemanager") ||
-              (auth && auth.data.role === "capita" && ( */}
-                <Route
-                  path="dashboard/settings/sites"
-                  element={
-                    <PrivateRoute passedRole={auth && auth.data.role}>
-                      <Admin />
-                    </PrivateRoute>
-                  }
-                ></Route>
-              {/* ))} */}
+            <Route
+              path="dashboard/settings/sites"
+              element={
+                <PrivateRoute passedRole="super">
+                  <Admin />
+                </PrivateRoute>
+              }
+            ></Route>
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<Page404 />} />

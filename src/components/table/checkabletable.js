@@ -94,7 +94,7 @@ export function DataTableCheckable(
     identifier,
     checkboxSelection = true,
     showQuickSearchToolbar = true,
-    enableReport = false,
+    enableReport = true,
   } = props;
   const [pageSize, setPageSize] = React.useState(20);
   const [isExportDropdownOpen, setIsExportDropdownOpen] = React.useState(false);
@@ -165,7 +165,7 @@ export function DataTableCheckable(
     XLSX.utils.book_append_sheet(wb, ws, "DataGrid Export");
 
     // Save the workbook as a file
-    XLSX.writeFile(wb, "npd-attendance-report.xlsx");
+    XLSX.writeFile(wb, "npd-report.xlsx");
   };
   function QuickSearchToolbar() {
     return (
@@ -173,6 +173,7 @@ export function DataTableCheckable(
         sx={{
           p: 4,
           pb: 0,
+          mb:5,
           display: "flex",
           justifyContent: "space-between",
         }}

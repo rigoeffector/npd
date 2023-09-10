@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { GET_REPORTS_LIST_REQUEST } from "../../../../reducers/reports/constants";
 
 const DocCategoriesModify = () => {
-  const { readReports } = useSelector((state) => state);
+  const { readReports, auth } = useSelector((state) => state);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch({
@@ -43,13 +43,15 @@ const DocCategoriesModify = () => {
                 <CardContent>
                   <DocumentIcon fontSize="large" color="primary" />
                   <Typography variant="h6">{r.reportName}</Typography>
-                  <Typography variant="body2">By: {r?.createdBy?.firstName} {r?.createdBy?.lastName}</Typography>
+                  <Typography variant="body2">
+                    By: {r?.createdBy?.firstName} {r?.createdBy?.lastName}
+                  </Typography>
                   <Typography variant="body2">
                     Created At: {r?.reportCreatedAt}
                   </Typography>
 
                   <Chip
-                    label={'Status:' +r.reportStatus}
+                    label={"Status:" + r.reportStatus}
                     sx={{
                       fontWeight: 600,
                       //   "& .MuiChip-label": {
@@ -67,7 +69,8 @@ const DocCategoriesModify = () => {
                     }
                     variant={
                       r.reportStatus === "pending" ? "outlined" : "contained"
-                    }/>
+                    }
+                  />
                 </CardContent>
                 <CardActions
                   sx={{
@@ -75,15 +78,19 @@ const DocCategoriesModify = () => {
                     justifyContent: "center",
                   }}
                 >
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    href={r.reportLink}
-                    target={'_blank'}
-                    startIcon={<DocumentIcon />}
-                  >
-                    Download
-                  </Button>
+                  {(auth && auth.data && auth.data.role === "super") ||
+                    (auth && auth.data && auth.data.role === "sitemanager") ||
+                    (auth && auth.data && auth.data.role === "capita" && (
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        href={r.reportLink}
+                        target={"_blank"}
+                        startIcon={<DocumentIcon />}
+                      >
+                        Download
+                      </Button>
+                    ))}
                 </CardActions>
               </Card>
             </Grid>

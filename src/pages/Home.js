@@ -46,9 +46,9 @@ const Home = () => {
     readReports,
   } = useSelector((state) => state);
 
-  const [moreInfo,setMoreInfo]= useState({})
-  const [status,setStatus]= useState('')
-  const [showUpdateModal, setShowUpdateModal]= useState(false);
+  const [moreInfo, setMoreInfo] = useState({});
+  const [status, setStatus] = useState("");
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
   useEffect(() => {
     dispatch({
       type: GET_PROJECTS_LIST_REQUEST,
@@ -66,12 +66,11 @@ const Home = () => {
     setShowUpdateModal(false);
   };
 
-
-  useEffect(()=>{
-    if(updateReport?.success){
+  useEffect(() => {
+    if (updateReport?.success) {
       handleClose();
     }
-  },[updateReport?.success])
+  }, [updateReport?.success]);
   const style = {
     position: "absolute",
     top: "50%",
@@ -88,10 +87,10 @@ const Home = () => {
 
   const handleAction = (d, st) => {
     debugger;
-    const {row}= d;
-   setMoreInfo(row);
-   setStatus(st);
-   setShowUpdateModal(true);
+    const { row } = d;
+    setMoreInfo(row);
+    setStatus(st);
+    setShowUpdateModal(true);
   };
   const columns = [
     // { field: "id", headerName: "ID", width: 70 },
@@ -169,7 +168,7 @@ const Home = () => {
       ],
     },
   ];
-  const handleConfirm =()=>{
+  const handleConfirm = () => {
     const payload = {
       id: moreInfo.id,
       updatedBy: auth && auth.data.id,
@@ -177,9 +176,9 @@ const Home = () => {
     };
     dispatch({
       type: UPDATE_REPORT_REQUEST,
-      payload
-    })
-  }
+      payload,
+    });
+  };
   return (
     <Page title=" Dashboard">
       <AlertConfirmDialog
@@ -241,11 +240,16 @@ const Home = () => {
             xs={12}
             sm={12}
             md={12}
-            sx={{
-              background: "white",
-              margin: "21px 0px",
-              borderRadius: "20px",
-            }}
+            sx={
+              (auth && auth.data && auth.data.role === "super") ||
+              (auth && auth.data && auth.data.role === "projectmanager")
+                ? {
+                    background: "white",
+                    margin: "21px 0px",
+                    borderRadius: "20px",
+                  }
+                : { display: "none" }
+            }
           >
             <Typography sx={{ fontWeight: "700", margin: "20px 0px" }}>
               Pending Reports

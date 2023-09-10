@@ -1,14 +1,17 @@
 <?php
 require_once "../../config/Connection.php";
+// Handle preflight OPTIONS request
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With");
     exit();
 }
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json");
-header('Access-Control-Allow-Methods: POST');
-header("Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With");
+
+
+header("Access-Control-Allow-Origin:*");
+header("Content-Type:application/json");
+header('Access-Control-Allow-Methods:POST');
+header("Access-Control-Allow-Headers:Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods,Authorization,X-Requested-With");
 include_once "../../models/employees/index.php";
 
 // Now you can directly use $conn

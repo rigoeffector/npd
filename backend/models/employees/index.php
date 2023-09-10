@@ -47,7 +47,7 @@ class Employees
             $query = "SELECT employees.*, sites.name AS site_name, sites.location AS site_location, sites.description AS site_description
             FROM " . $this->table . "
             LEFT JOIN sites ON employees.siteId = sites.id
-            WHERE employees.role = 'super'
+            WHERE employees.role != 'employee'
                       AND username = :username AND password = :password";
 
             // Prepare the query

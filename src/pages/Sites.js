@@ -21,7 +21,7 @@ const Sites = () => {
   const dispatch = useDispatch();
   const [showDelete, setShowDelete] = React.useState(false);
   const [deleteId, setDeleteId] = React.useState(false);
-  const { listSites, deleteSite } = useSelector((state) => state);
+  const { listSites, deleteSite, auth } = useSelector((state) => state);
 
   useEffect(() => {
     dispatch({
@@ -67,6 +67,9 @@ const Sites = () => {
       headerName: "Action",
       type: "actions",
       width: 300,
+      hide:
+        (auth && auth.data && auth.data.role !== "super") ||
+        (auth && auth.data && auth.data.role !== "projectmanager"),
       getActions: (params) => [
         // <div className="actions_button">
         //   <Button

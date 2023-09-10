@@ -12,7 +12,7 @@ const loginUserReducer = (state = initialState, action) => {
     const {type, payload} = action;
     switch (type) {
         case LOGIN_USER_LOADING:
-            return {...state, loading: payload.loading};
+            return {...state, loading: true};
         case LOGIN_USER_SUCCESS:
             return {
                 ...state,

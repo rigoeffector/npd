@@ -15,7 +15,7 @@ export function* loginRequestSaga(action) {
         const response = yield call(loginApi.auth.login, {...payload});
         if (response && response.success) {
             const ctx = buildContext(response.data || {});
-
+            
             saveState('ctx', ctx);
             yield put(success('CONTEXT', ctx));
             yield put(success(LOGIN_USER_SUCCESS, response));

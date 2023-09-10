@@ -80,6 +80,7 @@ const Attendance = () => {
     updateAttendance,
     listAttendances,
     listProjects,
+    auth
   } = useSelector((state) => state);
   React.useEffect(() => {
     dispatch({

@@ -19,7 +19,7 @@ const ThanksCard = ({ data }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
 
-  const { updateProject } = useSelector((state) => state);
+  const { updateProject, auth } = useSelector((state) => state);
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -46,9 +46,9 @@ const ThanksCard = ({ data }) => {
   };
 
   React.useEffect(() => {
-   if(updateProject.success){
-    handleMenuClose();
-   }
+    if (updateProject.success) {
+      handleMenuClose();
+    }
   }, [updateProject.success]);
   return (
     <Card>
@@ -102,35 +102,47 @@ const ThanksCard = ({ data }) => {
           <Skeleton />
         ) : (
           <Chip
-            label={ capitalize(data?.projectStatus)}
+            label={capitalize(data?.projectStatus)}
             color={
               data?.projectStatus === "completed"
                 ? "success"
-                : data?.projectStatus === "running" 
+                : data?.projectStatus === "running"
                 ? "warning"
                 : "error"
             }
           />
         )}
       </CardContent>
-      <CardActions style={{ paddingTop: "20px" }}>
-        <Menu
-          id="task-menu"
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleMenuClose}
-        >
-        <MenuItem disabled={data?.projectStatus === 'running' ? true: false}   onClick={() => handleAction("running")}>
-            Mark as Running
-          </MenuItem>
-          <MenuItem  disabled={data?.projectStatus === 'archived' ? true: false} onClick={() => handleAction("archived")}>
-            Mark as Archived
-          </MenuItem>
-          <MenuItem  disabled={data?.projectStatus === 'completed' ? true: false} onClick={() => handleAction("completed")}>
-            Mark as Completed
-          </MenuItem>
-        </Menu>
-      </CardActions>
+      {(auth && auth.data && auth.data.role === "super") ||
+        (auth && auth.data && auth.data.role === "projectmanager" && (
+          <CardActions style={{ paddingTop: "20px" }}>
+            <Menu
+              id="task-menu"
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem
+                disabled={data?.projectStatus === "running" ? true : false}
+                onClick={() => handleAction("running")}
+              >
+                Mark as Running
+              </MenuItem>
+              <MenuItem
+                disabled={data?.projectStatus === "archived" ? true : false}
+                onClick={() => handleAction("archived")}
+              >
+                Mark as Archived
+              </MenuItem>
+              <MenuItem
+                disabled={data?.projectStatus === "completed" ? true : false}
+                onClick={() => handleAction("completed")}
+              >
+                Mark as Completed
+              </MenuItem>
+            </Menu>
+          </CardActions>
+        ))}
     </Card>
   );
 };

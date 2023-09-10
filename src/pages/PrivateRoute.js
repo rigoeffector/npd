@@ -7,28 +7,29 @@ import { Stack } from "@mui/material";
 import { useSelector } from "react-redux";
 
 const PrivateRoute = ({ children, passedRole }) => {
- const {
-    auth: { data, loading, message, success, error },
+  const {
+    auth,
   } = useSelector((state) => state);
 
-  
   let location = useLocation();
 
-  if (data?.role === undefined) {
-    return <Navigate to="/login" state={{ from: location }} />;
-
-  } else if (data?.role === null) {
-    console.log("ting to", location);
+  if (Object.keys(auth).length === 0) {
     return <Navigate to="/login" state={{ from: location }} />;
   } else {
-    if (data?.role === "super") {
-      if (!data?.role) {
-        return <Page403 />;
+    if (auth && auth.data && auth && auth.data?.role === undefined) {
+      return <Navigate to="/login" state={{ from: location }} />;
+    } else if (auth && auth.data && auth && auth.data?.role === null) {
+      console.log("ting to", location);
+      return <Navigate to="/login" state={{ from: location }} />;
+    } else {
+      if (auth && auth.data && auth && auth.data?.role === "super") {
+        if (!auth && auth.data && !auth && auth.data?.role) {
+          return <Page403 />;
+        }
       }
+      return children;
     }
-    return children;
   }
-  // return <Navigate to="/login" state={{ from: location }} />;
 };
 
 export default PrivateRoute;

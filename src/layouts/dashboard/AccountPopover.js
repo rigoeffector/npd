@@ -68,7 +68,7 @@ export default function AccountPopover() {
             }),
           }}
         >
-          <Avatar src={'/images/user.jpeg'} />
+          <Avatar src={''} alt="hello" />
         </IconButton>
       {/* )} */}
 
