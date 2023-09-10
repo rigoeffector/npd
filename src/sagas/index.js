@@ -9,6 +9,10 @@ import { watchDeleteSiteData } from "./sites/delete";
 import { watchUpdateSiteData } from "./sites/update";
 import { watchCreateEmployeeData } from "./employees/create";
 import { watchDeleteEmployeeData } from "./employees/delete";
+import { watchCreateProjectData } from "./project/create";
+import { watchListProjectsData } from "./project/read";
+import { watchUpdateProjectData } from "./project/update";
+import { watchDeleteProjectData } from "./project/delete";
 
 export default function* rootSaga() {
   yield all([
@@ -21,6 +25,10 @@ export default function* rootSaga() {
     fork(watchDeleteSiteData),
     fork(watchUpdateSiteData),
     fork(watchCreateEmployeeData),
-    fork(watchDeleteEmployeeData)
+    fork(watchDeleteEmployeeData),
+    fork(watchCreateProjectData),
+    fork(watchListProjectsData),
+    fork(watchUpdateProjectData),
+    fork(watchDeleteProjectData)
   ]);
 }

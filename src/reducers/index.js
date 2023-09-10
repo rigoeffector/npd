@@ -13,6 +13,10 @@ import updateSiteReducer from "./sites/update";
 import deleteSiteReducer from "./sites/delete";
 import createEmployeeReducer from "./employees/create";
 import deleteEmployeeReducer from "./employees/delete";
+import createProjectReducer from "./project/create";
+import listProjectsReducer from "./project/read";
+import updateProjectReducer from "./project/update";
+import deleteProjectReducer from "./project/delete";
 
 const rootReducer = combineReducers({
   auth: loginUserReducer,
@@ -28,6 +32,10 @@ const rootReducer = combineReducers({
   deleteSite: deleteSiteReducer,
   createEmployee: createEmployeeReducer,
   deleteEmployee: deleteEmployeeReducer,
+  createProject:createProjectReducer,
+  listProjects:listProjectsReducer,
+  updateProject:updateProjectReducer,
+  deleteProject:deleteProjectReducer
 });
 
 export default rootReducer;
