@@ -12,7 +12,7 @@ $reports = new Reports($db);
 
 // Get the data from the request body as JSON
 $data = json_decode(file_get_contents("php://input"), true);
-
+ 
 if (!empty($data)) {
     // Call the create function to insert a new report
     if ($reports->create($data)) {
@@ -30,7 +30,7 @@ if (!empty($data)) {
             "status" => "error",
             "error" => true,
             "success" => false,
-            "message" => "Report is not created successfully. A report with the same name already exists."
+            "message" => "Error occurred while creating the report."
         );
         echo json_encode($response);
     }

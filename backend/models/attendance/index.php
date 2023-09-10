@@ -29,59 +29,60 @@ class Attendance
     // Modify the create function in the Attendance class
     // Refactored create function
     // Refactored create function
+  
     public function create($data)
     {
         try {
             // set the PDO error mode to exception
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+    
             foreach ($data as $record) {
                 $projectId = $record["projectId"];
                 $employeeId = $record["employeeId"];
                 $status = $record["status"];
-
+    
                 // Assuming 'time' is a date column in the database
                 $time = date('Y-m-d'); // Use the current date as 'time'
                 $timestamp = time(); // Replace with your actual timestamp or date value
-
+    
                 // Format the date as a full date with time (e.g., "2023-09-09 14:30:00")
                 $formattedDate = date('Y-m-d H:i:s', $timestamp); // Use the current date as 'time'
-
-                if (!$this->attendanceExists($projectId, $employeeId, $time)) {
-                    // No record with the same projectId, employeeId, and time exists, proceed with insertion
-                    $insertStmt = $this->conn->prepare("INSERT INTO $this->table (projectId, employeeId, time, status) 
-                            VALUES (:projectId, :employeeId, :time, :status)");
+    
+                if (!$this->attendanceExists($projectId, $employeeId,)) {
+                    // No record with the same projectId, employeeId, status, and time exists, proceed with insertion
+                    $insertStmt = $this->conn->prepare("INSERT INTO $this->table (projectId, employeeId) 
+                            VALUES (:projectId, :employeeId)");
                     $insertStmt->bindParam(':projectId', $projectId);
                     $insertStmt->bindParam(':employeeId', $employeeId);
-                    $insertStmt->bindParam(':time', $formattedDate);
-                    $insertStmt->bindParam(':status', $status);
+                    // $insertStmt->bindParam(':time', $formattedDate);
+                    // $insertStmt->bindParam(':status', $status);
                     $insertStmt->execute();
                 } else {
-                    // A record with the same projectId, employeeId, and time already exists, throw an error
-                    throw new Exception("Attendance record for employeeId $employeeId on projectId $projectId for date $time already exists.");
+                    // A record with the same projectId, employeeId, status, and time already exists, throw an error
+                    throw new Exception("Attendance record for employeeId $employeeId on projectId $projectId with status $status for date $time already exists.");
                 }
             }
-
+    
             return true; // Return a success indicator if all insertions were successful.
         } catch (PDOException $e) {
             // Handle any database errors here.
             return false; // Return a failure indicator if an error occurred.
         }
     }
-
+    
     // Function to check if an attendance record already exists
-    private function attendanceExists($projectId, $employeeId, $time)
+    private function attendanceExists($projectId, $employeeId)
     {
-        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM $this->table WHERE projectId = :projectId AND employeeId = :employeeId AND time = :time");
+        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM $this->table WHERE projectId = :projectId AND employeeId = :employeeId");
         $stmt->bindParam(':projectId', $projectId);
         $stmt->bindParam(':employeeId', $employeeId);
-        $stmt->bindParam(':time', $time);
+        // $stmt->bindParam(':status', $status);
         $stmt->execute();
         $count = $stmt->fetchColumn();
-
+    
         return ($count !== false && $count > 0);
     }
-
+    
 
 
 
@@ -141,7 +142,7 @@ class Attendance
     {
         try {
             $query = "SELECT 
-               a.id AS attendanceId,
+               a.id,
                a.projectId AS projectId,
                a.employeeId AS employeeId,
                a.time AS attendanceTime,

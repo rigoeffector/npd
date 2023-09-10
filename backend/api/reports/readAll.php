@@ -10,8 +10,6 @@ include_once "../../models/reports/index.php";
 $db = $conn;
 $report = new Reports($db);
 
-// ... Other headers and includes ...
-
 // Call the readAll function to retrieve all reports with createdBy and updatedBy details
 $result = $report->readAll();
 
@@ -23,6 +21,7 @@ if ($result) {
 
         $report_item = array(
             "reportId" => $reportId,
+            "id" => $id,
             "reportName" => $reportName,
             "reportStatus" => $reportStatus,
             "reportLink" => $reportLink,
@@ -43,8 +42,16 @@ if ($result) {
         array_push($report_arr, $report_item);
     }
 
-    // Send the JSON response
-    echo json_encode($report_arr);
+    // Send the JSON response with the same format
+    $response = array(
+        "status" => "success",
+        "error" => false,
+        "success" => true,
+        "message" => "Reports retrieved successfully.",
+        "data" => $report_arr // Use the report_arr as the data
+    );
+
+    echo json_encode($response);
 } else {
     // No reports found or an error occurred
     $response = array(
@@ -56,3 +63,4 @@ if ($result) {
     );
     echo json_encode($response);
 }
+?>

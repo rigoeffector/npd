@@ -9,7 +9,9 @@ import { useFormik } from "formik";
 const NewSiteForm = () => {
   const CREATE_SITE_REQUEST = "CREATE_SITE_REQUEST";
   const dispatch = useDispatch();
-  const { createSite } = useSelector((state) => state);
+  const { createSite,createReport } = useSelector((state) => state);
+ 
+
   const validationSchema = Yup.object({
     name: Yup.string().required("Name is required").nullable(),
     location: Yup.string().required("Location is required").nullable(),

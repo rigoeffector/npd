@@ -10,6 +10,7 @@ import {
   TextField,
   MenuItem,
   Typography,
+  Alert,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useAuth } from "../utils/context/AuthContext";
@@ -34,6 +35,7 @@ const Thanks = () => {
       success,
       loading: listAssignEmployeesLoading,
     },
+    updateProject,
   } = useSelector((state) => state);
 
   useEffect(() => {
@@ -94,6 +96,32 @@ const Thanks = () => {
             </Grid>
           </Grid>
         </Box>
+        <Typography
+          sx={{
+            fontWeight: '700',
+            margin: "20px 0px",
+          }}
+        >
+          Change Project Status
+        </Typography>
+        <Box
+          sx={{
+            margin: "20px 0px",
+          }}
+        >
+          {updateProject &&
+            !updateProject?.success &&
+            updateProject.message && (
+              <Alert variant="filled" severity="error">
+                {updateProject?.message}
+              </Alert>
+            )}
+          {updateProject && updateProject?.success && updateProject.message && (
+            <Alert variant="filled" severity="success">
+              {updateProject?.message}
+            </Alert>
+          )}
+        </Box>
 
         <Grid
           item
@@ -104,20 +132,20 @@ const Thanks = () => {
             flexWrap: "wrap",
           }}
         >
-           {listAssignEmployeesLoading ? (
-          <CircularProgress />
-        ) : (
-          <>
-            {/* Check if listAssignEmployeesData is not null or undefined */}
-            {listAssignEmployeesData && listAssignEmployeesData.length > 0 ? (
-              listAssignEmployeesData.map((item) => (
-                <ThanksCard key={item.assignmentId} data={item} />
-              ))
-            ) : (
-              <p>No assigned projects found.</p>
-            )}
-          </>
-        )}
+          {listAssignEmployeesLoading || updateProject?.loading ? (
+            <CircularProgress />
+          ) : (
+            <>
+              {/* Check if listAssignEmployeesData is not null or undefined */}
+              {listAssignEmployeesData && listAssignEmployeesData.length > 0 ? (
+                listAssignEmployeesData.map((item) => (
+                  <ThanksCard key={item.assignmentId} data={item} />
+                ))
+              ) : (
+                <p>No assigned projects found.</p>
+              )}
+            </>
+          )}
         </Grid>
       </Page>
     </>

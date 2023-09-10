@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Sep 10, 2023 at 12:29 PM
+-- Generation Time: Sep 10, 2023 at 08:51 PM
 -- Server version: 5.7.39
 -- PHP Version: 8.2.0
 
@@ -54,6 +54,13 @@ CREATE TABLE `assign` (
   `projectId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `assign`
+--
+
+INSERT INTO `assign` (`id`, `employeeId`, `projectId`) VALUES
+(1, 12, 6);
+
 -- --------------------------------------------------------
 
 --
@@ -67,6 +74,14 @@ CREATE TABLE `attendance` (
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` varchar(255) NOT NULL DEFAULT 'present'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `attendance`
+--
+
+INSERT INTO `attendance` (`id`, `projectId`, `employeeId`, `time`, `status`) VALUES
+(16, 5, 10, '2023-09-10 15:19:52', 'absent'),
+(17, 6, 10, '2023-09-10 15:19:52', 'absent');
 
 -- --------------------------------------------------------
 
@@ -104,7 +119,7 @@ INSERT INTO `employees` (`id`, `fname`, `lname`, `idnumber`, `phonenumber`, `age
 (5, 'Sandrine', 'Isheja', '1199380041412204', '0784567890', '30', '34000', 'Male', 2, 'super', '2023-09-12', '1993-09-12', 'MUKANSKUSI', 'Marthe', '0784638209', 'Sister', 'www.google.com', 'admin@gmail.com', '12345'),
 (10, 'MUSANA', 'Manzi', '1199080041412209', '0784673890', '23', '670000', 'Female', 1, 'capita', '2023-09-10', '1993-01-10', 'MUKUNZI', 'Yannick', '0785678902', 'Father', 'https://firebasestorage.googleapis.com/v0/b/daada-poducts-images.appspot.com/o/products%2F5.png?alt=media&token=059bcfe9-9147-402c-ab30-f556a7332439', 'MUKUNZI234@gmail.com', '12345'),
 (11, 'MANZI Morris', 'Gasangwa', '1199380041412208', '0784567890', '30', '34000', 'Male', 2, 'projectmanager', '2023-09-12', '1993-09-12', 'MUKANSKUSI', 'Marthe', '0784638209', 'Sister', 'www.google.com', 'manzi23@gmail.com', '12345'),
-(12, 'Dophin Morris', 'CYUSA', '1199380041412201', '0784567892', '30', '34000', 'Male', 2, 'projectmanager', '2023-09-12', '1993-09-12', 'MUKANSKUSI', 'Marthe', '0784638209', 'Sister', 'www.google.com', 'manzi23@gmail.com', '12345');
+(12, 'Dophin Morris', 'CYUSA', '1199380041412201', '0784567892', '30', '34000', 'Male', 2, 'sitemanager', '2023-09-12', '1993-09-12', 'MUKANSKUSI', 'Marthe', '0784638209', 'Sister', 'www.google.com', 'manzi23@gmail.com', '12345');
 
 -- --------------------------------------------------------
 
@@ -148,6 +163,17 @@ CREATE TABLE `reports` (
   `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `reports`
+--
+
+INSERT INTO `reports` (`id`, `name`, `createdBy`, `status`, `updatedBy`, `link`, `createdAt`, `description`) VALUES
+(16, 'Sept2', 10, 'pending', 10, 'www.google.com', '2023-09-10 18:37:31', 'pending'),
+(17, 'Sept2', 10, 'pending', 10, 'www.google.com', '2023-09-10 18:38:11', 'pending'),
+(18, 'report', 5, 'approved', 5, 'https://firebasestorage.googleapis.com/v0/b/daada-poducts-images.appspot.com/o/products%2FShield%20kids%20requirements.pdf?alt=media&token=c1176cd5-38fa-465b-957e-cc7d99832ca1', '2023-09-10 18:58:04', 'Work Report'),
+(19, 'Septermber Logistic', 5, 'rejected', 5, 'Array', '2023-09-10 19:26:50', 'Sawa'),
+(20, 'Septermber Logistics', 5, 'pending', 5, 'Array', '2023-09-10 19:27:26', 'Sawaaaa');
 
 -- --------------------------------------------------------
 
@@ -230,13 +256,13 @@ ALTER TABLE `sites`
 -- AUTO_INCREMENT for table `assign`
 --
 ALTER TABLE `assign`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `employees`
@@ -254,7 +280,7 @@ ALTER TABLE `projects`
 -- AUTO_INCREMENT for table `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `sites`

@@ -115,24 +115,25 @@ class Employees
         }
     }
     // Update function in Employees class
-public function update($data) {
-    try {
-        // Set the PDO error mode to exception
-        $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    public function update($data)
+    {
+        try {
+            // Set the PDO error mode to exception
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // Check if the record to be updated exists
-        $checkStmt = $this->conn->prepare("SELECT COUNT(*) FROM " . $this->table . " WHERE id = :id");
-        $checkStmt->bindParam(':id', $data["id"]);
-        $checkStmt->execute();
-        $count = $checkStmt->fetchColumn();
+            // Check if the record to be updated exists
+            $checkStmt = $this->conn->prepare("SELECT COUNT(*) FROM " . $this->table . " WHERE id = :id");
+            $checkStmt->bindParam(':id', $data["id"]);
+            $checkStmt->execute();
+            $count = $checkStmt->fetchColumn();
 
-        if ($count === 0) {
-            // The record with the specified ID does not exist, return false
-            return false;
-        }
+            if ($count === 0) {
+                // The record with the specified ID does not exist, return false
+                return false;
+            }
 
-        // Proceed with the update
-        $updateStmt = $this->conn->prepare("UPDATE " . $this->table . " SET
+            // Proceed with the update
+            $updateStmt = $this->conn->prepare("UPDATE " . $this->table . " SET
             fname = :fname,
             lname = :lname,
             idnumber = :idnumber,
@@ -153,105 +154,133 @@ public function update($data) {
             password=:password
             WHERE id = :id");
 
-        $updateStmt->execute([
-            "fname" => $data["fname"],
-            "lname" => $data["lname"],
-            "idnumber" => $data["idnumber"],
-            "phonenumber" => $data["phonenumber"],
-            "age" => $data["age"],
-            "salary" => $data["salary"],
-            "gender" => $data["gender"],
-            "siteId" => $data["siteId"],
-            "role" => $data["role"],
-            "startdate" => $data["startdate"],
-            "dob" => $data["dob"],
-            "emfname" => $data["emfname"],
-            "emlname" => $data["emlname"],
-            "emphone" => $data["emphone"],
-            "emrelation" => $data["emrelation"],
-            "doclink" => $data["doclink"],
-            "id" => $data["id"],
-            "username" => $data["username"],
-            "password"=>$data["password"]
-        ]);
+            $updateStmt->execute([
+                "fname" => $data["fname"],
+                "lname" => $data["lname"],
+                "idnumber" => $data["idnumber"],
+                "phonenumber" => $data["phonenumber"],
+                "age" => $data["age"],
+                "salary" => $data["salary"],
+                "gender" => $data["gender"],
+                "siteId" => $data["siteId"],
+                "role" => $data["role"],
+                "startdate" => $data["startdate"],
+                "dob" => $data["dob"],
+                "emfname" => $data["emfname"],
+                "emlname" => $data["emlname"],
+                "emphone" => $data["emphone"],
+                "emrelation" => $data["emrelation"],
+                "doclink" => $data["doclink"],
+                "id" => $data["id"],
+                "username" => $data["username"],
+                "password" => $data["password"]
+            ]);
 
-        return true; // Return a success indicator if the update was successful.
-    } catch (PDOException $e) {
-        // Handle any database errors here.
-        return false; // Return a failure indicator if an error occurred.
+            return true; // Return a success indicator if the update was successful.
+        } catch (PDOException $e) {
+            // Handle any database errors here.
+            return false; // Return a failure indicator if an error occurred.
+        }
     }
-}
 
 
-    public function readAll() {
+    public function readAll()
+    {
         try {
             // Set the PDO error mode to exception
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
+
             // Define the SQL query with a JOIN statement
             $query = "SELECT employees.*, sites.name AS site_name, sites.location AS site_location, sites.description AS site_description
             FROM " . $this->table . "
             LEFT JOIN sites ON employees.siteId = sites.id
             WHERE employees.role != 'super'";
-  
-    
+
+
             // Prepare and execute the query
             $stmt = $this->conn->prepare($query);
             $stmt->execute();
-    
+
             return $stmt;
         } catch (PDOException $e) {
             // Handle any database errors here.
             return false;
         }
     }
+
+    public function readByOther()
+    {
+        try {
+            // Set the PDO error mode to exception
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-    // Delete function in Employees class
-public function delete($id) {
-    try {
-        // Set the PDO error mode to exception
-        $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        // Check if the record to be deleted exists
-        $checkStmt = $this->conn->prepare("SELECT COUNT(*) FROM " . $this->table . " WHERE id = :id");
-        $checkStmt->bindParam(':id', $id);
-        $checkStmt->execute();
-        $count = $checkStmt->fetchColumn();
-
-        if ($count === 0) {
-            // The record with the specified ID does not exist, return false
-            return false;
+            // SQL query to retrieve user data based on username and password
+            $query = "SELECT employees.*, sites.name AS site_name, sites.location AS site_location, sites.description AS site_description
+                      FROM " . $this->table . "
+                      LEFT JOIN sites ON employees.siteId = sites.id
+                      WHERE employees.role IN ('employee', 'capita', 'sitemanager')";
+    
+            // Prepare the query
+            $stmt = $this->conn->prepare($query);
+    
+            // Execute the query
+            $stmt->execute();
+    
+            // Fetch and return all results as an array
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            // Handle any database errors here.
+            return null; // Return null if an error occurred.
         }
-
-        // Proceed with the delete
-        $deleteStmt = $this->conn->prepare("DELETE FROM " . $this->table . " WHERE id = :id");
-        $deleteStmt->bindParam(':id', $id);
-        $deleteStmt->execute();
-
-        return true; // Return a success indicator if the delete was successful.
-    } catch (PDOException $e) {
-        // Handle any database errors here.
-        return false; // Return a failure indicator if an error occurred.
     }
-}
+    
 
-// Read employees by role function in Employees class
-public function readByRole($role) {
-    try {
-        // Set the PDO error mode to exception
-        $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // Delete function in Employees class
+    public function delete($id)
+    {
+        try {
+            // Set the PDO error mode to exception
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // Prepare SQL statement to retrieve employees by role
-        $stmt = $this->conn->prepare("SELECT * FROM " . $this->table . " WHERE role = :role");
-        $stmt->bindParam(':role', $role);
-        $stmt->execute();
+            // Check if the record to be deleted exists
+            $checkStmt = $this->conn->prepare("SELECT COUNT(*) FROM " . $this->table . " WHERE id = :id");
+            $checkStmt->bindParam(':id', $id);
+            $checkStmt->execute();
+            $count = $checkStmt->fetchColumn();
 
-        return $stmt; // Return the result set
-    } catch (PDOException $e) {
-        // Handle any database errors here.
-        return null; // Return null if an error occurred.
+            if ($count === 0) {
+                // The record with the specified ID does not exist, return false
+                return false;
+            }
+
+            // Proceed with the delete
+            $deleteStmt = $this->conn->prepare("DELETE FROM " . $this->table . " WHERE id = :id");
+            $deleteStmt->bindParam(':id', $id);
+            $deleteStmt->execute();
+
+            return true; // Return a success indicator if the delete was successful.
+        } catch (PDOException $e) {
+            // Handle any database errors here.
+            return false; // Return a failure indicator if an error occurred.
+        }
     }
-}
 
+    // Read employees by role function in Employees class
+    public function readByRole($role)
+    {
+        try {
+            // Set the PDO error mode to exception
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+            // Prepare SQL statement to retrieve employees by role
+            $stmt = $this->conn->prepare("SELECT * FROM " . $this->table . " WHERE role = :role");
+            $stmt->bindParam(':role', $role);
+            $stmt->execute();
+
+            return $stmt; // Return the result set
+        } catch (PDOException $e) {
+            // Handle any database errors here.
+            return null; // Return null if an error occurred.
+        }
+    }
 }

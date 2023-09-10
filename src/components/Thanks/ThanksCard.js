@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -13,6 +13,7 @@ import {
 import { MoreVert as MoreVertIcon } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { UPDATE_PROJECT_REQUEST } from "../../reducers/project/constants";
+import { capitalize } from "lodash";
 
 const ThanksCard = ({ data }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -29,7 +30,7 @@ const ThanksCard = ({ data }) => {
   };
   const handleAction = (status) => {
     const payload = {
-      id: data?.assignmentId,
+      id: data?.projectId,
       name: data?.projectName,
       managerId: data?.projectManagerId,
       siteId: data?.projectSiteId,
@@ -44,6 +45,11 @@ const ThanksCard = ({ data }) => {
     });
   };
 
+  React.useEffect(() => {
+   if(updateProject.success){
+    handleMenuClose();
+   }
+  }, [updateProject.success]);
   return (
     <Card>
       <CardActions
@@ -96,8 +102,14 @@ const ThanksCard = ({ data }) => {
           <Skeleton />
         ) : (
           <Chip
-            label={data?.projectStatus}
-            color={data?.projectStatus === "completed" ? "success" : "primary"}
+            label={ capitalize(data?.projectStatus)}
+            color={
+              data?.projectStatus === "completed"
+                ? "success"
+                : data?.projectStatus === "running" 
+                ? "warning"
+                : "error"
+            }
           />
         )}
       </CardContent>
@@ -108,10 +120,13 @@ const ThanksCard = ({ data }) => {
           open={Boolean(anchorEl)}
           onClose={handleMenuClose}
         >
-          <MenuItem onClick={() => handleAction("archived")}>
+        <MenuItem disabled={data?.projectStatus === 'running' ? true: false}   onClick={() => handleAction("running")}>
+            Mark as Running
+          </MenuItem>
+          <MenuItem  disabled={data?.projectStatus === 'archived' ? true: false} onClick={() => handleAction("archived")}>
             Mark as Archived
           </MenuItem>
-          <MenuItem onClick={() => handleAction("completed")}>
+          <MenuItem  disabled={data?.projectStatus === 'completed' ? true: false} onClick={() => handleAction("completed")}>
             Mark as Completed
           </MenuItem>
         </Menu>

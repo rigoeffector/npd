@@ -1,14 +1,10 @@
 <?php
 require_once "../../config/Connection.php";// Handle preflight OPTIONS request
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With");
-    exit();
-}
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin:*");
 header("Content-Type:application/json");
 header('Access-Control-Allow-Methods:PUT');
 header("Access-Control-Allow-Headers:Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods,Authorization,X-Requested-With");
+
 include_once "../../models/projects/index.php";
 
 // Now you can directly use $conn
@@ -26,6 +22,7 @@ if (
     isset($data->siteId) &&
     isset($data->startdate) &&
     isset($data->enddate) &&
+    isset($data->status) &&
     isset($data->description)
 ) {
     // Call the update function to update the project
@@ -35,7 +32,7 @@ if (
             "status" => "success",
             "error" => false,
             "success" => true,
-            "message" => "Project with ID $data->id has been updated."
+            "message" => "Project  has been updated."
         );
         echo json_encode($response);
     } else {
@@ -44,7 +41,7 @@ if (
             "status" => "error",
             "error" => true,
             "success" => false,
-            "message" => "Project with ID $data->id was not updated. An error occurred or the project does not exist."
+            "message" => "Project  was not updated. An error occurred or the project does not exist."
         );
         echo json_encode($response);
     }

@@ -18,7 +18,7 @@ if ($result) {
         extract($row);
 
         $attendance_item = array(
-            "attendanceId" => $attendanceId,
+            "id" => $id,
             "projectId" => $projectId,
             "employeeId" => $employeeId,
             "attendanceTime" => $attendanceTime,

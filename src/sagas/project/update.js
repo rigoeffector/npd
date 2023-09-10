@@ -13,6 +13,8 @@ import {
 } from '../../reducers/project/constants';
 import {projectApi} from '../../api/project';
 import {  listProjectsRequestSaga } from './read';
+import { GET_ASSIGN_EMPLOYEES_LIST_REQUEST } from '../../reducers/assign/constants';
+import { listAssignEmployeesRequestSaga } from '../assign/read';
 
 
 
@@ -27,6 +29,9 @@ export function* updateProjectRequestSaga(action) {
             yield* listProjectsRequestSaga({
                 type: GET_PROJECTS_LIST_REQUEST,
             });
+            yield * listAssignEmployeesRequestSaga({
+                type:GET_ASSIGN_EMPLOYEES_LIST_REQUEST
+            })
             yield delay(2000);
             yield put({type: UPDATE_PROJECT_RESET})
         } else {

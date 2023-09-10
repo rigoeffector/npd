@@ -113,7 +113,7 @@ export default function DashboardNavbar({ onOpenSidebar }) {
           {/* <Grid item>
             <Grid container direction="rows" justifyContent="flex-end">
               <Grid item> */}
-          <NotificationsPopover />
+          {/* <NotificationsPopover /> */}
           {/* </Grid>
 
               <Grid item> */}

@@ -17,6 +17,7 @@ $data = json_decode(file_get_contents("php://input"), true); // Add true to deco
 if (is_array($data)) {
     // Call the create function to insert multiple attendance records
     try {
+        // Modified create function that checks for duplicates
         if ($attendance->create($data)) {
             // Successfully inserted attendance records
             $response = array(

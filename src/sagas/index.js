@@ -14,6 +14,16 @@ import { watchListProjectsData } from "./project/read";
 import { watchUpdateProjectData } from "./project/update";
 import { watchDeleteProjectData } from "./project/delete";
 import { watchListEmployeesByRoleData } from "./employees/readByRole";
+import { watchListEmployeesByOthersData } from "./employees/readByOther";
+import { watchCreateAssignEmployeeData } from "./assign/create";
+import { watchListAttendancesData } from "./attendance/read";
+import { watchCreateAttendanceEmployeeData } from "./attendance/create";
+import { watchDeleteAttendanceEmployeeData } from "./attendance/delete";
+import { watchUpdateAttendanceEmployeeData } from "./attendance/update";
+import { watchListReportsData } from "./reports/read";
+import { watchCreateReportData } from "./reports/create";
+import { watchDeleteReportData } from "./reports/delete";
+import { watchUpdateReportData } from "./reports/update";
 
 export default function* rootSaga() {
   yield all([
@@ -31,6 +41,16 @@ export default function* rootSaga() {
     fork(watchListProjectsData),
     fork(watchUpdateProjectData),
     fork(watchDeleteProjectData),
-    fork(watchListEmployeesByRoleData)
+    fork(watchListEmployeesByRoleData),
+    fork(watchListEmployeesByOthersData),
+    fork(watchCreateAssignEmployeeData),
+    fork(watchListAttendancesData),
+    fork(watchCreateAttendanceEmployeeData),
+    fork(watchDeleteAttendanceEmployeeData),
+    fork(watchUpdateAttendanceEmployeeData),
+    fork(watchListReportsData),
+    fork(watchCreateReportData),
+    fork(watchDeleteReportData),
+    fork(watchUpdateReportData)
   ]);
 }

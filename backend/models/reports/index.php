@@ -38,18 +38,7 @@ class Reports
             // set the PDO error mode to exception
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-            // Check if a record with the same name already exists
-            $stmt = $this->conn->prepare("SELECT COUNT(*) FROM $this->table WHERE name = :name");
-            $stmt->bindParam(':name', $data["name"]);
-            $stmt->execute();
-            $count = $stmt->fetchColumn();
-    
-            if ($count > 0) {
-                // A report with the same name already exists, return false
-                return false;
-            }
-    
-            // No record with the same name exists, proceed with insertion
+            // Proceed with insertion
             $insertStmt = $this->conn->prepare("INSERT INTO $this->table (name, createdBy, status, updatedBy, link, createdAt, description) 
                             VALUES (:name, :createdBy, :status, :updatedBy, :link, NOW(), :description)");
             $insertStmt->execute([
@@ -58,7 +47,7 @@ class Reports
                 "status" => $data["status"],
                 "updatedBy" => $data["updatedBy"],
                 "link" => $data["link"],
-                "description" => $data['description']
+                "description" => $data["description"]
             ]);
     
             return true; // Return a success indicator if the insert was successful.
@@ -67,6 +56,8 @@ class Reports
             return false; // Return a failure indicator if an error occurred.
         }
     }
+    
+    
     
 
     
@@ -116,6 +107,7 @@ public function readAll()
     try {
         $query = "SELECT 
             r.id AS reportId,
+            r.id,
             r.name AS reportName,
             r.status AS reportStatus,
             r.link AS reportLink,

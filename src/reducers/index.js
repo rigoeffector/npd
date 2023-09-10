@@ -17,6 +17,15 @@ import createProjectReducer from "./project/create";
 import listProjectsReducer from "./project/read";
 import updateProjectReducer from "./project/update";
 import deleteProjectReducer from "./project/delete";
+import getListEmployeesByOthersReducer from "./employees/readByOther";
+import createAttendanceReducer from "./attendance/create";
+import getAttendanceReducer from "./attendance/read";
+import updateAttendanceReducer from "./attendance/update";
+import filterAttendanceReducer from "./attendance/filter";
+import createReportReducer from "./reports/create";
+import deleteReportReducer from "./reports/delete";
+import updateReportReducer from "./reports/update";
+import listReportReducer from "./reports/read";
 
 const rootReducer = combineReducers({
   auth: loginUserReducer,
@@ -35,7 +44,16 @@ const rootReducer = combineReducers({
   createProject:createProjectReducer,
   listProjects:listProjectsReducer,
   updateProject:updateProjectReducer,
-  deleteProject:deleteProjectReducer
+  deleteProject:deleteProjectReducer,
+  listEmployeesByOthers:getListEmployeesByOthersReducer,
+  createAttendance: createAttendanceReducer,
+  listAttendances: getAttendanceReducer,
+  updateAttendance:updateAttendanceReducer,
+  filterAttendance: filterAttendanceReducer,
+  createReport: createReportReducer,
+  deleteReport: deleteReportReducer,
+  updateReport: updateReportReducer,
+  readReports:listReportReducer
 });
 
 export default rootReducer;

@@ -10,6 +10,7 @@ import {
   CircularProgress,
   Alert,
   Skeleton,
+  Chip,
 } from "@mui/material";
 import {
   Button,
@@ -36,6 +37,7 @@ import AlertConfirmDialog from "../components/modal/confitm";
 import { GET_EMPLOYEES_LIST_BYROLE_REQUEST } from "../reducers/employees/constants";
 import { GET_SITES_LIST_REQUEST } from "../reducers/sites/constants";
 import moment from "moment";
+import { capitalize } from "lodash";
 
 const MyTasks = () => {
   // const { userData } = useAuth();
@@ -123,6 +125,18 @@ const MyTasks = () => {
       field: "status",
       headerName: "Status",
       width: 150,
+      renderCell: (params) => (
+        <Chip
+          label={capitalize(params.row?.status)}
+          color={
+            params.row?.status === "completed"
+              ? "success"
+              : params.row?.status === "running"
+              ? "warning"
+              : "error"
+          }
+        />
+      ),
     },
 
     {
@@ -505,7 +519,7 @@ const MyTasks = () => {
                   alignItems="center"
                 >
                   <Typography variant="h6" color="black">
-                    My Projects
+                  All Projects
                   </Typography>
                   <Box
                     sx={{
@@ -555,13 +569,11 @@ const MyTasks = () => {
                       minWidth: "25px",
                     }}
                   >
-                    {
-                      data &&
+                    {data &&
                       data.length &&
                       data &&
-                      data.filter(
-                        (project) => project.status === "running"
-                      ).length}
+                      data.filter((project) => project.status === "running")
+                        .length}
                   </Box>
                 </Stack>
               </Box>
@@ -599,13 +611,11 @@ const MyTasks = () => {
                       minWidth: "25px",
                     }}
                   >
-                    {
-                      data &&
+                    {data &&
                       data.length &&
                       data &&
-                      data.filter(
-                        (project) => project.status === "completed"
-                      ).length}
+                      data.filter((project) => project.status === "completed")
+                        .length}
                   </Box>
                 </Stack>
               </Box>
@@ -778,14 +788,18 @@ const MyTasks = () => {
               }}
             >
               <Typography>Status</Typography>
-              <Typography
-                sx={{
-                  fontWeight: "700",
-                  color: "#494577",
-                }}
-              >
-                {moreInfo?.status}
-              </Typography>
+
+              <Chip
+          label={capitalize(moreInfo?.status)}
+          color={
+            moreInfo?.status === "completed"
+              ? "success"
+              : moreInfo?.status === "running"
+              ? "warning"
+              : "error"
+          }
+        />
+             
             </Box>
           </Grid>
         </Grid>

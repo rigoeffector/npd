@@ -21,7 +21,6 @@ export function* createProjectRequestSaga(action) {
         yield put(loading(CREATE_PROJECT_LOADING, {loading: true}));
         const {payload} = action;
         const response = yield call(projectApi.project.create,{...payload});
-        debugger;
         if (response && response.success) {
             yield put(success(CREATE_PROJECT_SUCCESS, response));
             yield* listProjectsRequestSaga({

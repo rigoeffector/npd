@@ -69,6 +69,10 @@ const sidebarConfig = [
         title: "All Settings",
         path: "/dashboard/settings/sites",
       },
+      // {
+      //   title: "Attendance Reports",
+      //   path: "/dashboard/settings/attendance/report",
+      // },
     ],
   },
   // {
