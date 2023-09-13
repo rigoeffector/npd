@@ -145,6 +145,9 @@ const Sites = () => {
             },
           }}
           pageSizeOptions={[5, 10]}
+          reportName={"NPD Cotraco"}
+                subTitle={"All Sites List"}
+                fileName={"all-sites"}
           checkboxSelection
         />
       </Box>

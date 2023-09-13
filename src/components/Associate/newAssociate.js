@@ -509,11 +509,11 @@ const StepOneEmployee = ({ next, listSites, data, setNew }) => {
         <Grid item>
           <Button
             disabled={
-              (auth && auth.data && auth.data.role !== "super") ||
-              (auth && auth.data && auth.data.role !== "projectmanager") ||
-              (auth && auth.data && auth.data.role !== "sitemanager")
-                ? true
-                : false
+              (auth && auth.data && auth.data.role === "super") ||
+              (auth && auth.data && auth.data.role === "projectmanager") ||
+              (auth && auth.data && auth.data.role === "sitemanager")
+                ? false
+                : true
             }
             variant="contained"
             type="submit"

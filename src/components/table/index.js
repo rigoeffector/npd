@@ -4,6 +4,8 @@ import Box from '@mui/material/Box';
 import {DataGrid, GridToolbarExport, GridToolbarQuickFilter} from '@mui/x-data-grid';
 import React from 'react';
 // import './style.css';
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
 import * as XLSX from "xlsx";
 
 const StyledDataGrid = withStyles({
@@ -30,7 +32,7 @@ const StyledDataGrid = withStyles({
 
 
 export function DataTable(props) {
-    const {rows = [], columns = [], rowsPerPageOptions = [], loading = false, pageSize = 5, onPageSizeChange} = props;
+    const {rows = [], columns = [], rowsPerPageOptions = [], loading = false, pageSize = 5, onPageSizeChange, enableReport=true, reportName='', subTitle='', fileName=''} = props;
     const [isExportDropdownOpen, setIsExportDropdownOpen] = React.useState(false);
     // const [selectedValue, setSelectedValue] = React.useState('');
     const getColumnsToExport = (columns) => {
@@ -70,37 +72,157 @@ export function DataTable(props) {
       return columnForNewFilter?.field ?? null;
     };
   
-    const handleExport = () => {
-      setIsExportDropdownOpen(!isExportDropdownOpen);
-      // Filter out columns with type "checkbox" and "actions"
-      const columnsToExport = columns
-        .filter(
-          (column) =>
-            column.field !== "checkbox" &&
-            column.type !== "actions" &&
-            column.field !== "status" &&
-            column.field !== "" &&
-            column.field !== "driver"
-        )
-        .map((column) => column.field);
   
-      // Prepare the data for export
-      const dataForExport = rows.map((row) => {
-        const rowData = {};
-        columnsToExport.forEach((field) => {
-          rowData[field] = row[field];
-        });
-        return rowData;
-      });
-  
-      // Create a worksheet and workbook using XLSX
-      const ws = XLSX.utils.json_to_sheet(dataForExport);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "DataGrid Export");
-  
-      // Save the workbook as a file
-      XLSX.writeFile(wb, "npd-report.xlsx");
-    };
+    
+    // const handleExport = () => {
+    //   setIsExportDropdownOpen(!isExportDropdownOpen);
+    
+    //   // Create a new worksheet
+    //   const ws = XLSX.utils.aoa_to_sheet([["NPD Cotraco"]]); // Add the header
+    
+    //   // Create a new workbook
+    //   const wb = XLSX.utils.book_new();
+    //   XLSX.utils.book_append_sheet(wb, ws, "Report"); // Name the worksheet "Report"
+    
+    //   // Add an image to the worksheet
+    //   const imgSrc = '/images/logo.jpeg'; // Specify the path to your image in the public directory
+    //   ws["A1"].s = { patternType: "solid", fgColor: { rgb: "FFFFFF" } }; // Set cell background color
+    //   ws["A1"].l = { Target: imgSrc, Tooltip: "NPD Logo" }; // Link to the image
+    //   ws["A1"].c = [{ x: { alignment: { horizontal: "center" } } }]; // Center align the content
+    
+    //   // Add the data for export
+    //   const columnsToExport = columns
+    //     .filter(
+    //       (column) =>
+    //         column.field !== "checkbox" &&
+    //         column.type !== "actions" &&
+    //         column.field !== "status" &&
+    //         column.field !== "" &&
+    //         column.field !== "driver"
+    //     )
+    //     .map((column) => column.field);
+    
+    //   const dataForExport = rows.map((row) => {
+    //     const rowData = {};
+    //     columnsToExport.forEach((field) => {
+    //       rowData[field] = row[field];
+    //     });
+    //     return rowData;
+    //   });
+    
+    //   // Add the data to the worksheet
+    //   XLSX.utils.sheet_add_json(ws, dataForExport, {
+    //     header: columnsToExport,
+    //     skipHeader: true,
+    //     origin: "A3", // Start data from A3 (below the header and image)
+    //   });
+    
+    //   // Save the workbook as a file
+    //   XLSX.writeFile(wb, "npd-report.xlsx");
+    // };
+    
+
+    // old way working well 
+    // const handleExport = () => {
+    //   setIsExportDropdownOpen(!isExportDropdownOpen);
+    
+    //   // Create a new workbook
+    //   const wb = XLSX.utils.book_new();
+    
+    //   // Create a new worksheet
+    //   const ws = XLSX.utils.aoa_to_sheet([[reportName], [], [subTitle]]); // Add reportName in A1, leave A2 empty, and add subTitle in A3
+    
+    //   // Style for reportName (A1)
+    //   const reportNameStyle = {
+    //     font: { bold: true, sz: 30 }, // Bold and font size 30
+    //   };
+    
+    //   // Apply the style to the A1 cell (reportName)
+    //   ws["A1"].s = reportNameStyle;
+    
+    //   // Add the data for export
+    //   const columnsToExport = columns
+    //     .filter(
+    //       (column) =>
+    //         column.field !== "checkbox" &&
+    //         column.type !== "actions" &&
+    //         column.field !== "status" &&
+    //         column.field !== "" &&
+    //         column.field !== "driver"
+    //     )
+    //     .map((column) => ({
+    //       header: column.headerName || "", // Use headerName as the column header text
+    //       field: column.field, // Include the field property
+    //     }));
+    
+    //   // Add the column headers starting from row 5
+    //   XLSX.utils.sheet_add_aoa(ws, [columnsToExport.map((col) => col.header)], { origin: "A5" });
+    
+    //   // Add the data rows starting from row 6
+    //   const dataForExport = rows.map((row) =>
+    //     columnsToExport.map((column) => {
+    //       if (column.field !== "") {
+    //         return row[column.field] || ""; // Display data in the corresponding column
+    //       }
+    //       return ""; // For empty columns, leave the cell empty
+    //     })
+    //   );
+    
+    //   XLSX.utils.sheet_add_aoa(ws, dataForExport, { origin: "A6" });
+    
+    //   // Add the data worksheet to the workbook
+    //   XLSX.utils.book_append_sheet(wb, ws, "Data");
+    
+    //   // Save the workbook as a file
+    //   XLSX.writeFile(wb, `${fileName}.xlsx`);
+    // };
+
+
+ 
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
+const handleExport = () => {
+  setIsExportDropdownOpen(!isExportDropdownOpen);
+
+  // Define the PDF document definition
+  const docDefinition = {
+    content: [
+      // Centered reportName
+      { text: reportName, fontSize: 30, bold: true, alignment: 'center' },
+      // Centered subTitle
+      { text: subTitle, fontSize: 20, bold: true, alignment: 'center' },
+      "\n", // Add an empty line for spacing
+      {
+        table: {
+          headerRows: 1,
+          widths: columns.map(() => "auto"), // Adjust column widths as needed
+          body: [
+            // Make column.headerName font weight bold
+            columns.map((column) => ({ text: column.headerName, bold: true })),
+            ...rows.map((row) =>
+              columns.map((column) => row[column.field] || "")
+            ),
+          ],
+        },
+        // Remove table borders
+        layout: 'noBorders',
+      },
+    ],
+  };
+
+  // Generate the PDF
+  const pdfDoc = pdfMake.createPdf(docDefinition);
+
+  // Download the PDF
+  pdfDoc.download(`${fileName}.pdf`);
+};
+
+    
+    
+    
+    
+    
 
     function QuickSearchToolbar() {
         return (
@@ -123,7 +245,8 @@ export function DataTable(props) {
               }
             />
     
-            <div>
+    <div style={enableReport ? { display: "block" } : { display: "none" }}>
+
               {isExportDropdownOpen ? (
                 // Render the export options when the dropdown is open
                 <Button

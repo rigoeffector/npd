@@ -240,16 +240,11 @@ const Home = () => {
             xs={12}
             sm={12}
             md={12}
-            sx={
-              (auth && auth.data && auth.data.role === "super") ||
-              (auth && auth.data && auth.data.role === "projectmanager")
-                ? {
-                    background: "white",
-                    margin: "21px 0px",
-                    borderRadius: "20px",
-                  }
-                : { display: "none" }
-            }
+            sx={{
+              background: "white",
+              margin: "21px 0px",
+              borderRadius: "20px",
+            }}
           >
             <Typography sx={{ fontWeight: "700", margin: "20px 0px" }}>
               Pending Reports
@@ -259,6 +254,7 @@ const Home = () => {
               <DataTable
                 rows={readReports?.data || []}
                 columns={columns}
+                enableReport={false}
                 initialState={{
                   pagination: {
                     paginationModel: { page: 0, pageSize: 5 },

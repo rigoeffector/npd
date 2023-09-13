@@ -576,6 +576,7 @@ const Attendance = () => {
                 actions={actions}
                 selectionModel={selectionModel}
                 onSelectionModelChange={handleSelectionChange}
+               enableReport={false}
               />
             </Box>
           </CustomTabPanel>
@@ -620,6 +621,9 @@ const Attendance = () => {
                 actions={actionsUpdate}
                 selectionModel={selectionUpdateModel}
                 onSelectionModelChange={handleSelectionUpdateChange}
+                reportName={"NPD Cotraco"}
+                subTitle={"All Employees Attendance List"}
+                fileName={"all-employees-attendance"}
               />
             ) : (
               <Typography>No Attendance Found Yet</Typography>

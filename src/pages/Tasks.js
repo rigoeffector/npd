@@ -145,9 +145,9 @@ const MyTasks = () => {
       headerName: "Action",
       type: "actions",
       width: 300,
-      hide:
-        (auth && auth.data && auth.data.role !== "super") ||
-        (auth && auth.data && auth.data.role !== "projectmanager"),
+      // hide:
+      //   !(auth && auth.data && auth.data.role === "super") ||
+      //   !(auth && auth.data && auth.data.role === "projectmanager"),
       getActions: (params) => [
         // <div className="actions_button">
         //   <Button
@@ -491,18 +491,18 @@ const MyTasks = () => {
           </Typography>
         </Grid>
         <Grid item>
-          {(auth && auth.data && auth.data.role === "super") ||
-            (auth && auth.data && auth.data.role === "projectmanager" && (
-              <Button
-                variant="contained"
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                onClick={handleClickAction}
-                endIcon={<AddCircleIcon color="white" fontSize="large" />}
-              >
-                Add New Project
-              </Button>
-            ))}
+          {/* {auth && auth.data && auth.data.role === "super" ||
+            auth && auth.data && auth.data.role === "projectmanager"  ( */}
+          <Button
+            variant="contained"
+            aria-haspopup="true"
+            aria-expanded={open ? "true" : undefined}
+            onClick={handleClickAction}
+            endIcon={<AddCircleIcon color="white" fontSize="large" />}
+          >
+            Add New Project
+          </Button>
+          {/* )} */}
         </Grid>
       </Grid>
 
@@ -645,6 +645,9 @@ const MyTasks = () => {
           <DataTable
             rows={data || []}
             columns={columns}
+            reportName={"NPD Cotraco"}
+            subTitle={"All NPD Projects List"}
+            fileName={"all-projects"}
             initialState={{
               pagination: {
                 paginationModel: { page: 0, pageSize: 5 },

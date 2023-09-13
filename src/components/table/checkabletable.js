@@ -6,11 +6,12 @@ import {
   GridLinkOperator,
   GridToolbar,
   GridToolbarQuickFilter,
-  GridToolbarExport
+  GridToolbarExport,
 } from "@mui/x-data-grid";
 import "./index.css";
 import { Box, Grid, withStyles } from "@material-ui/core";
-
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
 import Button from "@mui/material/Button";
 import * as XLSX from "xlsx";
 import { TextField } from "@mui/material";
@@ -95,6 +96,9 @@ export function DataTableCheckable(
     checkboxSelection = true,
     showQuickSearchToolbar = true,
     enableReport = true,
+    reportName = "",
+    subTitle = "",
+    fileName = "",
   } = props;
   const [pageSize, setPageSize] = React.useState(20);
   const [isExportDropdownOpen, setIsExportDropdownOpen] = React.useState(false);
@@ -136,44 +140,51 @@ export function DataTableCheckable(
     return columnForNewFilter?.field ?? null;
   };
 
-  const handleExport = () => {
-    setIsExportDropdownOpen(!isExportDropdownOpen);
-    // Filter out columns with type "checkbox" and "actions"
-    const columnsToExport = columns
-      .filter(
-        (column) =>
-          column.field !== "checkbox" &&
-          column.type !== "actions" &&
-          column.field !== "status" &&
-          column.field !== "" &&
-          column.field !== "driver"
-      )
-      .map((column) => column.field);
+  pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-    // Prepare the data for export
-    const dataForExport = rows.map((row) => {
-      const rowData = {};
-      columnsToExport.forEach((field) => {
-        rowData[field] = row[field];
-      });
-      return rowData;
-    });
+const handleExport = () => {
+  setIsExportDropdownOpen(!isExportDropdownOpen);
 
-    // Create a worksheet and workbook using XLSX
-    const ws = XLSX.utils.json_to_sheet(dataForExport);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "DataGrid Export");
-
-    // Save the workbook as a file
-    XLSX.writeFile(wb, "npd-report.xlsx");
+  // Define the PDF document definition
+  const docDefinition = {
+    content: [
+      // Centered reportName
+      { text: reportName, fontSize: 30, bold: true, alignment: 'center' },
+      // Centered subTitle
+      { text: subTitle, fontSize: 20, bold: true, alignment: 'center' },
+      "\n", // Add an empty line for spacing
+      {
+        table: {
+          headerRows: 1,
+          widths: columns.map(() => "auto"), // Adjust column widths as needed
+          body: [
+            // Make column.headerName font weight bold
+            columns.map((column) => ({ text: column.headerName, bold: true })),
+            ...rows.map((row) =>
+              columns.map((column) => row[column.field] || "")
+            ),
+          ],
+        },
+        // Remove table borders
+        layout: 'noBorders',
+      },
+    ],
   };
+
+  // Generate the PDF
+  const pdfDoc = pdfMake.createPdf(docDefinition);
+
+  // Download the PDF
+  pdfDoc.download(`${fileName}.pdf`);
+};
+
   function QuickSearchToolbar() {
     return (
       <Box
         sx={{
           p: 4,
           pb: 0,
-          mb:5,
+          mb: 5,
           display: "flex",
           justifyContent: "space-between",
         }}
