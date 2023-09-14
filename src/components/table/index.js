@@ -185,6 +185,15 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 const handleExport = () => {
   setIsExportDropdownOpen(!isExportDropdownOpen);
 
+  // Define the margin for each cell to create space between columns
+  const cellMargin = [0, 5]; // [leftMargin, rightMargin]
+
+  // Get the current date and time
+  const currentDateTime = new Date().toLocaleString();
+
+  // Define a regular expression for case-insensitive matching
+  const excludeHeaderRegex = /(action|link)/i;
+
   // Define the PDF document definition
   const docDefinition = {
     content: [
@@ -192,16 +201,35 @@ const handleExport = () => {
       { text: reportName, fontSize: 30, bold: true, alignment: 'center' },
       // Centered subTitle
       { text: subTitle, fontSize: 20, bold: true, alignment: 'center' },
-      "\n", // Add an empty line for spacing
+      // Add current date and time
+      { text: currentDateTime, fontSize: 14, alignment: 'center' },
+      // Add a line separator
+      { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 0.5 }] },
       {
         table: {
           headerRows: 1,
           widths: columns.map(() => "auto"), // Adjust column widths as needed
           body: [
             // Make column.headerName font weight bold
-            columns.map((column) => ({ text: column.headerName, bold: true })),
+            columns.map((column) => {
+              if (excludeHeaderRegex.test(column.headerName)) {
+                return { text: '', bold: true }; // Exclude header
+              } else {
+                return { text: column.headerName, bold: true };
+              }
+            }),
             ...rows.map((row) =>
-              columns.map((column) => row[column.field] || "")
+              columns.map((column) => {
+                // Check if the header name matches the exclusion pattern
+                if (excludeHeaderRegex.test(column.headerName)) {
+                  return { text: '', margin: cellMargin }; // Exclude cell
+                } else {
+                  return {
+                    text: row[column.field] || "",
+                    margin: cellMargin, // Apply margin to create space between columns
+                  };
+                }
+              })
             ),
           ],
         },
@@ -218,11 +246,8 @@ const handleExport = () => {
   pdfDoc.download(`${fileName}.pdf`);
 };
 
-    
-    
-    
-    
-    
+
+ 
 
     function QuickSearchToolbar() {
         return (
