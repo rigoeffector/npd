@@ -113,36 +113,34 @@ const ThanksCard = ({ data }) => {
           />
         )}
       </CardContent>
-      {(auth && auth.data && auth.data.role === "super") ||
-        (auth && auth.data && auth.data.role === "projectmanager" && (
-          <CardActions style={{ paddingTop: "20px" }}>
-            <Menu
-              id="task-menu"
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleMenuClose}
-            >
-              <MenuItem
-                disabled={data?.projectStatus === "running" ? true : false}
-                onClick={() => handleAction("running")}
-              >
-                Mark as Running
-              </MenuItem>
-              <MenuItem
-                disabled={data?.projectStatus === "archived" ? true : false}
-                onClick={() => handleAction("archived")}
-              >
-                Mark as Archived
-              </MenuItem>
-              <MenuItem
-                disabled={data?.projectStatus === "completed" ? true : false}
-                onClick={() => handleAction("completed")}
-              >
-                Mark as Completed
-              </MenuItem>
-            </Menu>
-          </CardActions>
-        ))}
+
+      <CardActions style={{ paddingTop: "20px" }}>
+        <Menu
+          id="task-menu"
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+        >
+          <MenuItem
+            disabled={data?.projectStatus === "running" ? true : false}
+            onClick={() => handleAction("running")}
+          >
+            Mark as Running
+          </MenuItem>
+          <MenuItem
+            disabled={data?.projectStatus === "archived" ? true : false}
+            onClick={() => handleAction("archived")}
+          >
+            Mark as Archived
+          </MenuItem>
+          <MenuItem
+            disabled={data?.projectStatus === "completed" ? true : false}
+            onClick={() => handleAction("completed")}
+          >
+            Mark as Completed
+          </MenuItem>
+        </Menu>
+      </CardActions>
     </Card>
   );
 };

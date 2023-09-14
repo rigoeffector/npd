@@ -88,7 +88,8 @@ class Employees
             // No record with the same name exists, proceed with insertion
             $insertStmt = $this->conn->prepare("INSERT INTO $this->table (fname, lname, idnumber, phonenumber, age, salary, gender, siteId, role, startdate, dob, emfname, emlname, emphone, emrelation, doclink,username) 
                             VALUES (:fname, :lname, :idnumber, :phonenumber, :age, :salary, :gender, :siteId, :role, :startdate, :dob, :emfname, :emlname, :emphone, :emrelation, :doclink,:username)");
-            $insertStmt->execute([
+
+            $insertSuccess = $insertStmt->execute([
                 "fname" => $data["fname"],
                 "lname" => $data["lname"],
                 "idnumber" => $data["idnumber"],
@@ -108,12 +109,54 @@ class Employees
                 "username" => $data["username"],
             ]);
 
-            return true; // Return a success indicator if the insert was successful.
+            if ($insertSuccess) {
+                // INSERT query executed successfully, send the SMS
+                $username = $data['username'];
+                $phone = $data["phonenumber"];
+                $name = $data["fname"];
+                $message = "Hello $name  please  use $username as your username and your password is 12345";
+
+                $curl = curl_init();
+
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => 'https://api.mista.io/sms',
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => '',
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => 'POST',
+                    CURLOPT_POSTFIELDS => array('to' => '+25' . $phone, 'from' => 'NPD', 'unicode' => '0', 'sms' => $message, 'action' => 'send-sms'),
+                    CURLOPT_HTTPHEADER => array(
+                        'x-api-key: 343|RfDs6xOVy1XwL7Effx2sUB4cE6XSpIlXeQLRI9kA'
+                    ),
+                ));
+
+                $response = curl_exec($curl);
+                $err = curl_error($curl);
+                curl_close($curl);
+
+                if ($err) {
+                    $response = array(
+                        "status" => "error",
+                        "error" => true,
+                        "success" => false,
+                        "message" => "$phone is not registered, or network issue?"
+                    );
+                    echo json_encode($response);
+                }
+
+                return true; // Return a success indicator if the insert and SMS send were successful.
+            } else {
+                return false; // Return a failure indicator if the insert query failed.
+            }
         } catch (PDOException $e) {
             // Handle any database errors here.
             return false; // Return a failure indicator if an error occurred.
         }
     }
+
     // Update function in Employees class
     public function update($data)
     {
@@ -213,19 +256,19 @@ class Employees
         try {
             // Set the PDO error mode to exception
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
+
             // SQL query to retrieve user data based on username and password
             $query = "SELECT employees.*, sites.name AS site_name, sites.location AS site_location, sites.description AS site_description
                       FROM " . $this->table . "
                       LEFT JOIN sites ON employees.siteId = sites.id
                       WHERE employees.role IN ('employee', 'capita', 'sitemanager')";
-    
+
             // Prepare the query
             $stmt = $this->conn->prepare($query);
-    
+
             // Execute the query
             $stmt->execute();
-    
+
             // Fetch and return all results as an array
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
@@ -233,7 +276,7 @@ class Employees
             return null; // Return null if an error occurred.
         }
     }
-    
+
 
     // Delete function in Employees class
     public function delete($id)

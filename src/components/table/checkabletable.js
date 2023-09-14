@@ -152,23 +152,42 @@ export function DataTableCheckable(
     const currentDateTime = new Date().toLocaleString();
   
     // Define a regular expression for case-insensitive matching
-    const excludeHeaderRegex = /(action|link)/i;
+    const excludeHeaderRegex = /(action|link|emergency|emerge|DOB|site|ID)/i;
   
-    // Define the PDF document definition
+    // Define the PDF document definition with landscape orientation
     const docDefinition = {
+      // Set the entire PDF to landscape mode
+      pageOrientation: 'landscape',
+  
       content: [
         // Centered reportName
         { text: reportName, fontSize: 30, bold: true, alignment: 'center' },
         // Centered subTitle
         { text: subTitle, fontSize: 20, bold: true, alignment: 'center' },
-        // Add current date and time
+        // Add current date and time after subTitle
         { text: currentDateTime, fontSize: 14, alignment: 'center' },
+        // Add space between date/time and the line separator
+        { margin: [0, 10], text: ' ' },
         // Add a line separator
-        { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 0.5 }] },
         {
+          canvas: [
+            {
+              type: 'line',
+              x1: 0,
+              y1: 0,
+              x2: 820, // Adjust the width to span the entire landscape page
+              y2: 0,
+              lineWidth: 0.5,
+            },
+          ],
+        },
+        // Add space between the line and the table data
+        { margin: [0, 10], text: ' ' },
+        {
+          // Center-align the entire table horizontally
           table: {
             headerRows: 1,
-            widths: columns.map(() => "auto"), // Adjust column widths as needed
+            width: '100%', // Make the table width fit the entire page size
             body: [
               // Make column.headerName font weight bold
               columns.map((column) => {
@@ -192,6 +211,8 @@ export function DataTableCheckable(
                 })
               ),
             ],
+            // Center-align the entire table horizontally
+            alignment: 'center',
           },
           // Remove table borders
           layout: 'noBorders',
@@ -207,7 +228,8 @@ export function DataTableCheckable(
   };
   
   
-
+  
+  
   function QuickSearchToolbar() {
     return (
       <Box

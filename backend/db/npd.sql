@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Sep 10, 2023 at 11:24 PM
+-- Generation Time: Sep 14, 2023 at 09:14 PM
 -- Server version: 5.7.39
 -- PHP Version: 8.2.0
 
@@ -80,7 +80,7 @@ CREATE TABLE `attendance` (
 --
 
 INSERT INTO `attendance` (`id`, `projectId`, `employeeId`, `time`, `status`) VALUES
-(16, 5, 10, '2023-09-10 15:19:52', 'absent'),
+(16, 5, 10, '2023-09-14 18:28:36', 'absent'),
 (17, 6, 10, '2023-09-10 15:19:52', 'absent');
 
 -- --------------------------------------------------------
@@ -118,8 +118,10 @@ CREATE TABLE `employees` (
 INSERT INTO `employees` (`id`, `fname`, `lname`, `idnumber`, `phonenumber`, `age`, `salary`, `gender`, `siteId`, `role`, `startdate`, `dob`, `emfname`, `emlname`, `emphone`, `emrelation`, `doclink`, `username`, `password`) VALUES
 (5, 'Sandrine', 'Isheja', '1199380041412204', '0784567890', '30', '34000', 'Male', 2, 'super', '2023-09-12', '1993-09-12', 'MUKANSKUSI', 'Marthe', '0784638209', 'Sister', 'www.google.com', 'admin@gmail.com', '12345'),
 (10, 'MUSANA', 'Manzi', '1199080041412209', '0784673890', '23', '670000', 'Female', 1, 'capita', '2023-09-10', '1993-01-10', 'MUKUNZI', 'Yannick', '0785678902', 'Father', 'https://firebasestorage.googleapis.com/v0/b/daada-poducts-images.appspot.com/o/products%2F5.png?alt=media&token=059bcfe9-9147-402c-ab30-f556a7332439', 'mukunzi234@gmail.com', '12345'),
-(11, 'MANZI Morris', 'Gasangwa', '1199380041412208', '0784567890', '30', '34000', 'Male', 2, 'projectmanager', '2023-09-12', '1993-09-12', 'MUKANSKUSI', 'Marthe', '0784638209', 'Sister', 'www.google.com', 'manzi23@gmail.com', '12345'),
-(12, 'Dophin Morris', 'CYUSA', '1199380041412201', '0784567892', '30', '34000', 'Male', 2, 'sitemanager', '2023-09-12', '1993-09-12', 'MUKANSKUSI', 'Marthe', '0784638209', 'Sister', 'www.google.com', 'manzi23@gmail.com', '12345');
+(11, 'MANZI Morris', 'Gasangwa', '1199380041412208', '0784567890', '30', '34000', 'Male', 2, 'projectmanager', '2023-09-12', '1993-09-12', 'MUKANSKUSI', 'Marthe', '0784638209', 'Sister', 'www.google.com', 'manzi29@gmail.com', '12345'),
+(12, 'Dophin Morris', 'CYUSA', '1199380041412201', '0784567892', '30', '34000', 'Male', 2, 'sitemanager', '2023-09-12', '1993-09-12', 'MUKANSKUSI', 'Marthe', '0784638209', 'Sister', 'www.google.com', 'manzi23@gmail.com', '12345'),
+(13, 'PATRICK IRANKUN', ' IRANKUN', '1199880041412203', '0784838201', '34', '5000', 'Male', 2, 'projectmanager', '2023-09-14', '2023-08-28', 'MUKANKUSI', 'Bella', '0784638202', 'Sister', 'https://firebasestorage.googleapis.com/v0/b/daada-poducts-images.appspot.com/o/products%2Flicensed-image.jpeg?alt=media&token=d981be08-1b76-4db4-9797-8bd87f5a931a', 'MUKANKUSI234@gmail.com', '12345'),
+(14, 'Dophin Morris', 'CYUSA', '1198380041412204', '0784638201', '30', '34000', 'Male', 2, 'projectmanager', '2023-09-12', '1993-09-12', 'MUKANSKUSI', 'Marthe', '0784638209', 'Sister', 'www.google.com', 'manzi23@gmail.com', '12345');
 
 -- --------------------------------------------------------
 
@@ -173,7 +175,7 @@ INSERT INTO `reports` (`id`, `name`, `createdBy`, `status`, `updatedBy`, `link`,
 (17, 'Sept2', 10, 'pending', 10, 'www.google.com', '2023-09-10 18:38:11', 'pending'),
 (18, 'report', 5, 'approved', 5, 'https://firebasestorage.googleapis.com/v0/b/daada-poducts-images.appspot.com/o/products%2FShield%20kids%20requirements.pdf?alt=media&token=c1176cd5-38fa-465b-957e-cc7d99832ca1', '2023-09-10 18:58:04', 'Work Report'),
 (19, 'Septermber Logistic', 5, 'rejected', 5, 'Array', '2023-09-10 19:26:50', 'Sawa'),
-(20, 'Septermber Logistics', 5, 'pending', 5, 'Array', '2023-09-10 19:27:26', 'Sawaaaa');
+(20, 'Septermber Logistics', 5, 'approved', 5, 'Array', '2023-09-10 19:27:26', 'Sawaaaa');
 
 -- --------------------------------------------------------
 
@@ -268,7 +270,7 @@ ALTER TABLE `attendance`
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `projects`

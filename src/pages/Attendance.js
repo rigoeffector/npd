@@ -110,47 +110,7 @@ const Attendance = () => {
     }
   }, [createAttendance.success, updateAttendance?.success]);
 
-  const columns = [
-    // { field: "id", headerName: "ID", width: 70 },
-    { field: "emfname", headerName: "First name", width: 130 },
-    { field: "emlname", headerName: "Last name", width: 130 },
-    {
-      field: "age",
-      headerName: "Age",
-      width: 90,
-    },
-    {
-      field: "role",
-      headerName: "Title",
-      width: 130,
-    },
-    {
-      field: "salary",
-      headerName: "Salary(RWF)",
-      width: 130,
-    },
-    {
-      field: "site_name",
-      headerName: "Site",
-      width: 130,
-    },
 
-    {
-      field: "doclink",
-      headerName: "ID Document",
-
-      renderCell: (params) => (
-        <Button
-          variant="outlined"
-          color="primary"
-          href={params?.row.doclink}
-          target="_blank"
-        >
-          View
-        </Button>
-      ),
-    },
-  ];
   // Handle the change event when an option is selected
   const handleAutocompleteChange = (event, newValue) => {
     setSelectedValueProject(newValue);
@@ -451,6 +411,47 @@ const Attendance = () => {
     //     </div>,
     //   ],
     // },
+  ];
+  const columns = [
+    // { field: "id", headerName: "ID", width: 70 },
+    { field: "emfname", headerName: "First name", width: 130 },
+    { field: "emlname", headerName: "Last name", width: 130 },
+    {
+      field: "age",
+      headerName: "Age",
+      width: 90,
+    },
+    {
+      field: "role",
+      headerName: "Title",
+      width: 130,
+    },
+    {
+      field: "salary",
+      headerName: "Salary(RWF)",
+      width: 130,
+    },
+    {
+      field: "site_name",
+      headerName: "Site",
+      width: 130,
+    },
+
+    {
+      field: "doclink",
+      headerName: "ID Document",
+
+      renderCell: (params) => (
+        <Button
+          variant="outlined"
+          color="primary"
+          href={params?.row.doclink}
+          target="_blank"
+        >
+          View
+        </Button>
+      ),
+    },
   ];
   return (
     <Page title="Attendance">
