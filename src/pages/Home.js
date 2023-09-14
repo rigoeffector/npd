@@ -28,7 +28,6 @@ import Page from "../components/Page";
 import CasualWorkers from "../components/Graphs/CausalWorkers";
 import DataTable from "../components/table";
 import AlertConfirmDialog from "../components/modal/confitm";
-
 import DoughnutChart from "../components/Graphs/officeGraph";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_PROJECTS_LIST_REQUEST } from "../reducers/project/constants";
@@ -234,39 +233,53 @@ const Home = () => {
               />
             )}
           </Grid>
-
-          <Grid
-            item
-            xs={12}
-            sm={12}
-            md={12}
-            sx={{
-              background: "white",
-              margin: "21px 0px",
-              borderRadius: "20px",
-            }}
-          >
-            <Typography sx={{ fontWeight: "700", margin: "20px 0px" }}>
-              Pending Reports
-            </Typography>
-            {readReports && readReports.loading && <CircularProgress />}
-            {readReports && readReports.data && readReports.data.length > 0 ? (
-              <DataTable
-                rows={readReports?.data || []}
-                columns={columns}
-                enableReport={false}
-                initialState={{
-                  pagination: {
-                    paginationModel: { page: 0, pageSize: 5 },
-                  },
-                }}
-                pageSizeOptions={[5, 10]}
-                checkboxSelection
-              />
-            ) : (
-              <Typography>No Reports Found</Typography>
-            )}
-          </Grid>
+          {(auth && auth.data && auth.data.role === "super") ||
+          (auth && auth.data && auth.data.role === "projectmanager") ? (
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              md={12}
+              sx={{
+                background: "white",
+                margin: "21px 0px",
+                borderRadius: "20px",
+              }}
+            >
+              <Typography sx={{ fontWeight: "700", margin: "20px 0px" }}>
+                Pending Reports
+              </Typography>
+              {readReports && readReports.loading && <CircularProgress />}
+              {readReports &&
+              readReports.data &&
+              readReports.data.length > 0 ? (
+                <DataTable
+                  rows={readReports?.data || []}
+                  columns={columns}
+                  enableReport={false}
+                  initialState={{
+                    pagination: {
+                      paginationModel: { page: 0, pageSize: 5 },
+                    },
+                  }}
+                  pageSizeOptions={[5, 10]}
+                  checkboxSelection
+                />
+              ) : (
+                <Typography>No Reports Found</Typography>
+              )}
+            </Grid>
+          ) : (
+            <Box
+              sx={{
+                marginTop: "20px",
+              }}
+            >
+              <Alert severity="error">
+                You are not allowed to see this information
+              </Alert>
+            </Box>
+          )}
         </Grid>
       </Container>
     </Page>

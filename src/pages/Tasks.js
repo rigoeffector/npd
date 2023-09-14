@@ -478,189 +478,211 @@ const MyTasks = () => {
           </Grid>
         </form>
       </NPDModal>
-
-      <Grid
-        container
-        direction="row"
-        justifyContent="space-between"
-        sx={{ px: 2 }}
-      >
-        <Grid item>
-          <Typography variant="h4" gutterBottom>
-            Projects
-          </Typography>
-        </Grid>
-        <Grid item>
-          {/* {auth && auth.data && auth.data.role === "super" ||
-            auth && auth.data && auth.data.role === "projectmanager"  ( */}
-          <Button
-            variant="contained"
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-            onClick={handleClickAction}
-            endIcon={<AddCircleIcon color="white" fontSize="large" />}
+      {(auth && auth.data && auth.data.role === "super") ||
+      (auth && auth.data && auth.data.role === "projectmanager") ? (
+        <Box>
+          <Grid
+            container
+            direction="row"
+            justifyContent="space-between"
+            sx={{ px: 2 }}
           >
-            Add New Project
-          </Button>
-          {/* )} */}
-        </Grid>
-      </Grid>
+            <Grid item>
+              <Typography variant="h4" gutterBottom>
+                Projects
+              </Typography>
+            </Grid>
+            <Grid item>
+              {/* {auth && auth.data && auth.data.role === "super" ||
+            auth && auth.data && auth.data.role === "projectmanager"  ( */}
+              <Button
+                variant="contained"
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClickAction}
+                endIcon={<AddCircleIcon color="white" fontSize="large" />}
+              >
+                Add New Project
+              </Button>
+              {/* )} */}
+            </Grid>
+          </Grid>
 
-      <Grid container direction="row" sx={{ p: 2 }} spacing={2} rowSpacing={2}>
-        <Grid item xs={12} md={4} lg={4}>
-          <Grid container direction="column" spacing={2}>
-            <Grid item>
-              <Box
-                sx={{
-                  background: "white",
-                  px: 1,
-                  py: 0.5,
-                  borderRadius: "10px",
-                  boxShadow: 7,
-                  borderBottom: "solid black 3px",
-                }}
-              >
-                <Stack
-                  direction="row"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Typography variant="h6" color="black">
-                    All Projects
-                  </Typography>
+          <Grid
+            container
+            direction="row"
+            sx={{ p: 2 }}
+            spacing={2}
+            rowSpacing={2}
+          >
+            <Grid item xs={12} md={4} lg={4}>
+              <Grid container direction="column" spacing={2}>
+                <Grid item>
                   <Box
                     sx={{
-                      backgroundColor: "black",
-                      borderRadius: "5px",
+                      background: "white",
                       px: 1,
                       py: 0.5,
-                      color: "white",
-                      minWidth: "25px",
+                      borderRadius: "10px",
+                      boxShadow: 7,
+                      borderBottom: "solid black 3px",
                     }}
                   >
-                    {data && data.length}
+                    <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                    >
+                      <Typography variant="h6" color="black">
+                        All Projects
+                      </Typography>
+                      <Box
+                        sx={{
+                          backgroundColor: "black",
+                          borderRadius: "5px",
+                          px: 1,
+                          py: 0.5,
+                          color: "white",
+                          minWidth: "25px",
+                        }}
+                      >
+                        {data && data.length}
+                      </Box>
+                    </Stack>
                   </Box>
-                </Stack>
-              </Box>
+                </Grid>
+              </Grid>
             </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12} md={4} lg={4}>
-          <Grid container direction="column" spacing={2}>
-            <Grid item>
-              <Box
-                sx={{
-                  backgroundColor: "white",
-                  px: 1,
-                  py: 0.5,
-                  borderRadius: "10px",
-                  boxShadow: 7,
-                  borderBottom: "solid #ff8c00 3px",
-                }}
-              >
-                <Stack
-                  direction="row"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Typography variant="h6" color="black">
-                    Currently Running
-                  </Typography>
+            <Grid item xs={12} md={4} lg={4}>
+              <Grid container direction="column" spacing={2}>
+                <Grid item>
                   <Box
                     sx={{
-                      backgroundColor: "black",
-                      borderRadius: "5px",
+                      backgroundColor: "white",
                       px: 1,
                       py: 0.5,
-                      color: "white",
-                      minWidth: "25px",
+                      borderRadius: "10px",
+                      boxShadow: 7,
+                      borderBottom: "solid #ff8c00 3px",
                     }}
                   >
-                    {data &&
-                      data.length &&
-                      data &&
-                      data.filter((project) => project.status === "running")
-                        .length}
+                    <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                    >
+                      <Typography variant="h6" color="black">
+                        Currently Running
+                      </Typography>
+                      <Box
+                        sx={{
+                          backgroundColor: "black",
+                          borderRadius: "5px",
+                          px: 1,
+                          py: 0.5,
+                          color: "white",
+                          minWidth: "25px",
+                        }}
+                      >
+                        {data &&
+                          data.length &&
+                          data &&
+                          data.filter((project) => project.status === "running")
+                            .length}
+                      </Box>
+                    </Stack>
                   </Box>
-                </Stack>
-              </Box>
+                </Grid>
+              </Grid>
             </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12} md={4} lg={4}>
-          <Grid container direction="column" spacing={2}>
-            <Grid item>
-              <Box
-                sx={{
-                  backgroundColor: "white",
-                  px: 1,
-                  py: 0.5,
-                  borderRadius: "10px",
-                  boxShadow: 7,
-                  borderBottom: "solid  #18b809 3px",
-                }}
-              >
-                <Stack
-                  direction="row"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Typography variant="h6" color="black">
-                    Complete
-                  </Typography>
+            <Grid item xs={12} md={4} lg={4}>
+              <Grid container direction="column" spacing={2}>
+                <Grid item>
                   <Box
                     sx={{
-                      backgroundColor: "black",
-                      borderRadius: "5px",
+                      backgroundColor: "white",
                       px: 1,
                       py: 0.5,
-                      color: "white",
-                      minWidth: "25px",
+                      borderRadius: "10px",
+                      boxShadow: 7,
+                      borderBottom: "solid  #18b809 3px",
                     }}
                   >
-                    {data &&
-                      data.length &&
-                      data &&
-                      data.filter((project) => project.status === "completed")
-                        .length}
+                    <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                    >
+                      <Typography variant="h6" color="black">
+                        Complete
+                      </Typography>
+                      <Box
+                        sx={{
+                          backgroundColor: "black",
+                          borderRadius: "5px",
+                          px: 1,
+                          py: 0.5,
+                          color: "white",
+                          minWidth: "25px",
+                        }}
+                      >
+                        {data &&
+                          data.length &&
+                          data &&
+                          data.filter(
+                            (project) => project.status === "completed"
+                          ).length}
+                      </Box>
+                    </Stack>
                   </Box>
-                </Stack>
-              </Box>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </Grid>
-      <Card
-        sx={{
-          padding: "2rem",
-        }}
-      >
-        {createProject && createProject?.success && createProject?.message && (
-          <Alert variant="filled" severity="success">
-            {createProject?.message}
-          </Alert>
-        )}
-        {loading && <CircularProgress />}
-        {data && data.length > 0 ? (
-          <DataTable
-            rows={data || []}
-            columns={columns}
-            reportName={"NPD Cotraco"}
-            subTitle={"All NPD Projects List"}
-            fileName={"all-projects"}
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: 5 },
-              },
+          <Card
+            sx={{
+              padding: "2rem",
             }}
-            pageSizeOptions={[5, 10]}
-            checkboxSelection
-          />
-        ) : (
-          "No Projects Found"
-        )}
-      </Card>
-
+          >
+            {createProject &&
+              createProject?.success &&
+              createProject?.message && (
+                <Alert variant="filled" severity="success">
+                  {createProject?.message}
+                </Alert>
+              )}
+            {loading && <CircularProgress />}
+            {data && data.length > 0 ? (
+              <DataTable
+                rows={data || []}
+                columns={columns}
+                reportName={"NPD Cotraco"}
+                subTitle={"All NPD Projects List"}
+                fileName={"all-projects"}
+                initialState={{
+                  pagination: {
+                    paginationModel: { page: 0, pageSize: 5 },
+                  },
+                }}
+                pageSizeOptions={[5, 10]}
+                checkboxSelection
+              />
+            ) : (
+              "No Projects Found"
+            )}
+          </Card>
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            marginTop: "20px",
+          }}
+        >
+          <Alert severity="error">
+            You are not allowed to see this information
+          </Alert>
+        </Box>
+      )}
       <NPDModal
         show={showMore}
         handleClose={handleClose}

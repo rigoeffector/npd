@@ -30,6 +30,7 @@ const Thanks = () => {
   const dispatch = useDispatch();
 
   const {
+    auth,
     listAssignEmployees: {
       data: listAssignEmployeesData,
       success,
@@ -48,105 +49,123 @@ const Thanks = () => {
   return (
     <>
       <Page title="">
-        <Box
-          sx={{
-            px: 1,
-            py: 0.5,
-            mb: 2,
-            borderRadius: "10px",
-            boxShadow: 7,
-            background: "white",
-            borderBottom: "solid black 3px",
-          }}
-        >
-          <Grid
-            container
-            direction="row"
-            sx={{ p: 1 }}
-            justifyContent="space-between"
-            alignContent="center"
-            alignItems="center"
-          >
-            <Grid item>
+        {(auth && auth.data && auth.data.role === "projectmanager") ||
+        (auth && auth.data && auth.data.role === "super") ? (
+          <Box>
+            <Box
+              sx={{
+                px: 1,
+                py: 0.5,
+                mb: 2,
+                borderRadius: "10px",
+                boxShadow: 7,
+                background: "white",
+                borderBottom: "solid black 3px",
+              }}
+            >
               <Grid
                 container
                 direction="row"
-                columnSpacing={2}
-                justifyContent="flex-start"
+                sx={{ p: 1 }}
+                justifyContent="space-between"
+                alignContent="center"
                 alignItems="center"
               >
-                <Typography
-                  sx={{
-                    marginLeft: "20px",
-                    fontWeight: "800",
-                  }}
-                >
-                  All Assigned Projects
-                </Typography>
+                <Grid item>
+                  <Grid
+                    container
+                    direction="row"
+                    columnSpacing={2}
+                    justifyContent="flex-start"
+                    alignItems="center"
+                  >
+                    <Typography
+                      sx={{
+                        marginLeft: "20px",
+                        fontWeight: "800",
+                      }}
+                    >
+                      All Assigned Projects
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    component={Link}
+                    to={"/dashboard/new/assign"}
+                  >
+                    Assign Employee To a Project
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                component={Link}
-                to={"/dashboard/new/assign"}
-              >
-                Assign Employee To a Project
-              </Button>
-            </Grid>
-          </Grid>
-        </Box>
-        <Typography
-          sx={{
-            fontWeight: '700',
-            margin: "20px 0px",
-          }}
-        >
-          Change Project Status
-        </Typography>
-        <Box
-          sx={{
-            margin: "20px 0px",
-          }}
-        >
-          {updateProject &&
-            !updateProject?.success &&
-            updateProject.message && (
-              <Alert variant="filled" severity="error">
-                {updateProject?.message}
-              </Alert>
-            )}
-          {updateProject && updateProject?.success && updateProject.message && (
-            <Alert variant="filled" severity="success">
-              {updateProject?.message}
-            </Alert>
-          )}
-        </Box>
+            </Box>
+            <Typography
+              sx={{
+                fontWeight: "700",
+                margin: "20px 0px",
+              }}
+            >
+              Change Project Status
+            </Typography>
+            <Box
+              sx={{
+                margin: "20px 0px",
+              }}
+            >
+              {updateProject &&
+                !updateProject?.success &&
+                updateProject.message && (
+                  <Alert variant="filled" severity="error">
+                    {updateProject?.message}
+                  </Alert>
+                )}
+              {updateProject &&
+                updateProject?.success &&
+                updateProject.message && (
+                  <Alert variant="filled" severity="success">
+                    {updateProject?.message}
+                  </Alert>
+                )}
+            </Box>
 
-        <Grid
-          item
-          xs={12}
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-          }}
-        >
-          {listAssignEmployeesLoading || updateProject?.loading ? (
-            <CircularProgress />
-          ) : (
-            <>
-              {/* Check if listAssignEmployeesData is not null or undefined */}
-              {listAssignEmployeesData && listAssignEmployeesData.length > 0 ? (
-                listAssignEmployeesData.map((item) => (
-                  <ThanksCard key={item.assignmentId} data={item} />
-                ))
+            <Grid
+              item
+              xs={12}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+              }}
+            >
+              {listAssignEmployeesLoading || updateProject?.loading ? (
+                <CircularProgress />
               ) : (
-                <p>No assigned projects found.</p>
+                <>
+                  {/* Check if listAssignEmployeesData is not null or undefined */}
+                  {listAssignEmployeesData &&
+                  listAssignEmployeesData.length > 0 ? (
+                    listAssignEmployeesData.map((item) => (
+                      <ThanksCard key={item.assignmentId} data={item} />
+                    ))
+                  ) : (
+                    <p>No assigned projects found.</p>
+                  )}
+                </>
               )}
-            </>
-          )}
-        </Grid>
+            </Grid>
+          </Box>
+        ) : (
+          <Box
+            sx={{
+              marginTop: "20px",
+            }}
+          >
+            <Alert severity="error">
+              You are not allowed to see this information
+            </Alert>
+          </Box>
+        )}
       </Page>
     </>
   );

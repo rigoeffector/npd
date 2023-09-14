@@ -323,130 +323,144 @@ const Admin = () => {
           </Grid>
         </form>
       </NPDModal>
-
-      <Container maxWidth="lg">
-        <h1>Settings</h1>
-        <Card>
-          <Box p={2}>
-            <Accordion
-              expanded={expanded === "panel1"}
-              onChange={handleChange("panel1")}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1bh-content"
-                id="panel1bh-header"
-                sx={{ backgroundColor: "#eef0f2" }}
+      {(auth && auth.data && auth.data.role === "projectmanager") ||
+      (auth && auth.data && auth.data.role === "super") ? (
+        <Container maxWidth="lg">
+          <h1>Settings</h1>
+          <Card>
+            <Box p={2}>
+              <Accordion
+                expanded={expanded === "panel1"}
+                onChange={handleChange("panel1")}
               >
-                <Typography
-                  sx={{ width: "33%", fontWeight: "700", flexShrink: 0 }}
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1bh-content"
+                  id="panel1bh-header"
+                  sx={{ backgroundColor: "#eef0f2" }}
                 >
-                  Sites...
-                </Typography>
-                <Typography sx={{ color: "text.secondary" }}></Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Grid xs={12}>
-                  <Box
-                    sx={{
-                      margin: "30px 0px",
-                      width: "100%",
-                      display: "flex",
-                      justifyContent: "space-between",
-                    }}
+                  <Typography
+                    sx={{ width: "33%", fontWeight: "700", flexShrink: 0 }}
                   >
-                    <Typography
+                    Sites...
+                  </Typography>
+                  <Typography sx={{ color: "text.secondary" }}></Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Grid xs={12}>
+                    <Box
                       sx={{
-                        fontWeight: "700",
+                        margin: "30px 0px",
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "space-between",
                       }}
                     >
-                      All Company Sites
-                    </Typography>
+                      <Typography
+                        sx={{
+                          fontWeight: "700",
+                        }}
+                      >
+                        All Company Sites
+                      </Typography>
 
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      startIcon={<AddIcon />}
-                      sx={
-                        (auth && auth.data && auth.data.role === "super") ||
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<AddIcon />}
+                        sx={
+                          (auth && auth.data && auth.data.role === "super") ||
+                          (auth &&
+                            auth.data &&
+                            auth.data.role === "projectmanager")
+                            ? {
+                                display: "block",
+                              }
+                            : { display: "none" }
+                        }
+                        onClick={showModalAddNew}
+                      >
+                        Add New Site
+                      </Button>
+                    </Box>
+                  </Grid>
+                  {createReport &&
+                    createReport?.success &&
+                    createReport.message && (
+                      <Alert variant="filled" severity="success">
+                        {createReport?.message}
+                      </Alert>
+                    )}
+                  <Sites />
+                </AccordionDetails>
+              </Accordion>
+              <Accordion
+                expanded={expanded === "panel2"}
+                onChange={handleChange("panel2")}
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1bh-content"
+                  id="panel1bh-header"
+                  sx={{ backgroundColor: "#eef0f2" }}
+                >
+                  <Typography
+                    sx={{ width: "33%", fontWeight: "700", flexShrink: 0 }}
+                  >
+                    Reports
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Grid xs={12}>
+                    <Box
+                      sx={{
+                        margin: "30px 0px",
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontWeight: "700",
+                        }}
+                      >
+                        All Uploaded Reports
+                      </Typography>
+                      {(auth && auth.data && auth.data.role === "super") ||
                         (auth &&
                           auth.data &&
-                          auth.data.role === "projectmanager")
-                          ? {
-                              display: "block",
-                            }
-                          : { display: "none" }
-                      }
-                      onClick={showModalAddNew}
-                    >
-                      Add New Site
-                    </Button>
-                  </Box>
-                </Grid>
-                {createReport &&
-                  createReport?.success &&
-                  createReport.message && (
-                    <Alert variant="filled" severity="success">
-                      {createReport?.message}
-                    </Alert>
-                  )}
-                <Sites />
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              expanded={expanded === "panel2"}
-              onChange={handleChange("panel2")}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1bh-content"
-                id="panel1bh-header"
-                sx={{ backgroundColor: "#eef0f2" }}
-              >
-                <Typography
-                  sx={{ width: "33%", fontWeight: "700", flexShrink: 0 }}
-                >
-                  Reports
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Grid xs={12}>
-                  <Box
-                    sx={{
-                      margin: "30px 0px",
-                      width: "100%",
-                      display: "flex",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        fontWeight: "700",
-                      }}
-                    >
-                      All Uploaded Reports
-                    </Typography>
-                    {(auth && auth.data && auth.data.role === "super") ||
-                      (auth && auth.data && auth.data.role === "sitemanager") ||
-                      (auth && auth.data && auth.data.role === "capita" && (
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={showModalUploadNew}
-                          startIcon={<DocumentIcon />}
-                        >
-                          Upload New Document
-                        </Button>
-                      ))}
-                  </Box>
-                </Grid>
+                          auth.data.role === "sitemanager") ||
+                        (auth && auth.data && auth.data.role === "capita" && (
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={showModalUploadNew}
+                            startIcon={<DocumentIcon />}
+                          >
+                            Upload New Document
+                          </Button>
+                        ))}
+                    </Box>
+                  </Grid>
 
-                <DocCategoriesModify />
-              </AccordionDetails>
-            </Accordion>
-          </Box>
-        </Card>
-      </Container>
+                  <DocCategoriesModify />
+                </AccordionDetails>
+              </Accordion>
+            </Box>
+          </Card>
+        </Container>
+      ) : (
+        <Box
+          sx={{
+            marginTop: "20px",
+          }}
+        >
+          <Alert severity="error">
+            You are not allowed to see this information
+          </Alert>
+        </Box>
+      )}
     </Page>
   );
 };
