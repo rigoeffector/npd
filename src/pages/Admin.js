@@ -11,6 +11,8 @@ import {
   IconButton,
   CircularProgress,
   TextField,
+  Skeleton,
+  Autocomplete,
 } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -28,7 +30,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../firebase";
 import { useDropzone } from "react-dropzone";
-import { CREATE_REPORT_REQUEST } from "../reducers/reports/constants";
+import { CREATE_REPORT_REQUEST, GET_REPORTS_LIST_REQUEST } from "../reducers/reports/constants";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 
@@ -36,9 +38,13 @@ const Admin = () => {
   const [expanded, setExpanded] = React.useState(true);
   const [showNewModal, setShowNewModal] = React.useState(false);
   const [showNewUploadModal, setShowNewUploadModal] = React.useState(false);
-  const { createSite, auth, createReport } = useSelector((state) => state);
+  const { createSite, auth, createReport, listProjects  } = useSelector((state) => state);
   const dispatch = useDispatch();
-
+  React.useEffect(() => {
+    dispatch({
+      type: GET_REPORTS_LIST_REQUEST,
+    });
+  }, [dispatch]);
   useEffect(() => {
     if (createSite.success || createReport.success) {
       handleClose();
@@ -62,7 +68,15 @@ const Admin = () => {
   const [files, setFiles] = React.useState([]);
   const [imageUrls, setImageUrls] = React.useState({});
   const [loadingUpload, setLoadingUpload] = React.useState(false);
+ 
 
+  const [selectedValueProject, setSelectedValueProject] = React.useState(null);
+
+  
+  // Handle the change event when an option is selected
+  const handleAutocompleteChange = (event, newValue) => {
+    setSelectedValueProject(newValue);
+  };
   const { getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
     accept: [".pdf", ".doc"],
@@ -110,12 +124,7 @@ const Admin = () => {
       files.forEach((file) => URL.revokeObjectURL(file.preview));
     };
   }, [files]);
-  const thumbsContainer = {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    marginTop: 16,
-  };
+ 
 
   const thumb = {
     display: "inline-flex",
@@ -147,6 +156,7 @@ const Admin = () => {
         updatedBy: auth && auth?.data?.id,
         link: imageUrls.image_url_1,
         description: values.description,
+        projectId: selectedValueProject.value,
       };
 
       dispatch({
@@ -243,6 +253,38 @@ const Admin = () => {
           >
             <Box sx={{ flexGrow: 1 }}>
               <Grid container spacing={2} sx={{ marginBottom: "15px" }}>
+              <Grid item sx={12} sm={12} xl={12}>
+                {listProjects && listProjects?.loading ? (
+                  <Skeleton />
+                ) : (
+                  <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={
+                      listProjects &&
+                      listProjects.data &&
+                      listProjects?.data.length > 0
+                        ? listProjects?.data
+                            .filter((pr) => pr.status === "running")
+                            .map((pr) => ({
+                              label: pr.name,
+                              value: pr.id,
+                            }))
+                        : [
+                            {
+                              label: "Select",
+                              value: "No Projects available",
+                            },
+                          ]
+                    }
+                    onChange={handleAutocompleteChange} // Handle selection change
+                    value={selectedValueProject} // Set the selected value
+                    renderInput={(params) => (
+                      <TextField {...params} label="Select a Project" />
+                    )}
+                  />
+                )}
+              </Grid>
                 <Grid item xs={12}>
                   <TextField
                     fullWidth
@@ -324,7 +366,8 @@ const Admin = () => {
         </form>
       </NPDModal>
       {(auth && auth.data && auth.data.role === "projectmanager") ||
-      (auth && auth.data && auth.data.role === "super") ? (
+      (auth && auth.data && auth.data.role === "super") ||
+      (auth && auth.data && auth.data.role === "sitemanager") ? (
         <Container maxWidth="lg">
           <h1>Settings</h1>
           <Card>
@@ -368,16 +411,6 @@ const Admin = () => {
                         variant="contained"
                         color="primary"
                         startIcon={<AddIcon />}
-                        sx={
-                          (auth && auth.data && auth.data.role === "super") ||
-                          (auth &&
-                            auth.data &&
-                            auth.data.role === "projectmanager")
-                            ? {
-                                display: "block",
-                              }
-                            : { display: "none" }
-                        }
                         onClick={showModalAddNew}
                       >
                         Add New Site
@@ -427,20 +460,15 @@ const Admin = () => {
                       >
                         All Uploaded Reports
                       </Typography>
-                      {(auth && auth.data && auth.data.role === "super") ||
-                        (auth &&
-                          auth.data &&
-                          auth.data.role === "sitemanager") ||
-                        (auth && auth.data && auth.data.role === "capita" && (
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={showModalUploadNew}
-                            startIcon={<DocumentIcon />}
-                          >
-                            Upload New Document
-                          </Button>
-                        ))}
+
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={showModalUploadNew}
+                        startIcon={<DocumentIcon />}
+                      >
+                        Upload New Document
+                      </Button>
                     </Box>
                   </Grid>
 

@@ -37,29 +37,26 @@ class Attendance
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
             foreach ($data as $record) {
-                $projectId = $record["projectId"];
+                $siteId = $record["siteId"];
                 $employeeId = $record["employeeId"];
                 $status = $record["status"];
     
-                // Assuming 'time' is a date column in the database
-                $time = date('Y-m-d'); // Use the current date as 'time'
-                $timestamp = time(); // Replace with your actual timestamp or date value
+                // Check if 'time' is present in the $record, otherwise use the default timestamp
+                $currentTime = isset($record["time"]) ? $record["time"] : date('Y-m-d H:i:s');
     
-                // Format the date as a full date with time (e.g., "2023-09-09 14:30:00")
-                $formattedDate = date('Y-m-d H:i:s', $timestamp); // Use the current date as 'time'
-    
-                if (!$this->attendanceExists($projectId, $employeeId,)) {
-                    // No record with the same projectId, employeeId, status, and time exists, proceed with insertion
-                    $insertStmt = $this->conn->prepare("INSERT INTO $this->table (projectId, employeeId) 
-                            VALUES (:projectId, :employeeId)");
-                    $insertStmt->bindParam(':projectId', $projectId);
+                // Check if attendance already exists for the same siteId, employeeId, and date
+                if (!$this->attendanceExists($siteId, $employeeId, date('Y-m-d', strtotime($currentTime)))) {
+                    // No record with the same siteId, employeeId, and date exists, proceed with insertion
+                    $insertStmt = $this->conn->prepare("INSERT INTO $this->table (siteId, employeeId, status, time) 
+                            VALUES (:siteId, :employeeId, :status, :time)");
+                    $insertStmt->bindParam(':siteId', $siteId);
                     $insertStmt->bindParam(':employeeId', $employeeId);
-                    // $insertStmt->bindParam(':time', $formattedDate);
-                    // $insertStmt->bindParam(':status', $status);
+                    $insertStmt->bindParam(':status', $status);
+                    $insertStmt->bindParam(':time', $currentTime);
                     $insertStmt->execute();
                 } else {
-                    // A record with the same projectId, employeeId, status, and time already exists, throw an error
-                    throw new Exception("Attendance record for employeeId $employeeId on projectId $projectId with status $status for date $time already exists.");
+                    // A record with the same siteId, employeeId, and date already exists, throw an error
+                    throw new Exception("Attendance record for employeeId $employeeId on site $siteId for the given date already exists.");
                 }
             }
     
@@ -70,18 +67,32 @@ class Attendance
         }
     }
     
-    // Function to check if an attendance record already exists
-    private function attendanceExists($projectId, $employeeId)
-    {
-        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM $this->table WHERE projectId = :projectId AND employeeId = :employeeId");
-        $stmt->bindParam(':projectId', $projectId);
-        $stmt->bindParam(':employeeId', $employeeId);
-        // $stmt->bindParam(':status', $status);
-        $stmt->execute();
-        $count = $stmt->fetchColumn();
+
     
-        return ($count !== false && $count > 0);
-    }
+
+    
+    // Function to check if an attendance record already exists
+    // Function to check if an attendance record already exists
+// Function to check if an attendance record with the same siteId, employeeId, and timestamp already exists
+// Function to check if an attendance record with the same siteId, employeeId, and date already exists
+// Function to check if an attendance record with the same siteId, employeeId, and date already exists
+private function attendanceExists($siteId, $employeeId, $date)
+{
+    // Extract the date part from the 'time' column in the database
+    $stmt = $this->conn->prepare("SELECT COUNT(*) FROM $this->table WHERE siteId = :siteId AND employeeId = :employeeId AND DATE(time) = :date");
+    $stmt->bindParam(':siteId', $siteId);
+    $stmt->bindParam(':employeeId', $employeeId);
+    $stmt->bindParam(':date', $date);
+    $stmt->execute();
+    $count = $stmt->fetchColumn();
+
+    return ($count !== false && $count > 0);
+}
+
+
+
+
+    
     
 
 
@@ -143,7 +154,7 @@ class Attendance
         try {
             $query = "SELECT 
                a.id,
-               a.projectId AS projectId,
+            
                a.employeeId AS employeeId,
                a.time AS attendanceTime,
                a.status AS attendanceStatus,
@@ -163,13 +174,11 @@ class Attendance
                e.emphone AS emergencyPhoneNumber,
                e.emrelation AS emergencyRelation,
                e.doclink AS documentLink,
-               p.name AS projectName,
                s.name AS siteName,
                s.location AS siteLocation
                FROM $this->table a
                JOIN employees e ON a.employeeId = e.id
-               JOIN projects p ON a.projectId = p.id
-               JOIN sites s ON p.siteId = s.id";
+               JOIN sites s ON a.siteId = s.id";
 
             $stmt = $this->conn->prepare($query);
             $stmt->execute();

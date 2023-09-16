@@ -27,6 +27,7 @@ if ($result) {
             "reportLink" => $reportLink,
             "reportCreatedAt" => $reportCreatedAt,
             "reportDescription" => $reportDescription,
+            "projectName" => $projectName,
             "createdBy" => array(
                 "employeeId" => $createdByEmployeeId,
                 "firstName" => $createdByFirstName,

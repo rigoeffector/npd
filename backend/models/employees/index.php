@@ -86,30 +86,30 @@ class Employees
             }
 
             // No record with the same name exists, proceed with insertion
-            $insertStmt = $this->conn->prepare("INSERT INTO $this->table (fname, lname, idnumber, phonenumber, age, salary, gender, siteId, role, startdate, dob, emfname, emlname, emphone, emrelation, doclink,username) 
-                            VALUES (:fname, :lname, :idnumber, :phonenumber, :age, :salary, :gender, :siteId, :role, :startdate, :dob, :emfname, :emlname, :emphone, :emrelation, :doclink,:username)");
+            // $insertStmt = $this->conn->prepare("INSERT INTO $this->table (fname, lname, idnumber, phonenumber, age, salary, gender, siteId, role, startdate, dob, emfname, emlname, emphone, emrelation, doclink,username) 
+            //                 VALUES (:fname, :lname, :idnumber, :phonenumber, :age, :salary, :gender, :siteId, :role, :startdate, :dob, :emfname, :emlname, :emphone, :emrelation, :doclink,:username)");
 
-            $insertSuccess = $insertStmt->execute([
-                "fname" => $data["fname"],
-                "lname" => $data["lname"],
-                "idnumber" => $data["idnumber"],
-                "phonenumber" => $data["phonenumber"],
-                "age" => $data["age"],
-                "salary" => $data["salary"],
-                "gender" => $data["gender"],
-                "siteId" => $data["siteId"],
-                "role" => $data["role"],
-                "startdate" => $data["startdate"],
-                "dob" => $data["dob"],
-                "emfname" => $data["emfname"],
-                "emlname" => $data["emlname"],
-                "emphone" => $data["emphone"],
-                "emrelation" => $data["emrelation"],
-                "doclink" => $data["doclink"],
-                "username" => $data["username"],
-            ]);
+            // $insertSuccess = $insertStmt->execute([
+            //     "fname" => $data["fname"],
+            //     "lname" => $data["lname"],
+            //     "idnumber" => $data["idnumber"],
+            //     "phonenumber" => $data["phonenumber"],
+            //     "age" => $data["age"],
+            //     "salary" => $data["salary"],
+            //     "gender" => $data["gender"],
+            //     "siteId" => $data["siteId"],
+            //     "role" => $data["role"],
+            //     "startdate" => $data["startdate"],
+            //     "dob" => $data["dob"],
+            //     "emfname" => $data["emfname"],
+            //     "emlname" => $data["emlname"],
+            //     "emphone" => $data["emphone"],
+            //     "emrelation" => $data["emrelation"],
+            //     "doclink" => $data["doclink"],
+            //     "username" => $data["username"],
+            // ]);
 
-            if ($insertSuccess) {
+            // if ($insertSuccess) {
                 // INSERT query executed successfully, send the SMS
                 $username = $data['username'];
                 $phone = $data["phonenumber"];
@@ -146,11 +146,14 @@ class Employees
                     );
                     echo json_encode($response);
                 }
+                else{
+                    print_r($response);
+                }
 
                 return true; // Return a success indicator if the insert and SMS send were successful.
-            } else {
-                return false; // Return a failure indicator if the insert query failed.
-            }
+            // } else {
+            //     return false; // Return a failure indicator if the insert query failed.
+            // }
         } catch (PDOException $e) {
             // Handle any database errors here.
             return false; // Return a failure indicator if an error occurred.

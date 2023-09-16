@@ -19,7 +19,7 @@ if ($result) {
 
         $attendance_item = array(
             "id" => $id,
-            "projectId" => $projectId,
+            // "projectId" => $projectId,
             "employeeId" => $employeeId,
             "attendanceTime" => $attendanceTime,
             "attendanceStatus" => $attendanceStatus,
@@ -39,7 +39,7 @@ if ($result) {
             "emergencyPhoneNumber" => $emergencyPhoneNumber,
             "emergencyRelation" => $emergencyRelation,
             "documentLink" => $documentLink,
-            "projectName" => $projectName,
+            // "projectName" => $projectName,
             "siteName" => $siteName,
             "siteLocation" => $siteLocation
         );

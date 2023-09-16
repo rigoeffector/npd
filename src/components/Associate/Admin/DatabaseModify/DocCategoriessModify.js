@@ -47,6 +47,9 @@ const DocCategoriesModify = () => {
                     By: {r?.createdBy?.firstName} {r?.createdBy?.lastName}
                   </Typography>
                   <Typography variant="body2">
+                    Project: {r?.projectName}
+                  </Typography>
+                  <Typography variant="body2">
                     Created At: {r?.reportCreatedAt}
                   </Typography>
 
@@ -72,25 +75,22 @@ const DocCategoriesModify = () => {
                     }
                   />
                 </CardContent>
+                <hr/>
                 <CardActions
                   sx={{
                     display: "flex",
                     justifyContent: "center",
                   }}
                 >
-                  {(auth && auth.data && auth.data.role === "super") ||
-                    (auth && auth.data && auth.data.role === "sitemanager") ||
-                    (auth && auth.data && auth.data.role === "capita" && (
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        href={r.reportLink}
-                        target={"_blank"}
-                        startIcon={<DocumentIcon />}
-                      >
-                        Download
-                      </Button>
-                    ))}
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    href={r.reportLink}
+                    target={"_blank"}
+                    startIcon={<DocumentIcon />}
+                  >
+                    Download
+                  </Button>
                 </CardActions>
               </Card>
             </Grid>

@@ -93,8 +93,14 @@ const Home = () => {
   };
   const columns = [
     // { field: "id", headerName: "ID", width: 70 },
-    { field: "reportName", headerName: "Report name", width: 300 },
+    { field: "reportName", headerName: "Report name", width: 200 },
+    {
+      field: "projectName",
+      headerName: "Project Name",
+      width: 200
+    },
     { field: "reportStatus", headerName: "Status", flex: 2 },
+    
     {
       field: "reportDescription",
       headerName: "Description",

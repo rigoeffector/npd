@@ -29,6 +29,7 @@ import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { capitalize } from "lodash";
+import { GET_SITES_LIST_REQUEST } from "../reducers/sites/constants";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -79,12 +80,12 @@ const Attendance = () => {
     createAttendance,
     updateAttendance,
     listAttendances,
-    listProjects,
+    listSites,
     auth
   } = useSelector((state) => state);
   React.useEffect(() => {
     dispatch({
-      type: GET_PROJECTS_LIST_REQUEST,
+      type: GET_SITES_LIST_REQUEST,
     });
   }, [dispatch]);
   React.useEffect(() => {
@@ -129,7 +130,7 @@ const Attendance = () => {
     );
 
     const newArray = selectedData.map((employee) => ({
-      projectId: selectedValueProject.value, // Use the selected project value
+      siteId: selectedValueProject.value, // Use the selected project value
       employeeId: employee.id,
       status: "present", // Use the employee's id
       // Add other properties as needed
@@ -146,7 +147,7 @@ const Attendance = () => {
     );
 
     const newArray = selectedData.map((employee) => ({
-      projectId: selectedValueProject.value, // Use the selected project value
+      siteId: selectedValueProject.value, // Use the selected project value
       employeeId: employee.id,
       status: "sick", // Use the employee's id
       // Add other properties as needed
@@ -163,7 +164,7 @@ const Attendance = () => {
     );
 
     const newArray = selectedData.map((employee) => ({
-      projectId: selectedValueProject.value, // Use the selected project value
+      siteId: selectedValueProject.value, // Use the selected project value
       employeeId: employee.id,
       status: "absent", // Use the employee's id
       // Add other properties as needed
@@ -296,11 +297,11 @@ const Attendance = () => {
       headerName: "EmergePhone Relation",
       width: 130,
     },
-    {
-      field: "projectName",
-      headerName: "Project Name",
-      width: 130,
-    },
+    // {
+    //   field: "projectName",
+    //   headerName: "Project Name",
+    //   width: 130,
+    // },
     {
       field: "siteName",
       headerName: "Site Name",
@@ -503,18 +504,18 @@ const Attendance = () => {
               <Box sx={{ flexGrow: 1 }}>
                 <Grid container xs={12} spacing={2}>
                   <Grid item sx={6} sm={6} xl={6}>
-                    {listProjects && listProjects?.loading ? (
+                    {listSites && listSites?.loading ? (
                       <Skeleton />
                     ) : (
                       <Autocomplete
                         disablePortal
                         id="combo-box-demo"
                         options={
-                          listProjects &&
-                          listProjects.data &&
-                          listProjects?.data.length > 0
-                            ? listProjects?.data
-                                .filter((pr) => pr.status === "running")
+                          listSites &&
+                          listSites.data &&
+                          listSites?.data.length > 0
+                            ? listSites?.data
+                                
                                 .map((pr) => ({
                                   label: pr.name,
                                   value: pr.id,
@@ -522,14 +523,14 @@ const Attendance = () => {
                             : [
                                 {
                                   label: "Select",
-                                  value: "No Projects available",
+                                  value: "No Sites available",
                                 },
                               ]
                         }
                         onChange={handleAutocompleteChange} // Handle selection change
                         value={selectedValueProject} // Set the selected value
                         renderInput={(params) => (
-                          <TextField {...params} label="Select a Project" />
+                          <TextField {...params} label="Select a Site" />
                         )}
                       />
                     )}

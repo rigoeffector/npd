@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Sep 14, 2023 at 09:14 PM
+-- Generation Time: Sep 16, 2023 at 01:52 PM
 -- Server version: 5.7.39
 -- PHP Version: 8.2.0
 
@@ -69,7 +69,7 @@ INSERT INTO `assign` (`id`, `employeeId`, `projectId`) VALUES
 
 CREATE TABLE `attendance` (
   `id` int(11) NOT NULL,
-  `projectId` int(11) NOT NULL,
+  `siteId` int(11) NOT NULL,
   `employeeId` int(11) NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` varchar(255) NOT NULL DEFAULT 'present'
@@ -79,9 +79,10 @@ CREATE TABLE `attendance` (
 -- Dumping data for table `attendance`
 --
 
-INSERT INTO `attendance` (`id`, `projectId`, `employeeId`, `time`, `status`) VALUES
-(16, 5, 10, '2023-09-14 18:28:36', 'absent'),
-(17, 6, 10, '2023-09-10 15:19:52', 'absent');
+INSERT INTO `attendance` (`id`, `siteId`, `employeeId`, `time`, `status`) VALUES
+(37, 1, 10, '2023-09-16 10:40:52', 'absent'),
+(38, 1, 12, '2023-09-16 10:48:53', 'sick'),
+(39, 5, 10, '2023-09-16 10:49:41', 'present');
 
 -- --------------------------------------------------------
 
@@ -161,6 +162,7 @@ CREATE TABLE `reports` (
   `createdBy` int(11) NOT NULL,
   `status` varchar(255) DEFAULT NULL,
   `updatedBy` int(11) NOT NULL,
+  `projectId` int(11) NOT NULL,
   `link` text,
   `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `description` text NOT NULL
@@ -170,12 +172,9 @@ CREATE TABLE `reports` (
 -- Dumping data for table `reports`
 --
 
-INSERT INTO `reports` (`id`, `name`, `createdBy`, `status`, `updatedBy`, `link`, `createdAt`, `description`) VALUES
-(16, 'Sept2', 10, 'pending', 10, 'www.google.com', '2023-09-10 18:37:31', 'pending'),
-(17, 'Sept2', 10, 'pending', 10, 'www.google.com', '2023-09-10 18:38:11', 'pending'),
-(18, 'report', 5, 'approved', 5, 'https://firebasestorage.googleapis.com/v0/b/daada-poducts-images.appspot.com/o/products%2FShield%20kids%20requirements.pdf?alt=media&token=c1176cd5-38fa-465b-957e-cc7d99832ca1', '2023-09-10 18:58:04', 'Work Report'),
-(19, 'Septermber Logistic', 5, 'rejected', 5, 'Array', '2023-09-10 19:26:50', 'Sawa'),
-(20, 'Septermber Logistics', 5, 'approved', 5, 'Array', '2023-09-10 19:27:26', 'Sawaaaa');
+INSERT INTO `reports` (`id`, `name`, `createdBy`, `status`, `updatedBy`, `projectId`, `link`, `createdAt`, `description`) VALUES
+(23, 'August Report', 5, 'pending', 5, 4, 'www.google.com', '2023-09-16 11:23:11', 'sawa'),
+(24, 'NPD Check', 12, 'pending', 12, 6, 'https://firebasestorage.googleapis.com/v0/b/daada-poducts-images.appspot.com/o/products%2Fall-employees-attendance%20(1).pdf?alt=media&token=561fabdc-e7db-4a3b-9410-71d563ef024e', '2023-09-16 11:49:07', 'Check in');
 
 -- --------------------------------------------------------
 
@@ -219,7 +218,7 @@ ALTER TABLE `assign`
 ALTER TABLE `attendance`
   ADD PRIMARY KEY (`id`),
   ADD KEY `attendance_ibfk_1` (`employeeId`),
-  ADD KEY `attendance_ibfk_2` (`projectId`);
+  ADD KEY `attendance_ibfk_2` (`siteId`);
 
 --
 -- Indexes for table `employees`
@@ -242,7 +241,8 @@ ALTER TABLE `projects`
 ALTER TABLE `reports`
   ADD PRIMARY KEY (`id`),
   ADD KEY `reports_ibfk_1` (`createdBy`),
-  ADD KEY `reports_ibfk_2` (`updatedBy`);
+  ADD KEY `reports_ibfk_2` (`updatedBy`),
+  ADD KEY `projectId` (`projectId`);
 
 --
 -- Indexes for table `sites`
@@ -264,7 +264,7 @@ ALTER TABLE `assign`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `employees`
@@ -282,7 +282,7 @@ ALTER TABLE `projects`
 -- AUTO_INCREMENT for table `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `sites`
@@ -306,7 +306,7 @@ ALTER TABLE `assign`
 --
 ALTER TABLE `attendance`
   ADD CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`employeeId`) REFERENCES `employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `attendance_ibfk_2` FOREIGN KEY (`projectId`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `attendance_ibfk_2` FOREIGN KEY (`siteId`) REFERENCES `sites` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `employees`
@@ -326,7 +326,8 @@ ALTER TABLE `projects`
 --
 ALTER TABLE `reports`
   ADD CONSTRAINT `reports_ibfk_1` FOREIGN KEY (`createdBy`) REFERENCES `employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `reports_ibfk_2` FOREIGN KEY (`updatedBy`) REFERENCES `employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `reports_ibfk_2` FOREIGN KEY (`updatedBy`) REFERENCES `employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `reports_ibfk_3` FOREIGN KEY (`projectId`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

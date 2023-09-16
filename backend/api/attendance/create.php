@@ -43,7 +43,7 @@ if (is_array($data)) {
             "status" => "error",
             "error" => true,
             "success" => false,
-            "message" => "Attendance record for this employee(s) on this project for date " . date("Y-m-d") . " already exists."
+            "message" => $e->getMessage() // Use the exception message to provide a specific error message
         );
         echo json_encode($response);
     }
